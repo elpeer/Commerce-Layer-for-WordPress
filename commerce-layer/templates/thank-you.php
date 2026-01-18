@@ -13,7 +13,42 @@ if ( ! defined( 'ABSPATH' ) ) {
 if ( ! isset( $order ) || ! $order instanceof CL_Order ) {
     return;
 }
+
+// Prepare tracking data
+$tracking_items = array();
+foreach ( $order->get_items() as $item ) {
+    $tracking_items[] = array(
+        'item_id'      => $item['post_id'],
+        'item_name'    => $item['name'],
+        'item_variant' => $item['variant_name'],
+        'price'        => floatval( $item['price'] ),
+        'quantity'     => intval( $item['quantity'] ),
+    );
+}
+
+$is_lead = 'lead' === $order->get_status();
 ?>
+<?php // Tracking: purchase or lead_submitted event ?>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    if (window.clTracking) {
+        var orderData = {
+            order_number: '<?php echo esc_js( $order->get_order_number() ); ?>',
+            currency: '<?php echo esc_js( get_option( 'cl_currency', 'ILS' ) ); ?>',
+            total: <?php echo floatval( $order->get_total() ); ?>,
+            subtotal: <?php echo floatval( $order->get_subtotal() ); ?>,
+            shipping: 0,
+            items: <?php echo json_encode( $tracking_items ); ?>
+        };
+
+        <?php if ( $is_lead ) : ?>
+        clTracking.leadSubmitted(orderData);
+        <?php else : ?>
+        clTracking.purchase(orderData);
+        <?php endif; ?>
+    }
+});
+</script>
 <div class="cl-thank-you">
     <div class="cl-success-header">
         <span class="cl-success-icon">✓</span>

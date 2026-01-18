@@ -85,6 +85,12 @@ class CL_Ajax {
             wp_send_json_error( array( 'message' => $result->get_error_message() ) );
         }
 
+        // Get cart item data for tracking
+        $cart_item = $cart->get_item( $result );
+
+        // Fire tracking hook
+        do_action( 'cl_add_to_cart', $post_id, $quantity, $variant_id, $cart_item );
+
         wp_send_json_success( array(
             'message'     => __( 'הפריט נוסף לסל', 'commerce-layer' ),
             'cart_key'    => $result,
@@ -94,6 +100,15 @@ class CL_Ajax {
                 'total' => CL_Core::format_price( $cart->get_total() ),
             ),
             'cart_url'    => get_permalink( get_option( 'cl_cart_page_id' ) ),
+            // Include tracking data for JavaScript
+            'tracking'    => array(
+                'id'       => $post_id,
+                'name'     => $cart_item ? $cart_item['name'] : '',
+                'variant'  => $cart_item ? $cart_item['variant_name'] : '',
+                'price'    => $cart_item ? floatval( $cart_item['price'] ) : 0,
+                'quantity' => $quantity,
+                'currency' => get_option( 'cl_currency', 'ILS' ),
+            ),
         ) );
     }
 
@@ -144,11 +159,18 @@ class CL_Ajax {
         }
 
         $cart = CL_Cart::get_instance();
+
+        // Get item data before removing for tracking
+        $cart_item = $cart->get_item( $cart_key );
+
         $result = $cart->remove_item( $cart_key );
 
         if ( ! $result ) {
             wp_send_json_error( array( 'message' => __( 'הסרה נכשלה', 'commerce-layer' ) ) );
         }
+
+        // Fire tracking hook
+        do_action( 'cl_remove_from_cart', $cart_key, $cart_item );
 
         wp_send_json_success( array(
             'message'     => __( 'הפריט הוסר', 'commerce-layer' ),
@@ -161,6 +183,15 @@ class CL_Ajax {
                 'subtotal' => CL_Core::format_price( $cart->get_subtotal() ),
                 'total'    => CL_Core::format_price( $cart->get_total() ),
             ),
+            // Include tracking data for JavaScript
+            'tracking'    => $cart_item ? array(
+                'id'       => $cart_item['post_id'],
+                'name'     => $cart_item['name'],
+                'variant'  => $cart_item['variant_name'],
+                'price'    => floatval( $cart_item['price'] ),
+                'quantity' => $cart_item['quantity'],
+                'currency' => get_option( 'cl_currency', 'ILS' ),
+            ) : null,
         ) );
     }
 

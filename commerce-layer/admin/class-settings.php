@@ -136,6 +136,7 @@ class CL_Settings {
                 update_option( 'cl_display_position', sanitize_text_field( $_POST['cl_display_position'] ?? 'after_content' ) );
                 update_option( 'cl_add_to_cart_text', sanitize_text_field( $_POST['cl_add_to_cart_text'] ?? '' ) );
                 update_option( 'cl_buy_now_text', sanitize_text_field( $_POST['cl_buy_now_text'] ?? '' ) );
+                update_option( 'cl_continue_shopping_text', sanitize_text_field( $_POST['cl_continue_shopping_text'] ?? __( 'המשך בקנייה', 'commerce-layer' ) ) );
                 update_option( 'cl_floating_bar_enabled', isset( $_POST['cl_floating_bar_enabled'] ) ? 'yes' : 'no' );
 
                 // Floating cart icon settings

@@ -253,6 +253,11 @@
                     // Show success notification
                     showNotice(response.data.message, 'success');
 
+                    // Fire tracking event
+                    if (window.clTracking && response.data.tracking) {
+                        clTracking.addToCart(response.data.tracking);
+                    }
+
                     // Update and open side cart
                     console.log('[Commerce Layer] Updating and opening side cart...');
                     updateSideCart(function() {
@@ -491,6 +496,11 @@
                         $(this).remove();
                     });
 
+                    // Fire tracking event
+                    if (window.clTracking && response.data.tracking) {
+                        clTracking.removeFromCart(response.data.tracking);
+                    }
+
                     // Update totals
                     $('.cl-subtotal-amount').text(response.data.formatted.total);
                     updateCartCount(response.data.items_count);
@@ -585,6 +595,11 @@
                 $row.fadeOut(function() {
                     $(this).remove();
                 });
+
+                // Fire tracking event
+                if (window.clTracking && response.data.tracking) {
+                    clTracking.removeFromCart(response.data.tracking);
+                }
 
                 // Update totals
                 $('.cl-subtotal-amount').text(response.data.formatted.subtotal);

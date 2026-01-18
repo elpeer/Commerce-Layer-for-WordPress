@@ -380,6 +380,14 @@ if ( ! defined( 'ABSPATH' ) ) {
                 </tr>
 
                 <tr>
+                    <th scope="row"><?php esc_html_e( 'טקסט כפתור "המשך בקנייה"', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="text" name="cl_continue_shopping_text" value="<?php echo esc_attr( get_option( 'cl_continue_shopping_text', __( 'המשך בקנייה', 'commerce-layer' ) ) ); ?>" class="regular-text">
+                        <p class="description"><?php esc_html_e( 'הטקסט שיופיע בכפתור "המשך בקנייה" בעמוד הסל', 'commerce-layer' ); ?></p>
+                    </td>
+                </tr>
+
+                <tr>
                     <th scope="row"><?php esc_html_e( 'סרגל צף', 'commerce-layer' ); ?></th>
                     <td>
                         <label>

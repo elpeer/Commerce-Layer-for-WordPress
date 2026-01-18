@@ -92,7 +92,7 @@ $checkout_url = get_permalink( get_option( 'cl_checkout_page_id' ) );
                 <?php esc_html_e( 'המשך לתשלום', 'commerce-layer' ); ?>
             </a>
             <a href="<?php echo esc_url( home_url() ); ?>" class="cl-btn cl-btn-secondary cl-continue">
-                <?php esc_html_e( 'המשך בקנייה', 'commerce-layer' ); ?>
+                <?php echo esc_html( get_option( 'cl_continue_shopping_text', __( 'המשך בקנייה', 'commerce-layer' ) ) ); ?>
             </a>
         </div>
     </div>

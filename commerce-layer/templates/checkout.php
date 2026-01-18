@@ -51,7 +51,35 @@ $coupon_discount = $totals['discount'];
 // Calculate initial total
 $default_shipping = ! empty( $enabled_shipping_methods ) ? floatval( $enabled_shipping_methods[0]['price'] ) : 0;
 $final_total = $totals['subtotal'] - $coupon_discount + $default_shipping;
+
+// Prepare tracking data
+$tracking_items = array();
+foreach ( $items as $item ) {
+    $tracking_items[] = array(
+        'item_id'      => $item['post_id'],
+        'item_name'    => $item['name'],
+        'item_variant' => $item['variant_name'],
+        'price'        => floatval( $item['price'] ),
+        'quantity'     => intval( $item['quantity'] ),
+    );
+}
+
+// Fire server-side tracking hook
+do_action( 'cl_begin_checkout', $cart, $totals );
 ?>
+<?php // Tracking: begin_checkout event ?>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    if (window.clTracking) {
+        clTracking.beginCheckout({
+            currency: '<?php echo esc_js( get_option( 'cl_currency', 'ILS' ) ); ?>',
+            total: <?php echo floatval( $totals['total'] ); ?>,
+            subtotal: <?php echo floatval( $totals['subtotal'] ); ?>,
+            items: <?php echo json_encode( $tracking_items ); ?>
+        });
+    }
+});
+</script>
 <div class="cl-checkout cl-checkout-shopify">
     <?php if ( isset( $_GET['payment_error'] ) ) : ?>
         <div class="cl-notice cl-notice-error">
