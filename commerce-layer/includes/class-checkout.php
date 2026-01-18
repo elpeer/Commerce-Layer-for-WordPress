@@ -18,6 +18,10 @@ class CL_Checkout {
         add_action( 'wp_ajax_cl_process_checkout', array( $this, 'process_checkout' ) );
         add_action( 'wp_ajax_nopriv_cl_process_checkout', array( $this, 'process_checkout' ) );
 
+        // Lead submission handler
+        add_action( 'wp_ajax_cl_submit_lead', array( $this, 'submit_lead' ) );
+        add_action( 'wp_ajax_nopriv_cl_submit_lead', array( $this, 'submit_lead' ) );
+
         // Payment gateway callbacks
         add_action( 'wp_ajax_cl_payment_callback', array( $this, 'payment_callback' ) );
         add_action( 'wp_ajax_nopriv_cl_payment_callback', array( $this, 'payment_callback' ) );
@@ -116,6 +120,56 @@ class CL_Checkout {
         }
 
         wp_send_json_success( $payment_result );
+    }
+
+    /**
+     * Submit lead (no payment)
+     */
+    public function submit_lead() {
+        // Verify nonce
+        if ( ! check_ajax_referer( 'cl_checkout_nonce', 'nonce', false ) ) {
+            wp_send_json_error( array( 'message' => __( 'אימות נכשל', 'commerce-layer' ) ) );
+        }
+
+        // Get cart
+        $cart = CL_Cart::get_instance();
+
+        if ( $cart->is_empty() ) {
+            wp_send_json_error( array( 'message' => __( 'הסל ריק', 'commerce-layer' ) ) );
+        }
+
+        // Validate customer data
+        $validation = $this->validate_customer_data( $_POST );
+
+        if ( is_wp_error( $validation ) ) {
+            wp_send_json_error( array( 'message' => $validation->get_error_message() ) );
+        }
+
+        // Create order with lead status
+        $order = CL_Order::create_from_cart( $_POST, $cart, 'lead' );
+
+        if ( is_wp_error( $order ) ) {
+            wp_send_json_error( array( 'message' => $order->get_error_message() ) );
+        }
+
+        // Clear cart
+        $cart->clear();
+
+        // Send lead notification
+        do_action( 'cl_lead_submitted', $order );
+
+        // Redirect to thank you page
+        $thank_you_url = add_query_arg(
+            'order',
+            $order->get_order_number(),
+            get_permalink( get_option( 'cl_thank_you_page_id' ) )
+        );
+
+        wp_send_json_success( array(
+            'success'      => true,
+            'redirect_url' => $thank_you_url,
+            'order_number' => $order->get_order_number(),
+        ) );
     }
 
     /**
@@ -468,3 +522,58 @@ add_action( 'cl_order_status_changed', function( $order_id, $new_status, $old_st
         CL_Checkout::send_order_confirmation( $order );
     }
 }, 10, 3 );
+
+// Send lead notification to admin
+add_action( 'cl_lead_submitted', function( $order ) {
+    $admin_email = get_option( 'admin_email' );
+    $subject = sprintf( __( 'ליד חדש התקבל - %s', 'commerce-layer' ), $order->get_order_number() );
+
+    $message = sprintf(
+        __( "ליד חדש התקבל!\n\nמספר הזמנה: %s\n\nפרטי לקוח:\nשם: %s\nאימייל: %s\nטלפון: %s\n\nפרטי ההזמנה:\n", 'commerce-layer' ),
+        $order->get_order_number(),
+        $order->get_customer_name(),
+        $order->get_customer_email(),
+        $order->get_customer_phone()
+    );
+
+    foreach ( $order->get_items() as $item ) {
+        $message .= sprintf(
+            "- %s x %d = %s\n",
+            $item['name'] . ( $item['variant_name'] ? ' (' . $item['variant_name'] . ')' : '' ),
+            $item['quantity'],
+            CL_Core::format_price( floatval( $item['total'] ) )
+        );
+    }
+
+    $message .= sprintf(
+        __( "\nסה\"כ: %s\n\nהערות: %s", 'commerce-layer' ),
+        CL_Core::format_price( $order->get_total() ),
+        $order->get_notes()
+    );
+
+    $address = $order->get_billing_address();
+    if ( ! empty( $address ) ) {
+        $message .= sprintf(
+            __( "\n\nכתובת: %s, %s", 'commerce-layer' ),
+            isset( $address['address'] ) ? $address['address'] : '',
+            isset( $address['city'] ) ? $address['city'] : ''
+        );
+    }
+
+    $headers = array(
+        'Content-Type: text/plain; charset=UTF-8',
+    );
+
+    wp_mail( $admin_email, $subject, $message, $headers );
+
+    // Also send confirmation to customer
+    $customer_email = $order->get_customer_email();
+    $customer_subject = sprintf( __( 'פנייתך התקבלה - %s', 'commerce-layer' ), $order->get_order_number() );
+    $customer_message = sprintf(
+        __( "שלום %s,\n\nפנייתך התקבלה בהצלחה!\n\nמספר הזמנה: %s\n\nניצור איתך קשר בהקדם.\n\nתודה!", 'commerce-layer' ),
+        $order->get_customer_name(),
+        $order->get_order_number()
+    );
+
+    wp_mail( $customer_email, $customer_subject, $customer_message, $headers );
+} );

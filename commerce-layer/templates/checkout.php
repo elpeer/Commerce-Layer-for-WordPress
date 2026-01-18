@@ -17,6 +17,9 @@ if ( ! isset( $cart ) ) {
 $items = $cart->get_contents();
 $totals = $cart->get_totals();
 $gateway = get_option( 'cl_payment_gateway', 'tranzila' );
+$checkout_mode = get_option( 'cl_checkout_mode', 'payment' );
+$is_lead_mode = 'lead' === $checkout_mode;
+$lead_button_text = get_option( 'cl_lead_button_text', __( 'שלח פנייה', 'commerce-layer' ) );
 $shipping_methods = get_option( 'cl_shipping_methods', array() );
 $free_shipping_threshold = floatval( get_option( 'cl_free_shipping_threshold', 0 ) );
 $show_discounts = 'yes' === get_option( 'cl_show_discount_in_cart', 'yes' );
@@ -152,6 +155,7 @@ $final_total = $totals['subtotal'] - $coupon_discount + $default_shipping;
                 </div>
                 <?php endif; ?>
 
+                <?php if ( ! $is_lead_mode ) : ?>
                 <!-- Payment Section -->
                 <div class="cl-checkout-section">
                     <h2 class="cl-section-title"><?php esc_html_e( 'תשלום', 'commerce-layer' ); ?></h2>
@@ -177,12 +181,14 @@ $final_total = $totals['subtotal'] - $coupon_discount + $default_shipping;
                         </label>
                     </div>
                 </div>
+                <?php endif; ?>
 
                 <!-- Submit Button (Mobile) -->
                 <div class="cl-checkout-submit-mobile">
                     <button type="submit" class="cl-btn cl-btn-pay cl-btn-checkout">
-                        <?php esc_html_e( 'לתשלום', 'commerce-layer' ); ?>
+                        <?php echo $is_lead_mode ? esc_html( $lead_button_text ) : esc_html__( 'לתשלום', 'commerce-layer' ); ?>
                     </button>
+                    <?php if ( ! $is_lead_mode ) : ?>
                     <p class="cl-secure-badge">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
@@ -190,6 +196,7 @@ $final_total = $totals['subtotal'] - $coupon_discount + $default_shipping;
                         </svg>
                         <?php esc_html_e( 'מאובטח באמצעות תקני אבטחה מתקדמים', 'commerce-layer' ); ?>
                     </p>
+                    <?php endif; ?>
                 </div>
             </div>
 
@@ -321,9 +328,12 @@ $final_total = $totals['subtotal'] - $coupon_discount + $default_shipping;
                     <!-- Submit Button (Desktop) -->
                     <div class="cl-checkout-submit-desktop">
                         <button type="submit" class="cl-btn cl-btn-pay cl-btn-checkout">
+                            <?php if ( ! $is_lead_mode ) : ?>
                             <span class="cl-btn-icon">+</span>
-                            <?php esc_html_e( 'לתשלום', 'commerce-layer' ); ?>
+                            <?php endif; ?>
+                            <?php echo $is_lead_mode ? esc_html( $lead_button_text ) : esc_html__( 'לתשלום', 'commerce-layer' ); ?>
                         </button>
+                        <?php if ( ! $is_lead_mode ) : ?>
                         <p class="cl-secure-badge">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
@@ -331,12 +341,14 @@ $final_total = $totals['subtotal'] - $coupon_discount + $default_shipping;
                             </svg>
                             <?php esc_html_e( 'מאובטח באמצעות תקני אבטחה מתקדמים', 'commerce-layer' ); ?>
                         </p>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
         </div>
     </form>
 
+    <?php if ( ! $is_lead_mode ) : ?>
     <!-- Payment iframe container -->
     <div id="cl-payment-container" class="cl-payment-container" style="display: none;">
         <div class="cl-payment-overlay"></div>
@@ -347,6 +359,7 @@ $final_total = $totals['subtotal'] - $coupon_discount + $default_shipping;
             </div>
         </div>
     </div>
+    <?php endif; ?>
 </div>
 
 <script>
@@ -358,6 +371,7 @@ jQuery(document).ready(function($) {
     var couponDiscount = <?php echo floatval( $coupon_discount ); ?>;
     var currencySymbol = '<?php echo esc_js( get_option( 'cl_currency_symbol', '₪' ) ); ?>';
     var currencyPosition = '<?php echo esc_js( get_option( 'cl_currency_position', 'right' ) ); ?>';
+    var isLeadMode = <?php echo $is_lead_mode ? 'true' : 'false'; ?>;
 
     function formatPrice(amount) {
         var formatted = amount.toFixed(2);
@@ -407,8 +421,11 @@ jQuery(document).ready(function($) {
         // Combine first and last name
         var fullName = $form.find('[name="first_name"]').val() + ' ' + $form.find('[name="last_name"]').val();
 
+        // Determine action based on mode
+        var ajaxAction = isLeadMode ? 'cl_submit_lead' : 'cl_process_checkout';
+
         $.post(clFrontend.ajaxUrl, {
-            action: 'cl_process_checkout',
+            action: ajaxAction,
             nonce: $form.find('[name="checkout_nonce"]').val(),
             name: fullName,
             email: $form.find('[name="email"]').val(),
@@ -421,7 +438,9 @@ jQuery(document).ready(function($) {
             shipping_price: shippingPrice
         }, function(response) {
             if (response.success) {
-                if (response.data.redirect) {
+                if (response.data.redirect_url) {
+                    window.location.href = response.data.redirect_url;
+                } else if (response.data.redirect) {
                     window.location.href = response.data.redirect_url;
                 } else if (response.data.iframe) {
                     $iframe.attr('src', response.data.iframe_url);

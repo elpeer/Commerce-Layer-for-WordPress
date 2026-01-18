@@ -114,6 +114,28 @@ if ( ! defined( 'ABSPATH' ) ) {
             <!-- Checkout Settings -->
             <table class="form-table">
                 <tr>
+                    <th scope="row"><?php esc_html_e( 'מצב תשלום', 'commerce-layer' ); ?></th>
+                    <td>
+                        <select name="cl_checkout_mode" id="cl-checkout-mode">
+                            <option value="payment" <?php selected( get_option( 'cl_checkout_mode', 'payment' ), 'payment' ); ?>><?php esc_html_e( 'תשלום רגיל', 'commerce-layer' ); ?></option>
+                            <option value="lead" <?php selected( get_option( 'cl_checkout_mode' ), 'lead' ); ?>><?php esc_html_e( 'השארת ליד (ללא תשלום)', 'commerce-layer' ); ?></option>
+                        </select>
+                        <p class="description"><?php esc_html_e( 'במצב ליד, הלקוח משאיר פרטים ללא תשלום והזמנה נשמרת כליד', 'commerce-layer' ); ?></p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'טקסט כפתור שליחה (ליד)', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="text" name="cl_lead_button_text" value="<?php echo esc_attr( get_option( 'cl_lead_button_text', __( 'שלח פנייה', 'commerce-layer' ) ) ); ?>" class="regular-text">
+                        <p class="description"><?php esc_html_e( 'הטקסט שיופיע על כפתור השליחה במצב ליד', 'commerce-layer' ); ?></p>
+                    </td>
+                </tr>
+            </table>
+
+            <div id="cl-payment-settings" style="<?php echo get_option( 'cl_checkout_mode' ) === 'lead' ? 'display:none;' : ''; ?>">
+            <h3><?php esc_html_e( 'הגדרות תשלום', 'commerce-layer' ); ?></h3>
+            <table class="form-table">
+                <tr>
                     <th scope="row"><?php esc_html_e( 'שער תשלום', 'commerce-layer' ); ?></th>
                     <td>
                         <select name="cl_payment_gateway" id="cl-payment-gateway">
@@ -200,6 +222,23 @@ if ( ! defined( 'ABSPATH' ) ) {
                     </td>
                 </tr>
             </table>
+            </div><!-- /#cl-payment-settings -->
+
+            <script>
+            jQuery(document).ready(function($) {
+                // Toggle payment settings based on checkout mode
+                function togglePaymentSettings() {
+                    var mode = $('#cl-checkout-mode').val();
+                    if (mode === 'lead') {
+                        $('#cl-payment-settings').slideUp();
+                    } else {
+                        $('#cl-payment-settings').slideDown();
+                    }
+                }
+
+                $('#cl-checkout-mode').on('change', togglePaymentSettings);
+            });
+            </script>
 
         <?php elseif ( 'shipping' === $this->current_tab ) : ?>
             <!-- Shipping Settings -->

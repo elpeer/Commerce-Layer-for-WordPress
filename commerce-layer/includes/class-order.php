@@ -34,6 +34,7 @@ class CL_Order {
         'paid'     => 'שולם',
         'canceled' => 'בוטל',
         'refunded' => 'זוכה',
+        'lead'     => 'ליד',
     );
 
     /**
@@ -277,8 +278,13 @@ class CL_Order {
 
     /**
      * Create order from cart
+     *
+     * @param array   $customer_data Customer data.
+     * @param CL_Cart $cart          Cart instance.
+     * @param string  $status        Order status (default: 'pending').
+     * @return CL_Order|WP_Error
      */
-    public static function create_from_cart( $customer_data, $cart = null ) {
+    public static function create_from_cart( $customer_data, $cart = null, $status = 'pending' ) {
         global $wpdb;
 
         if ( null === $cart ) {
@@ -287,6 +293,11 @@ class CL_Order {
 
         if ( $cart->is_empty() ) {
             return new WP_Error( 'empty_cart', __( 'הסל ריק', 'commerce-layer' ) );
+        }
+
+        // Validate status
+        if ( ! isset( self::$statuses[ $status ] ) ) {
+            $status = 'pending';
         }
 
         // Prepare billing address
@@ -302,7 +313,7 @@ class CL_Order {
             $orders_table,
             array(
                 'order_number'    => self::generate_order_number(),
-                'status'          => 'pending',
+                'status'          => $status,
                 'customer_email'  => sanitize_email( $customer_data['email'] ),
                 'customer_name'   => sanitize_text_field( $customer_data['name'] ),
                 'customer_phone'  => isset( $customer_data['phone'] ) ? sanitize_text_field( $customer_data['phone'] ) : '',

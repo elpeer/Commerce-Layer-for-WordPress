@@ -115,6 +115,11 @@ class CL_Settings {
                 break;
 
             case 'checkout':
+                // Checkout mode (payment or lead)
+                update_option( 'cl_checkout_mode', sanitize_text_field( $_POST['cl_checkout_mode'] ?? 'payment' ) );
+                update_option( 'cl_lead_button_text', sanitize_text_field( $_POST['cl_lead_button_text'] ?? __( 'שלח פנייה', 'commerce-layer' ) ) );
+
+                // Payment gateway settings
                 update_option( 'cl_payment_gateway', sanitize_text_field( $_POST['cl_payment_gateway'] ?? 'tranzila' ) );
                 update_option( 'cl_tranzila_terminal', sanitize_text_field( $_POST['cl_tranzila_terminal'] ?? '' ) );
                 update_option( 'cl_tranzila_password', sanitize_text_field( $_POST['cl_tranzila_password'] ?? '' ) );
