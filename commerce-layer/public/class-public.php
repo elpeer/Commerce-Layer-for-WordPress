@@ -366,6 +366,22 @@ class CL_Public {
         echo '.cl-buy-now-btn { background: var(--cl-buy-now-bg) !important; color: var(--cl-buy-now-text) !important; }' . "\n";
         echo '.cl-buy-now-btn:hover { filter: brightness(0.9); }' . "\n";
 
+        // Checkout button specific styles (cart page, side cart)
+        echo '.cl-btn-checkout, .cl-btn.cl-btn-checkout { background: var(--cl-add-to-cart-bg) !important; color: var(--cl-add-to-cart-text) !important; }' . "\n";
+        echo '.cl-btn-checkout:hover { filter: brightness(0.9); }' . "\n";
+
+        // View cart button specific styles (side cart)
+        echo '.cl-view-cart-btn, .cl-btn.cl-view-cart-btn { background: var(--cl-color-background, #fff) !important; color: var(--cl-color-text, #1e293b) !important; border: 2px solid var(--cl-color-primary) !important; }' . "\n";
+        echo '.cl-view-cart-btn:hover { background: var(--cl-color-primary) !important; color: #fff !important; }' . "\n";
+
+        // Continue shopping button (cart page)
+        echo '.cl-continue, .cl-btn.cl-continue { background: var(--cl-color-background, #fff) !important; color: var(--cl-color-text, #1e293b) !important; border: 2px solid var(--cl-color-primary) !important; }' . "\n";
+        echo '.cl-continue:hover { background: var(--cl-color-primary) !important; color: #fff !important; }' . "\n";
+
+        // Product name link in cart
+        echo '.cl-product-name { color: var(--cl-color-text, #1e293b) !important; text-decoration: none; }' . "\n";
+        echo '.cl-product-name:hover { color: var(--cl-color-primary) !important; }' . "\n";
+
         // Cart icon styles
         echo '.cl-floating-cart-btn { background: var(--cl-cart-icon-bg); color: var(--cl-cart-icon-color); }' . "\n";
         echo '.cl-floating-cart-count { background: var(--cl-cart-icon-badge-bg); }' . "\n";
