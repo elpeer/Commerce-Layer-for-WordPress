@@ -492,6 +492,60 @@ if ( ! defined( 'ABSPATH' ) ) {
                         </td>
                     </tr>
                 </table>
+
+                <h3><?php esc_html_e( 'כפתור "הוסף לסל"', 'commerce-layer' ); ?></h3>
+                <table class="form-table">
+                    <tr>
+                        <th scope="row"><?php esc_html_e( 'צבע רקע', 'commerce-layer' ); ?></th>
+                        <td>
+                            <input type="color" name="cl_add_to_cart_bg" value="<?php echo esc_attr( get_option( 'cl_add_to_cart_bg', '#2563eb' ) ); ?>">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><?php esc_html_e( 'צבע טקסט', 'commerce-layer' ); ?></th>
+                        <td>
+                            <input type="color" name="cl_add_to_cart_text" value="<?php echo esc_attr( get_option( 'cl_add_to_cart_text', '#ffffff' ) ); ?>">
+                        </td>
+                    </tr>
+                </table>
+
+                <h3><?php esc_html_e( 'כפתור "קנה עכשיו"', 'commerce-layer' ); ?></h3>
+                <table class="form-table">
+                    <tr>
+                        <th scope="row"><?php esc_html_e( 'צבע רקע', 'commerce-layer' ); ?></th>
+                        <td>
+                            <input type="color" name="cl_buy_now_bg" value="<?php echo esc_attr( get_option( 'cl_buy_now_bg', '#10b981' ) ); ?>">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><?php esc_html_e( 'צבע טקסט', 'commerce-layer' ); ?></th>
+                        <td>
+                            <input type="color" name="cl_buy_now_text" value="<?php echo esc_attr( get_option( 'cl_buy_now_text', '#ffffff' ) ); ?>">
+                        </td>
+                    </tr>
+                </table>
+
+                <h3><?php esc_html_e( 'אייקון סל קניות', 'commerce-layer' ); ?></h3>
+                <table class="form-table">
+                    <tr>
+                        <th scope="row"><?php esc_html_e( 'צבע אייקון', 'commerce-layer' ); ?></th>
+                        <td>
+                            <input type="color" name="cl_cart_icon_color" value="<?php echo esc_attr( get_option( 'cl_cart_icon_color', '#2563eb' ) ); ?>">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><?php esc_html_e( 'צבע רקע', 'commerce-layer' ); ?></th>
+                        <td>
+                            <input type="color" name="cl_cart_icon_bg" value="<?php echo esc_attr( get_option( 'cl_cart_icon_bg', '#ffffff' ) ); ?>">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><?php esc_html_e( 'צבע תגית כמות', 'commerce-layer' ); ?></th>
+                        <td>
+                            <input type="color" name="cl_cart_icon_badge_bg" value="<?php echo esc_attr( get_option( 'cl_cart_icon_badge_bg', '#ef4444' ) ); ?>">
+                        </td>
+                    </tr>
+                </table>
             </div>
 
             <h2 class="title"><?php esc_html_e( 'כפתורים', 'commerce-layer' ); ?></h2>
@@ -514,60 +568,6 @@ if ( ! defined( 'ABSPATH' ) ) {
                             <option value="outline" <?php selected( get_option( 'cl_button_style', 'gradient' ), 'outline' ); ?>><?php esc_html_e( 'מסגרת', 'commerce-layer' ); ?></option>
                             <option value="gradient" <?php selected( get_option( 'cl_button_style', 'gradient' ), 'gradient' ); ?>><?php esc_html_e( 'גרדיאנט', 'commerce-layer' ); ?></option>
                         </select>
-                    </td>
-                </tr>
-            </table>
-
-            <h3><?php esc_html_e( 'כפתור "הוסף לסל"', 'commerce-layer' ); ?></h3>
-            <table class="form-table">
-                <tr>
-                    <th scope="row"><?php esc_html_e( 'צבע רקע', 'commerce-layer' ); ?></th>
-                    <td>
-                        <input type="color" name="cl_add_to_cart_bg" value="<?php echo esc_attr( get_option( 'cl_add_to_cart_bg', '#2563eb' ) ); ?>">
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row"><?php esc_html_e( 'צבע טקסט', 'commerce-layer' ); ?></th>
-                    <td>
-                        <input type="color" name="cl_add_to_cart_text" value="<?php echo esc_attr( get_option( 'cl_add_to_cart_text', '#ffffff' ) ); ?>">
-                    </td>
-                </tr>
-            </table>
-
-            <h3><?php esc_html_e( 'כפתור "קנה עכשיו"', 'commerce-layer' ); ?></h3>
-            <table class="form-table">
-                <tr>
-                    <th scope="row"><?php esc_html_e( 'צבע רקע', 'commerce-layer' ); ?></th>
-                    <td>
-                        <input type="color" name="cl_buy_now_bg" value="<?php echo esc_attr( get_option( 'cl_buy_now_bg', '#10b981' ) ); ?>">
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row"><?php esc_html_e( 'צבע טקסט', 'commerce-layer' ); ?></th>
-                    <td>
-                        <input type="color" name="cl_buy_now_text" value="<?php echo esc_attr( get_option( 'cl_buy_now_text', '#ffffff' ) ); ?>">
-                    </td>
-                </tr>
-            </table>
-
-            <h3><?php esc_html_e( 'אייקון סל קניות', 'commerce-layer' ); ?></h3>
-            <table class="form-table">
-                <tr>
-                    <th scope="row"><?php esc_html_e( 'צבע אייקון', 'commerce-layer' ); ?></th>
-                    <td>
-                        <input type="color" name="cl_cart_icon_color" value="<?php echo esc_attr( get_option( 'cl_cart_icon_color', '#2563eb' ) ); ?>">
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row"><?php esc_html_e( 'צבע רקע', 'commerce-layer' ); ?></th>
-                    <td>
-                        <input type="color" name="cl_cart_icon_bg" value="<?php echo esc_attr( get_option( 'cl_cart_icon_bg', '#ffffff' ) ); ?>">
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row"><?php esc_html_e( 'צבע תגית כמות', 'commerce-layer' ); ?></th>
-                    <td>
-                        <input type="color" name="cl_cart_icon_badge_bg" value="<?php echo esc_attr( get_option( 'cl_cart_icon_badge_bg', '#ef4444' ) ); ?>">
                     </td>
                 </tr>
             </table>

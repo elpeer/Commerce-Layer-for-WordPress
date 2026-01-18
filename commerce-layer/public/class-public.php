@@ -289,16 +289,25 @@ class CL_Public {
         $button_corners = get_option( 'cl_button_corners', 'rounded' );
         $button_style   = get_option( 'cl_button_style', 'gradient' );
 
-        // Get button-specific colors
-        $add_to_cart_bg    = get_option( 'cl_add_to_cart_bg', '#2563eb' );
-        $add_to_cart_text  = get_option( 'cl_add_to_cart_text', '#ffffff' );
-        $buy_now_bg        = get_option( 'cl_buy_now_bg', '#10b981' );
-        $buy_now_text      = get_option( 'cl_buy_now_text', '#ffffff' );
-
-        // Get cart icon colors
-        $cart_icon_color    = get_option( 'cl_cart_icon_color', '#2563eb' );
-        $cart_icon_bg       = get_option( 'cl_cart_icon_bg', '#ffffff' );
-        $cart_icon_badge_bg = get_option( 'cl_cart_icon_badge_bg', '#ef4444' );
+        // Get button-specific colors (only custom when theme is custom)
+        if ( 'custom' === $theme_preset ) {
+            $add_to_cart_bg    = get_option( 'cl_add_to_cart_bg', '#2563eb' );
+            $add_to_cart_text  = get_option( 'cl_add_to_cart_text', '#ffffff' );
+            $buy_now_bg        = get_option( 'cl_buy_now_bg', '#10b981' );
+            $buy_now_text      = get_option( 'cl_buy_now_text', '#ffffff' );
+            $cart_icon_color   = get_option( 'cl_cart_icon_color', '#2563eb' );
+            $cart_icon_bg      = get_option( 'cl_cart_icon_bg', '#ffffff' );
+            $cart_icon_badge_bg = get_option( 'cl_cart_icon_badge_bg', '#ef4444' );
+        } else {
+            // Use theme colors for buttons
+            $add_to_cart_bg    = $colors['primary'];
+            $add_to_cart_text  = '#ffffff';
+            $buy_now_bg        = $colors['success'];
+            $buy_now_text      = '#ffffff';
+            $cart_icon_color   = $colors['primary'];
+            $cart_icon_bg      = '#ffffff';
+            $cart_icon_badge_bg = $colors['danger'];
+        }
 
         // Get side cart settings
         $side_cart_width = absint( get_option( 'cl_side_cart_width', 420 ) );
