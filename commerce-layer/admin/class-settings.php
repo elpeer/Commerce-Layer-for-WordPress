@@ -106,6 +106,7 @@ class CL_Settings {
             case 'general':
                 $post_types = isset( $_POST['cl_enabled_post_types'] ) ? $_POST['cl_enabled_post_types'] : array();
                 update_option( 'cl_enabled_post_types', $this->sanitize_post_types( $post_types ) );
+                update_option( 'cl_language', sanitize_text_field( $_POST['cl_language'] ?? 'he_IL' ) );
                 update_option( 'cl_currency', sanitize_text_field( $_POST['cl_currency'] ?? 'ILS' ) );
                 update_option( 'cl_currency_symbol', sanitize_text_field( $_POST['cl_currency_symbol'] ?? '₪' ) );
                 update_option( 'cl_currency_position', sanitize_text_field( $_POST['cl_currency_position'] ?? 'right' ) );

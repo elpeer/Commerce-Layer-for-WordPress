@@ -30,6 +30,18 @@ if ( ! defined( 'ABSPATH' ) ) {
             <!-- General Settings -->
             <table class="form-table">
                 <tr>
+                    <th scope="row"><?php esc_html_e( 'שפת התוסף', 'commerce-layer' ); ?></th>
+                    <td>
+                        <?php $current_language = get_option( 'cl_language', 'he_IL' ); ?>
+                        <select name="cl_language">
+                            <option value="he_IL" <?php selected( $current_language, 'he_IL' ); ?>>עברית (Hebrew)</option>
+                            <option value="en_US" <?php selected( $current_language, 'en_US' ); ?>>English</option>
+                        </select>
+                        <p class="description"><?php esc_html_e( 'שפת הממשק של התוסף. לאחר שינוי, רענן את הדף.', 'commerce-layer' ); ?></p>
+                    </td>
+                </tr>
+
+                <tr>
                     <th scope="row"><?php esc_html_e( 'סוגי תוכן למכירה', 'commerce-layer' ); ?></th>
                     <td>
                         <fieldset>

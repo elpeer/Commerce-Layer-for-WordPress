@@ -1,0 +1,1164 @@
+# Copyright (C) 2024 Commerce Layer Team
+# This file is distributed under the GPL v2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Commerce Layer 1.0.9\n"
+"Report-Msgid-Bugs-To: https://example.com\n"
+"POT-Creation-Date: 2024-01-01 00:00+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2024-01-01 00:00+0000\n"
+"Last-Translator: Commerce Layer Team\n"
+"Language-Team: Commerce Layer Team\n"
+"Language: \n"
+"X-Generator: WP-CLI\n"
+"X-Domain: commerce-layer\n"
+
+#: Plugin Name
+msgid "Commerce Layer"
+msgstr ""
+
+#: admin/class-admin.php
+msgid "לוח בקרה"
+msgstr ""
+
+#: admin/class-admin.php
+msgid "מוצרים"
+msgstr ""
+
+#: admin/class-admin.php
+msgid "הזמנות"
+msgstr ""
+
+#: admin/class-admin.php
+msgid "מאפיינים"
+msgstr ""
+
+#: admin/class-admin.php
+msgid "קופונים"
+msgstr ""
+
+#: admin/class-admin.php
+msgid "הגדרות"
+msgstr ""
+
+#: admin/class-admin.php
+msgid "האם למחוק?"
+msgstr ""
+
+#: admin/class-admin.php
+msgid "נשמר"
+msgstr ""
+
+#: admin/class-admin.php
+msgid "שגיאה"
+msgstr ""
+
+#: admin/class-admin.php
+msgid "בחר תמונה"
+msgstr ""
+
+#: admin/class-admin.php
+msgid "השתמש בתמונה"
+msgstr ""
+
+#: admin/class-settings.php
+msgid "כללי"
+msgstr ""
+
+#: admin/class-settings.php
+msgid "תשלום"
+msgstr ""
+
+#: admin/class-settings.php
+msgid "משלוח"
+msgstr ""
+
+#: admin/class-settings.php
+msgid "תצוגה"
+msgstr ""
+
+#: admin/class-settings.php
+msgid "עיצוב"
+msgstr ""
+
+#: admin/class-settings.php
+msgid "תרגום טקסטים"
+msgstr ""
+
+#: admin/class-settings.php
+msgid "שלח פנייה"
+msgstr ""
+
+#: admin/class-settings.php
+msgid "המשך בקנייה"
+msgstr ""
+
+#: admin/class-settings.php
+msgid "ההגדרות נשמרו"
+msgstr ""
+
+#: admin/class-settings.php
+msgid "— בחר עמוד —"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "הגדרות Commerce Layer"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "שפת התוסף"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "שפת הממשק של התוסף. לאחר שינוי, רענן את הדף."
+msgstr ""
+
+#: admin/views/settings.php
+msgid "סוגי תוכן למכירה"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "בחר על אילו סוגי תוכן להפעיל אפשרות מכירה"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "מטבע"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "סמל מטבע"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "מיקום סמל"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "תבנית מספר"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "מפריד אלפים:"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "מפריד עשרוני:"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "ספרות אחרי נקודה:"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "מודל רכישה ברירת מחדל"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "סל קניות"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "קנייה מיידית"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "שניהם"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "מצב תשלום"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "תשלום רגיל"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "השארת ליד (ללא תשלום)"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "במצב ליד, הלקוח משאיר פרטים ללא תשלום והזמנה נשמרת כליד"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "טקסט כפתור שליחה (ליד)"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "הטקסט שיופיע על כפתור השליחה במצב ליד"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "הגדרות תשלום"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "שער תשלום"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "מצב בדיקה"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "מספר מסוף"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "סיסמה (אופציונלי)"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "שם משתמש"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "עמודי מערכת"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "עמוד סל"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "עמוד תשלום"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "עמוד תודה"
+msgstr ""
+
+#: admin/views/settings.php Shipping
+msgid "אפשרויות משלוח"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "הגדר את אפשרויות המשלוח שיוצגו ללקוחות בעמוד התשלום"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "פעיל"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "שם אפשרות"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "מחיר"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "הסר"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "+ הוסף אפשרות משלוח"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "משלוח חינם"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "סף למשלוח חינם"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "סכום הזמנה מינימלי לקבלת משלוח חינם. הזן 0 לביטול."
+msgstr ""
+
+#: admin/views/settings.php
+msgid "תצוגת הנחות"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "הצג הנחות בסל"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "הצג מחיר מקורי, הנחה וחיסכון לכל מוצר ובסך הכל"
+msgstr ""
+
+#: admin/views/settings.php Display
+msgid "מצב הצגה"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "אוטומטי - הזרקה לתוכן"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "ידני - רק באמצעות Shortcode"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "מיקום הזרקה אוטומטית"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "אחרי התוכן"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "לפני התוכן"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "טקסט כפתור \"הוסף לסל\""
+msgstr ""
+
+#: admin/views/settings.php
+msgid "טקסט כפתור \"קנה עכשיו\""
+msgstr ""
+
+#: admin/views/settings.php
+msgid "טקסט כפתור \"המשך בקנייה\""
+msgstr ""
+
+#: admin/views/settings.php
+msgid "הטקסט שיופיע בכפתור \"המשך בקנייה\" בעמוד הסל"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "סרגל צף"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "הפעל סרגל צף במובייל"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "מציג סרגל קבוע בתחתית המסך במכשירים ניידים"
+msgstr ""
+
+#: admin/views/settings.php Custom Injection
+msgid "הטמעת כפתורים מותאמת"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "הגדר selector (class או ID) לאלמנט שמתחתיו יוטמעו הכפתורים. ניתן להשתמש ב-\"Copy selector\" מכלי הפיתוח בדפדפן."
+msgstr ""
+
+#: admin/views/settings.php
+msgid "הפעל הטמעה מותאמת"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "הפעל הטמעת כפתורים לפי selector"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "CSS Selector"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "הזן CSS selector (class, ID, או נתיב). הכפתורים יוטמעו מתחת לאלמנט הראשון שיימצא."
+msgstr ""
+
+#: admin/views/settings.php
+msgid "דוגמאות:"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "לפי קלאס"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "לפי ID"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "נתיב מדויק (Copy selector מהדפדפן)"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "מיקום הטמעה"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "אחרי האלמנט"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "לפני האלמנט"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "בתוך האלמנט (בסוף)"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "בתוך האלמנט (בהתחלה)"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "הצג מחירים"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "הצג מחיר ומחיר מבצע בהטמעה"
+msgstr ""
+
+#: admin/views/settings.php Floating Cart
+msgid "אייקון סל צף"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "הפעל אייקון סל צף"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "הצג אייקון סל צף באתר"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "לחיצה על האייקון פותחת את סל הקניות הצדדי"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "מיקום בדסקטופ"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "למעלה משמאל"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "למעלה באמצע"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "למעלה מימין"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "למטה משמאל"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "למטה באמצע"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "למטה מימין"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "מרחק מהקצה (דסקטופ)"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "פיקסלים"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "מיקום במובייל"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "מרחק מהקצה (מובייל)"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "שורטקוד למיקום ידני"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "השתמש בשורטקוד זה אם תרצה למקם את האייקון ידנית (למשל בתפריט או בהדר)"
+msgstr ""
+
+#: admin/views/settings.php Styling
+msgid "ערכת נושא"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "בחר ערכת נושא"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "קלאסי"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "שחור / לבן / אפור"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "מודרני"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "כחול / לבן (ברירת מחדל)"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "מותאם אישית"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "בחר צבעים בעצמך"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "צבעים מותאמים אישית"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "צבע ראשי"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "צבע ראשי כהה (hover)"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "צבע משני"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "צבע טקסט"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "צבע רקע"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "צבע הצלחה"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "צבע שגיאה"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "כפתור \"הוסף לסל\""
+msgstr ""
+
+#: admin/views/settings.php
+msgid "כפתור \"קנה עכשיו\""
+msgstr ""
+
+#: admin/views/settings.php
+msgid "כפתור המשך בקנייה"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "צבע מסגרת"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "אייקון סל קניות"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "צבע אייקון"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "צבע תגית כמות"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "כפתורים"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "פינות כפתור"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "מרובע"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "מעוגל קל"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "מעוגל מאוד"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "סגנון כפתור"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "מלא"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "מסגרת"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "גרדיאנט"
+msgstr ""
+
+#: admin/views/settings.php Side Cart
+msgid "סל צדדי (Side Cart)"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "רוחב הסל"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "מומלץ: 380-480 פיקסלים"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "צד פתיחה"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "ימין"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "שמאל"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "פס משלוח חינם"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "הצג פס התקדמות למשלוח חינם"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "טיימר דחיפות"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "הצג טיימר דחיפות (המוצרים מוגבלים)"
+msgstr ""
+
+#: admin/views/settings.php Checkout
+msgid "רוחב מקסימלי"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "rem"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "רוחב מקסימלי של עמוד התשלום. ברירת מחדל: 88rem (מומלץ 70-100)"
+msgstr ""
+
+#: admin/views/settings.php Custom CSS
+msgid "CSS מותאם אישית"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "קוד CSS נוסף"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "/* הוסף כאן CSS מותאם אישית */"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "הזן קוד CSS מותאם אישית שיחול על כל רכיבי התוסף"
+msgstr ""
+
+#: admin/views/settings.php Translations
+msgid "טקסטים לכפתורים"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "הוסף לסל"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "קנה עכשיו"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "צפה בסל"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "לתשלום"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "המשך לתשלום"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "טקסטים לסל קניות"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "כותרת סל קניות"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "הסל שלך ריק"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "מוצר"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "כמות"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "סה\"כ"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "סיכום ביניים"
+msgstr ""
+
+#: admin/views/settings.php Shipping Texts
+msgid "טקסטים למשלוח"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "זכאי למשלוח חינם!"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "הוסף לקבלת משלוח חינם"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "הוסף %s לקבלת משלוח חינם!"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "השתמש ב-%s במקום הסכום החסר"
+msgstr ""
+
+#: admin/views/settings.php Checkout Texts
+msgid "טקסטים לעמוד תשלום"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "פרטי הלקוח"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "שם פרטי"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "שם משפחה"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "אימייל"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "טלפון"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "כתובת"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "עיר"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "הערות להזמנה"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "סיכום הזמנה"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "לתשלום מאובטח"
+msgstr ""
+
+#: admin/views/settings.php Coupon Texts
+msgid "טקסטים לקופונים והנחות"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "קופון הנחה"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "placeholder קוד קופון"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "הזן קוד קופון"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "החל קופון"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "סה\"כ חיסכון"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "הנחה"
+msgstr ""
+
+#: admin/views/settings.php Thank You Texts
+msgid "טקסטים לעמוד תודה"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "תודה על הזמנתך!"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "ההזמנה התקבלה בהצלחה"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "מספר הזמנה"
+msgstr ""
+
+#: admin/views/settings.php Other Texts
+msgid "טקסטים נוספים"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "בחר"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "מבצע"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "אזל מהמלאי"
+msgstr ""
+
+#: admin/views/settings.php
+msgid "הפריט נוסף לסל"
+msgstr ""
+
+#: admin/class-products-list.php
+msgid "אין הרשאה"
+msgstr ""
+
+#: admin/class-products-list.php
+msgid "מזהה פוסט חסר"
+msgstr ""
+
+#: admin/class-products-list.php
+msgid "נשמר בהצלחה"
+msgstr ""
+
+#: admin/class-products-list.php
+msgid "אין נתונים לשמירה"
+msgstr ""
+
+#: admin/class-products-list.php
+msgid "%d מוצרים נשמרו בהצלחה"
+msgstr ""
+
+#: admin/views/products-list.php
+msgid "ניהול מוצרים"
+msgstr ""
+
+#: admin/views/products-list.php
+msgid "סנן לפי סוג תוכן:"
+msgstr ""
+
+#: admin/views/products-list.php
+msgid "כל סוגי התוכן"
+msgstr ""
+
+#: admin/views/products-list.php
+msgid "סנן"
+msgstr ""
+
+#: admin/views/products-list.php
+msgid "חפש:"
+msgstr ""
+
+#: admin/views/products-list.php
+msgid "חיפוש"
+msgstr ""
+
+#: admin/views/products-list.php
+msgid "שמור את כל השינויים"
+msgstr ""
+
+#: admin/views/products-list.php
+msgid "תמונה"
+msgstr ""
+
+#: admin/views/products-list.php
+msgid "כותרת"
+msgstr ""
+
+#: admin/views/products-list.php
+msgid "סוג תוכן"
+msgstr ""
+
+#: admin/views/products-list.php
+msgid "פעיל"
+msgstr ""
+
+#: admin/views/products-list.php
+msgid "מחיר רגיל"
+msgstr ""
+
+#: admin/views/products-list.php
+msgid "מחיר מבצע"
+msgstr ""
+
+#: admin/views/products-list.php
+msgid "מודל רכישה"
+msgstr ""
+
+#: admin/views/products-list.php
+msgid "כמות מינ'"
+msgstr ""
+
+#: admin/views/products-list.php
+msgid "כמות מקס'"
+msgstr ""
+
+#: admin/views/products-list.php
+msgid "וריאציות"
+msgstr ""
+
+#: admin/views/products-list.php
+msgid "לא נמצאו מוצרים. ודא שהפעלת סוגי תוכן בהגדרות."
+msgstr ""
+
+#: admin/views/products-list.php
+msgid "עריכה"
+msgstr ""
+
+#: admin/views/products-list.php
+msgid "צפייה"
+msgstr ""
+
+#: admin/views/products-list.php
+msgid "סל בלבד"
+msgstr ""
+
+#: admin/views/products-list.php
+msgid "קנייה ישירה"
+msgstr ""
+
+#: admin/views/products-list.php
+msgid "אין הגבלה"
+msgstr ""
+
+#: admin/views/products-list.php
+msgid "הגדר וריאציות"
+msgstr ""
+
+#: admin/views/products-list.php
+msgid "שמור שורה"
+msgstr ""
+
+#: Dashboard
+msgid "לוח בקרה - Commerce Layer"
+msgstr ""
+
+#: Dashboard
+msgid "שבוע אחרון"
+msgstr ""
+
+#: Dashboard
+msgid "חודש אחרון"
+msgstr ""
+
+#: Dashboard
+msgid "3 חודשים"
+msgstr ""
+
+#: Dashboard
+msgid "הכנסות"
+msgstr ""
+
+#: Dashboard
+msgid "הזמנות ששולמו"
+msgstr ""
+
+#: Dashboard
+msgid "לידים"
+msgstr ""
+
+#: Dashboard
+msgid "מבקרים"
+msgstr ""
+
+#: Dashboard
+msgid "משפך מכירות"
+msgstr ""
+
+#: Dashboard
+msgid "צפיות במוצרים"
+msgstr ""
+
+#: Dashboard
+msgid "הוספות לסל"
+msgstr ""
+
+#: Dashboard
+msgid "התחלות checkout"
+msgstr ""
+
+#: Dashboard
+msgid "רכישות"
+msgstr ""
+
+#: Dashboard
+msgid "סטטוס הזמנות"
+msgstr ""
+
+#: Dashboard
+msgid "ממתינות"
+msgstr ""
+
+#: Dashboard
+msgid "שולמו"
+msgstr ""
+
+#: Dashboard
+msgid "נשלחו"
+msgstr ""
+
+#: Dashboard
+msgid "הושלמו"
+msgstr ""
+
+#: Dashboard
+msgid "בוטלו"
+msgstr ""
+
+#: Dashboard
+msgid "מוצרים מובילים"
+msgstr ""
+
+#: Dashboard
+msgid "התפלגות מכשירים"
+msgstr ""
+
+#: Dashboard
+msgid "דסקטופ"
+msgstr ""
+
+#: Dashboard
+msgid "מובייל"
+msgstr ""
+
+#: Dashboard
+msgid "טאבלט"
+msgstr ""
+
+#: Dashboard
+msgid "פעולות מהירות"
+msgstr ""
+
+#: Dashboard
+msgid "הזמנה חדשה"
+msgstr ""
+
+#: Dashboard
+msgid "הוסף קופון"
+msgstr ""
+
+#: Dashboard
+msgid "צפה בדוחות"
+msgstr ""
+
+#: Dashboard
+msgid "ייצוא נתונים"
+msgstr ""
+
+#: Orders
+msgid "פרטי הזמנה"
+msgstr ""
+
+#: Orders
+msgid "סטטוס"
+msgstr ""
+
+#: Orders
+msgid "תאריך"
+msgstr ""
+
+#: Orders
+msgid "סכום"
+msgstr ""
+
+#: Orders
+msgid "פעולות"
+msgstr ""
+
+#: Orders
+msgid "פרטי לקוח"
+msgstr ""
+
+#: Orders
+msgid "שם:"
+msgstr ""
+
+#: Orders
+msgid "אימייל:"
+msgstr ""
+
+#: Orders
+msgid "טלפון:"
+msgstr ""
+
+#: Orders
+msgid "כתובת:"
+msgstr ""
+
+#: Orders
+msgid "הערות:"
+msgstr ""
+
+#: Orders
+msgid "פריטים בהזמנה"
+msgstr ""
+
+#: Orders
+msgid "שם המוצר"
+msgstr ""
+
+#: Orders
+msgid "סיכום תשלום"
+msgstr ""
+
+#: Orders
+msgid "סה\"כ משלוח:"
+msgstr ""
+
+#: Orders
+msgid "סה\"כ לתשלום:"
+msgstr ""
+
+#: Public Frontend
+msgid "מחיר:"
+msgstr ""
+
+#: Public Frontend
+msgid "לא במלאי"
+msgstr ""
+
+#: Public Frontend
+msgid "מחיר רגיל:"
+msgstr ""
+
+#: Public Frontend
+msgid "חיסכון:"
+msgstr ""

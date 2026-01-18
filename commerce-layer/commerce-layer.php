@@ -3,7 +3,7 @@
  * Plugin Name: Commerce Layer
  * Plugin URI: https://example.com/commerce-layer
  * Description: הוספת יכולות קומרס מלאות לתוכן קיים - מחיר, וריאציות, סל, תשלום וניהול הזמנות
- * Version: 1.0.9
+ * Version: 1.1.0
  * Author: Commerce Layer Team
  * Author URI: https://example.com
  * License: GPL v2 or later
@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Plugin constants
-define( 'CL_VERSION', '1.0.9' );
+define( 'CL_VERSION', '1.1.0' );
 define( 'CL_PLUGIN_FILE', __FILE__ );
 define( 'CL_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'CL_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
@@ -75,8 +75,24 @@ register_deactivation_hook( __FILE__, 'cl_deactivate' );
  * Initialize the plugin
  */
 function cl_init() {
-    // Load text domain for translations
-    load_plugin_textdomain( 'commerce-layer', false, dirname( CL_PLUGIN_BASENAME ) . '/languages' );
+    // Get the selected language from settings
+    $language = get_option( 'cl_language', 'he_IL' );
+
+    // Load the appropriate translation file
+    $locale = $language;
+
+    // Unload existing textdomain if any
+    unload_textdomain( 'commerce-layer' );
+
+    // Load the plugin textdomain with the selected locale
+    $mofile = CL_PLUGIN_DIR . 'languages/commerce-layer-' . $locale . '.mo';
+
+    if ( file_exists( $mofile ) ) {
+        load_textdomain( 'commerce-layer', $mofile );
+    } else {
+        // Fallback to default WordPress textdomain loading
+        load_plugin_textdomain( 'commerce-layer', false, dirname( CL_PLUGIN_BASENAME ) . '/languages' );
+    }
 
     // Initialize main plugin class
     $plugin = CL_Core::get_instance();
