@@ -3,7 +3,7 @@
  * Plugin Name: Commerce Layer
  * Plugin URI: https://example.com/commerce-layer
  * Description: הוספת יכולות קומרס מלאות לתוכן קיים - מחיר, וריאציות, סל, תשלום וניהול הזמנות
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Commerce Layer Team
  * Author URI: https://example.com
  * License: GPL v2 or later
@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Plugin constants
-define( 'CL_VERSION', '1.0.0' );
+define( 'CL_VERSION', '1.0.1' );
 define( 'CL_PLUGIN_FILE', __FILE__ );
 define( 'CL_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'CL_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
