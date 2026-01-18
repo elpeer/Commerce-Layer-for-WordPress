@@ -179,11 +179,11 @@ class CL_Settings {
 
                 // Add to cart button colors
                 update_option( 'cl_add_to_cart_bg', sanitize_hex_color( $_POST['cl_add_to_cart_bg'] ?? '#2563eb' ) );
-                update_option( 'cl_add_to_cart_text', sanitize_hex_color( $_POST['cl_add_to_cart_text'] ?? '#ffffff' ) );
+                update_option( 'cl_add_to_cart_text_color', sanitize_hex_color( $_POST['cl_add_to_cart_text_color'] ?? '#ffffff' ) );
 
                 // Buy now button colors
                 update_option( 'cl_buy_now_bg', sanitize_hex_color( $_POST['cl_buy_now_bg'] ?? '#10b981' ) );
-                update_option( 'cl_buy_now_text', sanitize_hex_color( $_POST['cl_buy_now_text'] ?? '#ffffff' ) );
+                update_option( 'cl_buy_now_text_color', sanitize_hex_color( $_POST['cl_buy_now_text_color'] ?? '#ffffff' ) );
 
                 // Cart icon colors
                 update_option( 'cl_cart_icon_color', sanitize_hex_color( $_POST['cl_cart_icon_color'] ?? '#2563eb' ) );

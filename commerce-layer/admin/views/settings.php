@@ -504,7 +504,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                     <tr>
                         <th scope="row"><?php esc_html_e( 'צבע טקסט', 'commerce-layer' ); ?></th>
                         <td>
-                            <input type="color" name="cl_add_to_cart_text" value="<?php echo esc_attr( get_option( 'cl_add_to_cart_text', '#ffffff' ) ); ?>">
+                            <input type="color" name="cl_add_to_cart_text_color" value="<?php echo esc_attr( get_option( 'cl_add_to_cart_text_color', '#ffffff' ) ); ?>">
                         </td>
                     </tr>
                 </table>
@@ -520,7 +520,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                     <tr>
                         <th scope="row"><?php esc_html_e( 'צבע טקסט', 'commerce-layer' ); ?></th>
                         <td>
-                            <input type="color" name="cl_buy_now_text" value="<?php echo esc_attr( get_option( 'cl_buy_now_text', '#ffffff' ) ); ?>">
+                            <input type="color" name="cl_buy_now_text_color" value="<?php echo esc_attr( get_option( 'cl_buy_now_text_color', '#ffffff' ) ); ?>">
                         </td>
                     </tr>
                 </table>

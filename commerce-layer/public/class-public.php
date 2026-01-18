@@ -292,9 +292,9 @@ class CL_Public {
         // Get button-specific colors (only custom when theme is custom)
         if ( 'custom' === $theme_preset ) {
             $add_to_cart_bg    = get_option( 'cl_add_to_cart_bg', '#2563eb' );
-            $add_to_cart_text  = get_option( 'cl_add_to_cart_text', '#ffffff' );
+            $add_to_cart_text  = get_option( 'cl_add_to_cart_text_color', '#ffffff' );
             $buy_now_bg        = get_option( 'cl_buy_now_bg', '#10b981' );
-            $buy_now_text      = get_option( 'cl_buy_now_text', '#ffffff' );
+            $buy_now_text      = get_option( 'cl_buy_now_text_color', '#ffffff' );
             $cart_icon_color   = get_option( 'cl_cart_icon_color', '#2563eb' );
             $cart_icon_bg      = get_option( 'cl_cart_icon_bg', '#ffffff' );
             $cart_icon_badge_bg = get_option( 'cl_cart_icon_badge_bg', '#ef4444' );
