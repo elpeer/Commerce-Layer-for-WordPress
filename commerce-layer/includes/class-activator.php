@@ -185,19 +185,20 @@ class CL_Activator {
      */
     private static function set_default_options() {
         $defaults = array(
-            'cl_currency'           => 'ILS',
-            'cl_currency_symbol'    => '₪',
-            'cl_currency_position'  => 'right',
-            'cl_thousand_separator' => ',',
-            'cl_decimal_separator'  => '.',
-            'cl_decimals'           => 2,
-            'cl_enabled_post_types' => array(),
-            'cl_purchase_mode'      => 'both',
-            'cl_display_mode'       => 'auto',
-            'cl_display_position'   => 'after_content',
-            'cl_add_to_cart_text'   => __( 'הוסף לסל', 'commerce-layer' ),
-            'cl_buy_now_text'       => __( 'קנה עכשיו', 'commerce-layer' ),
-            'cl_payment_gateway'    => 'tranzila',
+            'cl_currency'             => 'ILS',
+            'cl_currency_symbol'      => '₪',
+            'cl_currency_position'    => 'right',
+            'cl_thousand_separator'   => ',',
+            'cl_decimal_separator'    => '.',
+            'cl_decimals'             => 2,
+            'cl_enabled_post_types'   => array( 'post' ),
+            'cl_purchase_mode'        => 'both',
+            'cl_display_mode'         => 'auto',
+            'cl_display_position'     => 'after_content',
+            'cl_add_to_cart_text'     => __( 'הוסף לסל', 'commerce-layer' ),
+            'cl_buy_now_text'         => __( 'קנה עכשיו', 'commerce-layer' ),
+            'cl_payment_gateway'      => 'tranzila',
+            'cl_floating_bar_enabled' => 'yes',
         );
 
         foreach ( $defaults as $key => $value ) {
