@@ -97,11 +97,18 @@ $currency_symbol = get_option( 'cl_currency_symbol', '₪' );
                         <?php esc_html_e( 'המשך בקנייה', 'commerce-layer' ); ?>
                     </button>
                 </div>
-            <?php else : ?>
+            <?php else :
+                $show_discounts = 'yes' === get_option( 'cl_show_discount_in_cart', 'yes' );
+                $total_savings = 0;
+            ?>
                 <?php foreach ( $items as $cart_key => $item ) :
                     $product = new CL_Product( $item['post_id'] );
                     $variant = $item['variant_id'] ? new CL_Variant( $item['variant_id'] ) : null;
                     $price = $variant ? $variant->get_price() : $product->get_price();
+                    $regular_price = $variant ? $variant->get_regular_price() : $product->get_regular_price();
+                    $has_discount = $regular_price && $regular_price > $price;
+                    $item_savings = $has_discount ? ( $regular_price - $price ) * $item['quantity'] : 0;
+                    $total_savings += $item_savings;
                     $line_total = $price * $item['quantity'];
                     $thumbnail = $product->get_thumbnail( 'thumbnail' );
                 ?>
@@ -118,6 +125,11 @@ $currency_symbol = get_option( 'cl_currency_symbol', '₪' );
                                     </svg>
                                 </div>
                             <?php endif; ?>
+                            <?php if ( $has_discount && $show_discounts ) :
+                                $discount_percent = round( ( ( $regular_price - $price ) / $regular_price ) * 100 );
+                            ?>
+                                <span class="cl-item-discount-badge">-<?php echo esc_html( $discount_percent ); ?>%</span>
+                            <?php endif; ?>
                         </div>
                         <div class="cl-side-cart-item-details">
                             <a href="<?php echo esc_url( $product->get_permalink() ); ?>" class="cl-side-cart-item-title">
@@ -127,8 +139,21 @@ $currency_symbol = get_option( 'cl_currency_symbol', '₪' );
                                 <span class="cl-side-cart-item-variant"><?php echo esc_html( $item['variant_name'] ); ?></span>
                             <?php endif; ?>
                             <div class="cl-side-cart-item-price">
-                                <?php echo CL_Core::format_price( $price ); ?>
+                                <?php if ( $has_discount && $show_discounts ) : ?>
+                                    <span class="cl-original-price"><?php echo CL_Core::format_price( $regular_price ); ?></span>
+                                    <span class="cl-sale-price"><?php echo CL_Core::format_price( $price ); ?></span>
+                                <?php else : ?>
+                                    <?php echo CL_Core::format_price( $price ); ?>
+                                <?php endif; ?>
                             </div>
+                            <?php if ( $has_discount && $show_discounts && $item['quantity'] > 1 ) : ?>
+                                <div class="cl-item-savings">
+                                    <?php printf(
+                                        esc_html__( 'חיסכון: %s', 'commerce-layer' ),
+                                        CL_Core::format_price( $item_savings )
+                                    ); ?>
+                                </div>
+                            <?php endif; ?>
                             <div class="cl-side-cart-item-qty">
                                 <button type="button" class="cl-qty-btn cl-qty-minus" data-cart-key="<?php echo esc_attr( $cart_key ); ?>">−</button>
                                 <input type="number" class="cl-cart-quantity" value="<?php echo esc_attr( $item['quantity'] ); ?>" min="1" max="99" data-cart-key="<?php echo esc_attr( $cart_key ); ?>">
@@ -153,10 +178,26 @@ $currency_symbol = get_option( 'cl_currency_symbol', '₪' );
         <div class="cl-side-cart-footer">
             <?php
             $discount = $totals['discount'] ?? 0;
-            if ( $discount > 0 ) :
+            $show_discounts = isset( $show_discounts ) ? $show_discounts : ( 'yes' === get_option( 'cl_show_discount_in_cart', 'yes' ) );
+            $total_savings = isset( $total_savings ) ? $total_savings : 0;
             ?>
+
+            <?php if ( $total_savings > 0 && $show_discounts ) : ?>
+            <div class="cl-side-cart-savings">
+                <span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                        <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                    </svg>
+                    <?php esc_html_e( 'סה"כ חיסכון', 'commerce-layer' ); ?>
+                </span>
+                <span class="cl-savings-amount"><?php echo CL_Core::format_price( $total_savings ); ?></span>
+            </div>
+            <?php endif; ?>
+
+            <?php if ( $discount > 0 ) : ?>
             <div class="cl-side-cart-discount">
-                <span><?php esc_html_e( 'הנחה', 'commerce-layer' ); ?></span>
+                <span><?php esc_html_e( 'קופון הנחה', 'commerce-layer' ); ?></span>
                 <span class="cl-discount-amount">-<?php echo CL_Core::format_price( $discount ); ?></span>
             </div>
             <?php endif; ?>

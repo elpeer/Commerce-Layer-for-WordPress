@@ -201,6 +201,108 @@ if ( ! defined( 'ABSPATH' ) ) {
                 </tr>
             </table>
 
+        <?php elseif ( 'shipping' === $this->current_tab ) : ?>
+            <!-- Shipping Settings -->
+            <h2 class="title"><?php esc_html_e( 'אפשרויות משלוח', 'commerce-layer' ); ?></h2>
+            <p class="description"><?php esc_html_e( 'הגדר את אפשרויות המשלוח שיוצגו ללקוחות בעמוד התשלום', 'commerce-layer' ); ?></p>
+
+            <?php
+            $shipping_methods = get_option( 'cl_shipping_methods', array() );
+            if ( empty( $shipping_methods ) ) {
+                // Default shipping methods
+                $shipping_methods = array(
+                    array( 'name' => 'איסוף עצמי', 'price' => 0, 'enabled' => true ),
+                    array( 'name' => 'משלוח רגיל', 'price' => 30, 'enabled' => true ),
+                    array( 'name' => 'משלוח אקספרס', 'price' => 50, 'enabled' => true ),
+                );
+            }
+            ?>
+
+            <table class="widefat striped" id="cl-shipping-methods-table" style="max-width: 600px;">
+                <thead>
+                    <tr>
+                        <th style="width: 40px;"><?php esc_html_e( 'פעיל', 'commerce-layer' ); ?></th>
+                        <th><?php esc_html_e( 'שם אפשרות', 'commerce-layer' ); ?></th>
+                        <th style="width: 100px;"><?php esc_html_e( 'מחיר', 'commerce-layer' ); ?></th>
+                        <th style="width: 50px;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ( $shipping_methods as $index => $method ) : ?>
+                    <tr class="cl-shipping-method-row">
+                        <td>
+                            <input type="checkbox" name="cl_shipping_method_enabled[<?php echo $index; ?>]" value="1" <?php checked( $method['enabled'] ?? true ); ?>>
+                        </td>
+                        <td>
+                            <input type="text" name="cl_shipping_method_name[<?php echo $index; ?>]" value="<?php echo esc_attr( $method['name'] ); ?>" class="regular-text">
+                        </td>
+                        <td>
+                            <input type="number" name="cl_shipping_method_price[<?php echo $index; ?>]" value="<?php echo esc_attr( $method['price'] ); ?>" min="0" step="0.01" class="small-text"> <?php echo esc_html( get_option( 'cl_currency_symbol', '₪' ) ); ?>
+                        </td>
+                        <td>
+                            <button type="button" class="button cl-remove-shipping-method" title="<?php esc_attr_e( 'הסר', 'commerce-layer' ); ?>">×</button>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4">
+                            <button type="button" class="button" id="cl-add-shipping-method">
+                                <?php esc_html_e( '+ הוסף אפשרות משלוח', 'commerce-layer' ); ?>
+                            </button>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <h2 class="title" style="margin-top: 30px;"><?php esc_html_e( 'משלוח חינם', 'commerce-layer' ); ?></h2>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'סף למשלוח חינם', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="number" name="cl_free_shipping_threshold" value="<?php echo esc_attr( get_option( 'cl_free_shipping_threshold', 200 ) ); ?>" min="0" step="1" class="small-text"> <?php echo esc_html( get_option( 'cl_currency_symbol', '₪' ) ); ?>
+                        <p class="description"><?php esc_html_e( 'סכום הזמנה מינימלי לקבלת משלוח חינם. הזן 0 לביטול.', 'commerce-layer' ); ?></p>
+                    </td>
+                </tr>
+            </table>
+
+            <h2 class="title" style="margin-top: 30px;"><?php esc_html_e( 'תצוגת הנחות', 'commerce-layer' ); ?></h2>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'הצג הנחות בסל', 'commerce-layer' ); ?></th>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="cl_show_discount_in_cart" value="yes" <?php checked( get_option( 'cl_show_discount_in_cart', 'yes' ), 'yes' ); ?>>
+                            <?php esc_html_e( 'הצג מחיר מקורי, הנחה וחיסכון לכל מוצר ובסך הכל', 'commerce-layer' ); ?>
+                        </label>
+                    </td>
+                </tr>
+            </table>
+
+            <script>
+            jQuery(document).ready(function($) {
+                var methodIndex = <?php echo count( $shipping_methods ); ?>;
+
+                // Add new shipping method
+                $('#cl-add-shipping-method').on('click', function() {
+                    var row = '<tr class="cl-shipping-method-row">' +
+                        '<td><input type="checkbox" name="cl_shipping_method_enabled[' + methodIndex + ']" value="1" checked></td>' +
+                        '<td><input type="text" name="cl_shipping_method_name[' + methodIndex + ']" value="" class="regular-text" placeholder="<?php esc_attr_e( 'שם אפשרות', 'commerce-layer' ); ?>"></td>' +
+                        '<td><input type="number" name="cl_shipping_method_price[' + methodIndex + ']" value="0" min="0" step="0.01" class="small-text"> <?php echo esc_html( get_option( 'cl_currency_symbol', '₪' ) ); ?></td>' +
+                        '<td><button type="button" class="button cl-remove-shipping-method" title="<?php esc_attr_e( 'הסר', 'commerce-layer' ); ?>">×</button></td>' +
+                        '</tr>';
+                    $('#cl-shipping-methods-table tbody').append(row);
+                    methodIndex++;
+                });
+
+                // Remove shipping method
+                $(document).on('click', '.cl-remove-shipping-method', function() {
+                    $(this).closest('tr').remove();
+                });
+            });
+            </script>
+
         <?php elseif ( 'display' === $this->current_tab ) : ?>
             <!-- Display Settings -->
             <table class="form-table">
@@ -412,6 +514,60 @@ if ( ! defined( 'ABSPATH' ) ) {
                             <option value="outline" <?php selected( get_option( 'cl_button_style', 'gradient' ), 'outline' ); ?>><?php esc_html_e( 'מסגרת', 'commerce-layer' ); ?></option>
                             <option value="gradient" <?php selected( get_option( 'cl_button_style', 'gradient' ), 'gradient' ); ?>><?php esc_html_e( 'גרדיאנט', 'commerce-layer' ); ?></option>
                         </select>
+                    </td>
+                </tr>
+            </table>
+
+            <h3><?php esc_html_e( 'כפתור "הוסף לסל"', 'commerce-layer' ); ?></h3>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'צבע רקע', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="color" name="cl_add_to_cart_bg" value="<?php echo esc_attr( get_option( 'cl_add_to_cart_bg', '#2563eb' ) ); ?>">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'צבע טקסט', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="color" name="cl_add_to_cart_text" value="<?php echo esc_attr( get_option( 'cl_add_to_cart_text', '#ffffff' ) ); ?>">
+                    </td>
+                </tr>
+            </table>
+
+            <h3><?php esc_html_e( 'כפתור "קנה עכשיו"', 'commerce-layer' ); ?></h3>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'צבע רקע', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="color" name="cl_buy_now_bg" value="<?php echo esc_attr( get_option( 'cl_buy_now_bg', '#10b981' ) ); ?>">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'צבע טקסט', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="color" name="cl_buy_now_text" value="<?php echo esc_attr( get_option( 'cl_buy_now_text', '#ffffff' ) ); ?>">
+                    </td>
+                </tr>
+            </table>
+
+            <h3><?php esc_html_e( 'אייקון סל קניות', 'commerce-layer' ); ?></h3>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'צבע אייקון', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="color" name="cl_cart_icon_color" value="<?php echo esc_attr( get_option( 'cl_cart_icon_color', '#2563eb' ) ); ?>">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'צבע רקע', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="color" name="cl_cart_icon_bg" value="<?php echo esc_attr( get_option( 'cl_cart_icon_bg', '#ffffff' ) ); ?>">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'צבע תגית כמות', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="color" name="cl_cart_icon_badge_bg" value="<?php echo esc_attr( get_option( 'cl_cart_icon_badge_bg', '#ef4444' ) ); ?>">
                     </td>
                 </tr>
             </table>

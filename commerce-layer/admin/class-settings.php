@@ -28,6 +28,7 @@ class CL_Settings {
         $this->tabs = array(
             'general'  => __( 'כללי', 'commerce-layer' ),
             'checkout' => __( 'תשלום', 'commerce-layer' ),
+            'shipping' => __( 'משלוח', 'commerce-layer' ),
             'display'  => __( 'תצוגה', 'commerce-layer' ),
             'styling'  => __( 'עיצוב', 'commerce-layer' ),
         );
@@ -140,6 +141,25 @@ class CL_Settings {
                 update_option( 'cl_cart_icon_mobile_offset', absint( $_POST['cl_cart_icon_mobile_offset'] ?? 20 ) );
                 break;
 
+            case 'shipping':
+                // Shipping methods (JSON array)
+                $shipping_methods = array();
+                if ( isset( $_POST['cl_shipping_method_name'] ) && is_array( $_POST['cl_shipping_method_name'] ) ) {
+                    foreach ( $_POST['cl_shipping_method_name'] as $index => $name ) {
+                        if ( ! empty( $name ) ) {
+                            $shipping_methods[] = array(
+                                'name'    => sanitize_text_field( $name ),
+                                'price'   => floatval( $_POST['cl_shipping_method_price'][ $index ] ?? 0 ),
+                                'enabled' => isset( $_POST['cl_shipping_method_enabled'][ $index ] ) ? true : false,
+                            );
+                        }
+                    }
+                }
+                update_option( 'cl_shipping_methods', $shipping_methods );
+                update_option( 'cl_free_shipping_threshold', floatval( $_POST['cl_free_shipping_threshold'] ?? 0 ) );
+                update_option( 'cl_show_discount_in_cart', isset( $_POST['cl_show_discount_in_cart'] ) ? 'yes' : 'no' );
+                break;
+
             case 'styling':
                 // Theme preset
                 update_option( 'cl_theme_preset', sanitize_text_field( $_POST['cl_theme_preset'] ?? 'modern' ) );
@@ -156,6 +176,19 @@ class CL_Settings {
                 // Button styling
                 update_option( 'cl_button_corners', sanitize_text_field( $_POST['cl_button_corners'] ?? 'rounded' ) );
                 update_option( 'cl_button_style', sanitize_text_field( $_POST['cl_button_style'] ?? 'gradient' ) );
+
+                // Add to cart button colors
+                update_option( 'cl_add_to_cart_bg', sanitize_hex_color( $_POST['cl_add_to_cart_bg'] ?? '#2563eb' ) );
+                update_option( 'cl_add_to_cart_text', sanitize_hex_color( $_POST['cl_add_to_cart_text'] ?? '#ffffff' ) );
+
+                // Buy now button colors
+                update_option( 'cl_buy_now_bg', sanitize_hex_color( $_POST['cl_buy_now_bg'] ?? '#10b981' ) );
+                update_option( 'cl_buy_now_text', sanitize_hex_color( $_POST['cl_buy_now_text'] ?? '#ffffff' ) );
+
+                // Cart icon colors
+                update_option( 'cl_cart_icon_color', sanitize_hex_color( $_POST['cl_cart_icon_color'] ?? '#2563eb' ) );
+                update_option( 'cl_cart_icon_bg', sanitize_hex_color( $_POST['cl_cart_icon_bg'] ?? '#ffffff' ) );
+                update_option( 'cl_cart_icon_badge_bg', sanitize_hex_color( $_POST['cl_cart_icon_badge_bg'] ?? '#ef4444' ) );
 
                 // Side cart settings
                 update_option( 'cl_side_cart_width', absint( $_POST['cl_side_cart_width'] ?? 420 ) );

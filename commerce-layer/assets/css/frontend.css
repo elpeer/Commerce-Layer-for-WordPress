@@ -1846,6 +1846,7 @@ html[dir="rtl"] .cl-shipping-icon {
 }
 
 .cl-side-cart-item-image {
+    position: relative;
     width: 80px;
     height: 80px;
     flex-shrink: 0;
@@ -1977,6 +1978,70 @@ html[dir="rtl"] .cl-side-cart-item-actions {
 .cl-discount-amount {
     color: var(--cl-success-dark);
     font-weight: 600;
+}
+
+/* Item Discount Badge */
+.cl-item-discount-badge {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: var(--cl-danger);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: var(--cl-radius-sm);
+    z-index: 1;
+}
+
+/* Original Price (strikethrough) */
+.cl-original-price {
+    text-decoration: line-through;
+    color: var(--cl-text-muted);
+    font-size: 13px;
+    margin-left: 6px;
+}
+
+/* Sale Price */
+.cl-sale-price {
+    color: var(--cl-danger);
+    font-weight: 700;
+}
+
+/* Item Level Savings */
+.cl-item-savings {
+    font-size: 12px;
+    color: var(--cl-success-dark);
+    margin-top: 2px;
+}
+
+/* Total Savings Row */
+.cl-side-cart-savings {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    background: var(--cl-success-light);
+    border-radius: var(--cl-radius);
+    margin-bottom: 12px;
+    font-size: 14px;
+}
+
+.cl-side-cart-savings span:first-child {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--cl-success-dark);
+    font-weight: 500;
+}
+
+.cl-side-cart-savings svg {
+    stroke: var(--cl-success-dark);
+}
+
+.cl-savings-amount {
+    color: var(--cl-success-dark);
+    font-weight: 700;
 }
 
 .cl-side-cart-subtotal {

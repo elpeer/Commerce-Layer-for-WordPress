@@ -289,6 +289,17 @@ class CL_Public {
         $button_corners = get_option( 'cl_button_corners', 'rounded' );
         $button_style   = get_option( 'cl_button_style', 'gradient' );
 
+        // Get button-specific colors
+        $add_to_cart_bg    = get_option( 'cl_add_to_cart_bg', '#2563eb' );
+        $add_to_cart_text  = get_option( 'cl_add_to_cart_text', '#ffffff' );
+        $buy_now_bg        = get_option( 'cl_buy_now_bg', '#10b981' );
+        $buy_now_text      = get_option( 'cl_buy_now_text', '#ffffff' );
+
+        // Get cart icon colors
+        $cart_icon_color    = get_option( 'cl_cart_icon_color', '#2563eb' );
+        $cart_icon_bg       = get_option( 'cl_cart_icon_bg', '#ffffff' );
+        $cart_icon_badge_bg = get_option( 'cl_cart_icon_badge_bg', '#ef4444' );
+
         // Get side cart settings
         $side_cart_width = absint( get_option( 'cl_side_cart_width', 420 ) );
         $side_cart_side  = get_option( 'cl_side_cart_side', 'right' );
@@ -317,6 +328,17 @@ class CL_Public {
         // Button variables
         echo '  --cl-button-radius: ' . esc_attr( $border_radius ) . ';' . "\n";
 
+        // Button-specific colors
+        echo '  --cl-add-to-cart-bg: ' . esc_attr( $add_to_cart_bg ) . ';' . "\n";
+        echo '  --cl-add-to-cart-text: ' . esc_attr( $add_to_cart_text ) . ';' . "\n";
+        echo '  --cl-buy-now-bg: ' . esc_attr( $buy_now_bg ) . ';' . "\n";
+        echo '  --cl-buy-now-text: ' . esc_attr( $buy_now_text ) . ';' . "\n";
+
+        // Cart icon colors
+        echo '  --cl-cart-icon-color: ' . esc_attr( $cart_icon_color ) . ';' . "\n";
+        echo '  --cl-cart-icon-bg: ' . esc_attr( $cart_icon_bg ) . ';' . "\n";
+        echo '  --cl-cart-icon-badge-bg: ' . esc_attr( $cart_icon_badge_bg ) . ';' . "\n";
+
         // Side cart variables
         echo '  --cl-side-cart-width: ' . esc_attr( $side_cart_width ) . 'px;' . "\n";
 
@@ -327,15 +349,29 @@ class CL_Public {
         echo '  border-radius: var(--cl-button-radius);' . "\n";
         echo '}' . "\n";
 
+        // Add to Cart button specific styles
+        echo '.cl-add-to-cart-btn { background: var(--cl-add-to-cart-bg) !important; color: var(--cl-add-to-cart-text) !important; }' . "\n";
+        echo '.cl-add-to-cart-btn:hover { filter: brightness(0.9); }' . "\n";
+
+        // Buy Now button specific styles
+        echo '.cl-buy-now-btn { background: var(--cl-buy-now-bg) !important; color: var(--cl-buy-now-text) !important; }' . "\n";
+        echo '.cl-buy-now-btn:hover { filter: brightness(0.9); }' . "\n";
+
+        // Cart icon styles
+        echo '.cl-floating-cart-btn { background: var(--cl-cart-icon-bg); color: var(--cl-cart-icon-color); }' . "\n";
+        echo '.cl-floating-cart-count { background: var(--cl-cart-icon-badge-bg); }' . "\n";
+        echo '.cl-cart-icon-link { color: var(--cl-cart-icon-color); }' . "\n";
+        echo '.cl-cart-icon-link .cl-cart-badge { background: var(--cl-cart-icon-badge-bg); }' . "\n";
+
         if ( 'filled' === $button_style ) {
-            echo '.cl-btn { background: var(--cl-color-primary); border: none; }' . "\n";
-            echo '.cl-btn:hover { background: var(--cl-color-primary-dark); }' . "\n";
+            echo '.cl-btn:not(.cl-add-to-cart-btn):not(.cl-buy-now-btn) { background: var(--cl-color-primary); border: none; }' . "\n";
+            echo '.cl-btn:not(.cl-add-to-cart-btn):not(.cl-buy-now-btn):hover { background: var(--cl-color-primary-dark); }' . "\n";
         } elseif ( 'outline' === $button_style ) {
-            echo '.cl-btn { background: transparent; border: 2px solid var(--cl-color-primary); color: var(--cl-color-primary); }' . "\n";
-            echo '.cl-btn:hover { background: var(--cl-color-primary); color: #fff; }' . "\n";
+            echo '.cl-btn:not(.cl-add-to-cart-btn):not(.cl-buy-now-btn) { background: transparent; border: 2px solid var(--cl-color-primary); color: var(--cl-color-primary); }' . "\n";
+            echo '.cl-btn:not(.cl-add-to-cart-btn):not(.cl-buy-now-btn):hover { background: var(--cl-color-primary); color: #fff; }' . "\n";
         } elseif ( 'gradient' === $button_style ) {
-            echo '.cl-btn { background: linear-gradient(135deg, var(--cl-color-primary), var(--cl-color-primary-dark)); border: none; }' . "\n";
-            echo '.cl-btn:hover { background: linear-gradient(135deg, var(--cl-color-primary-dark), var(--cl-color-primary)); }' . "\n";
+            echo '.cl-btn:not(.cl-add-to-cart-btn):not(.cl-buy-now-btn) { background: linear-gradient(135deg, var(--cl-color-primary), var(--cl-color-primary-dark)); border: none; }' . "\n";
+            echo '.cl-btn:not(.cl-add-to-cart-btn):not(.cl-buy-now-btn):hover { background: linear-gradient(135deg, var(--cl-color-primary-dark), var(--cl-color-primary)); }' . "\n";
         }
 
         // Side cart width
