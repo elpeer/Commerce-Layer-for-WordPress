@@ -29,6 +29,7 @@ class CL_Settings {
             'general'  => __( 'כללי', 'commerce-layer' ),
             'checkout' => __( 'תשלום', 'commerce-layer' ),
             'display'  => __( 'תצוגה', 'commerce-layer' ),
+            'styling'  => __( 'עיצוב', 'commerce-layer' ),
         );
 
         $this->current_tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'general';
@@ -137,6 +138,33 @@ class CL_Settings {
                 update_option( 'cl_cart_icon_desktop_offset', absint( $_POST['cl_cart_icon_desktop_offset'] ?? 20 ) );
                 update_option( 'cl_cart_icon_mobile_position', sanitize_text_field( $_POST['cl_cart_icon_mobile_position'] ?? 'bottom-right' ) );
                 update_option( 'cl_cart_icon_mobile_offset', absint( $_POST['cl_cart_icon_mobile_offset'] ?? 20 ) );
+                break;
+
+            case 'styling':
+                // Theme preset
+                update_option( 'cl_theme_preset', sanitize_text_field( $_POST['cl_theme_preset'] ?? 'modern' ) );
+
+                // Custom colors (only saved if preset is 'custom')
+                update_option( 'cl_color_primary', sanitize_hex_color( $_POST['cl_color_primary'] ?? '#2563eb' ) );
+                update_option( 'cl_color_primary_dark', sanitize_hex_color( $_POST['cl_color_primary_dark'] ?? '#1e40af' ) );
+                update_option( 'cl_color_secondary', sanitize_hex_color( $_POST['cl_color_secondary'] ?? '#64748b' ) );
+                update_option( 'cl_color_text', sanitize_hex_color( $_POST['cl_color_text'] ?? '#1e293b' ) );
+                update_option( 'cl_color_background', sanitize_hex_color( $_POST['cl_color_background'] ?? '#ffffff' ) );
+                update_option( 'cl_color_success', sanitize_hex_color( $_POST['cl_color_success'] ?? '#10b981' ) );
+                update_option( 'cl_color_danger', sanitize_hex_color( $_POST['cl_color_danger'] ?? '#ef4444' ) );
+
+                // Button styling
+                update_option( 'cl_button_corners', sanitize_text_field( $_POST['cl_button_corners'] ?? 'rounded' ) );
+                update_option( 'cl_button_style', sanitize_text_field( $_POST['cl_button_style'] ?? 'gradient' ) );
+
+                // Side cart settings
+                update_option( 'cl_side_cart_width', absint( $_POST['cl_side_cart_width'] ?? 420 ) );
+                update_option( 'cl_side_cart_side', sanitize_text_field( $_POST['cl_side_cart_side'] ?? 'right' ) );
+                update_option( 'cl_side_cart_shipping_bar', isset( $_POST['cl_side_cart_shipping_bar'] ) ? 'yes' : 'no' );
+                update_option( 'cl_side_cart_urgency_timer', isset( $_POST['cl_side_cart_urgency_timer'] ) ? 'yes' : 'no' );
+
+                // Custom CSS
+                update_option( 'cl_custom_css', wp_strip_all_tags( $_POST['cl_custom_css'] ?? '' ) );
                 break;
         }
 

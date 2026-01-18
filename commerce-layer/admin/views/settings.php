@@ -314,6 +314,157 @@ if ( ! defined( 'ABSPATH' ) ) {
                     </td>
                 </tr>
             </table>
+        <?php elseif ( 'styling' === $this->current_tab ) : ?>
+            <!-- Styling Settings -->
+            <h2 class="title"><?php esc_html_e( 'ערכת נושא', 'commerce-layer' ); ?></h2>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'בחר ערכת נושא', 'commerce-layer' ); ?></th>
+                    <td>
+                        <fieldset>
+                            <?php $theme_preset = get_option( 'cl_theme_preset', 'modern' ); ?>
+                            <label style="display: block; margin-bottom: 10px;">
+                                <input type="radio" name="cl_theme_preset" value="classic" <?php checked( $theme_preset, 'classic' ); ?>>
+                                <strong><?php esc_html_e( 'קלאסי', 'commerce-layer' ); ?></strong>
+                                <span style="color: #666;"> - <?php esc_html_e( 'שחור / לבן / אפור', 'commerce-layer' ); ?></span>
+                            </label>
+                            <label style="display: block; margin-bottom: 10px;">
+                                <input type="radio" name="cl_theme_preset" value="modern" <?php checked( $theme_preset, 'modern' ); ?>>
+                                <strong><?php esc_html_e( 'מודרני', 'commerce-layer' ); ?></strong>
+                                <span style="color: #666;"> - <?php esc_html_e( 'כחול / לבן (ברירת מחדל)', 'commerce-layer' ); ?></span>
+                            </label>
+                            <label style="display: block; margin-bottom: 10px;">
+                                <input type="radio" name="cl_theme_preset" value="custom" <?php checked( $theme_preset, 'custom' ); ?>>
+                                <strong><?php esc_html_e( 'מותאם אישית', 'commerce-layer' ); ?></strong>
+                                <span style="color: #666;"> - <?php esc_html_e( 'בחר צבעים בעצמך', 'commerce-layer' ); ?></span>
+                            </label>
+                        </fieldset>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- Custom Colors (shown only when custom is selected) -->
+            <div id="cl-custom-colors" style="<?php echo $theme_preset !== 'custom' ? 'display:none;' : ''; ?>">
+                <h2 class="title"><?php esc_html_e( 'צבעים מותאמים אישית', 'commerce-layer' ); ?></h2>
+                <table class="form-table">
+                    <tr>
+                        <th scope="row"><?php esc_html_e( 'צבע ראשי', 'commerce-layer' ); ?></th>
+                        <td>
+                            <input type="color" name="cl_color_primary" value="<?php echo esc_attr( get_option( 'cl_color_primary', '#2563eb' ) ); ?>">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><?php esc_html_e( 'צבע ראשי כהה (hover)', 'commerce-layer' ); ?></th>
+                        <td>
+                            <input type="color" name="cl_color_primary_dark" value="<?php echo esc_attr( get_option( 'cl_color_primary_dark', '#1e40af' ) ); ?>">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><?php esc_html_e( 'צבע משני', 'commerce-layer' ); ?></th>
+                        <td>
+                            <input type="color" name="cl_color_secondary" value="<?php echo esc_attr( get_option( 'cl_color_secondary', '#64748b' ) ); ?>">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><?php esc_html_e( 'צבע טקסט', 'commerce-layer' ); ?></th>
+                        <td>
+                            <input type="color" name="cl_color_text" value="<?php echo esc_attr( get_option( 'cl_color_text', '#1e293b' ) ); ?>">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><?php esc_html_e( 'צבע רקע', 'commerce-layer' ); ?></th>
+                        <td>
+                            <input type="color" name="cl_color_background" value="<?php echo esc_attr( get_option( 'cl_color_background', '#ffffff' ) ); ?>">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><?php esc_html_e( 'צבע הצלחה', 'commerce-layer' ); ?></th>
+                        <td>
+                            <input type="color" name="cl_color_success" value="<?php echo esc_attr( get_option( 'cl_color_success', '#10b981' ) ); ?>">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><?php esc_html_e( 'צבע שגיאה', 'commerce-layer' ); ?></th>
+                        <td>
+                            <input type="color" name="cl_color_danger" value="<?php echo esc_attr( get_option( 'cl_color_danger', '#ef4444' ) ); ?>">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <h2 class="title"><?php esc_html_e( 'כפתורים', 'commerce-layer' ); ?></h2>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'פינות כפתור', 'commerce-layer' ); ?></th>
+                    <td>
+                        <select name="cl_button_corners">
+                            <option value="square" <?php selected( get_option( 'cl_button_corners', 'rounded' ), 'square' ); ?>><?php esc_html_e( 'מרובע', 'commerce-layer' ); ?></option>
+                            <option value="rounded" <?php selected( get_option( 'cl_button_corners', 'rounded' ), 'rounded' ); ?>><?php esc_html_e( 'מעוגל קל', 'commerce-layer' ); ?></option>
+                            <option value="pill" <?php selected( get_option( 'cl_button_corners', 'rounded' ), 'pill' ); ?>><?php esc_html_e( 'מעוגל מאוד', 'commerce-layer' ); ?></option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'סגנון כפתור', 'commerce-layer' ); ?></th>
+                    <td>
+                        <select name="cl_button_style">
+                            <option value="filled" <?php selected( get_option( 'cl_button_style', 'gradient' ), 'filled' ); ?>><?php esc_html_e( 'מלא', 'commerce-layer' ); ?></option>
+                            <option value="outline" <?php selected( get_option( 'cl_button_style', 'gradient' ), 'outline' ); ?>><?php esc_html_e( 'מסגרת', 'commerce-layer' ); ?></option>
+                            <option value="gradient" <?php selected( get_option( 'cl_button_style', 'gradient' ), 'gradient' ); ?>><?php esc_html_e( 'גרדיאנט', 'commerce-layer' ); ?></option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+
+            <h2 class="title"><?php esc_html_e( 'סל צדדי (Side Cart)', 'commerce-layer' ); ?></h2>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'רוחב הסל', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="number" name="cl_side_cart_width" value="<?php echo esc_attr( get_option( 'cl_side_cart_width', 420 ) ); ?>" min="300" max="600" class="small-text"> <?php esc_html_e( 'פיקסלים', 'commerce-layer' ); ?>
+                        <p class="description"><?php esc_html_e( 'מומלץ: 380-480 פיקסלים', 'commerce-layer' ); ?></p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'צד פתיחה', 'commerce-layer' ); ?></th>
+                    <td>
+                        <select name="cl_side_cart_side">
+                            <option value="right" <?php selected( get_option( 'cl_side_cart_side', 'right' ), 'right' ); ?>><?php esc_html_e( 'ימין', 'commerce-layer' ); ?></option>
+                            <option value="left" <?php selected( get_option( 'cl_side_cart_side', 'right' ), 'left' ); ?>><?php esc_html_e( 'שמאל', 'commerce-layer' ); ?></option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'פס משלוח חינם', 'commerce-layer' ); ?></th>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="cl_side_cart_shipping_bar" value="yes" <?php checked( get_option( 'cl_side_cart_shipping_bar', 'yes' ), 'yes' ); ?>>
+                            <?php esc_html_e( 'הצג פס התקדמות למשלוח חינם', 'commerce-layer' ); ?>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'טיימר דחיפות', 'commerce-layer' ); ?></th>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="cl_side_cart_urgency_timer" value="yes" <?php checked( get_option( 'cl_side_cart_urgency_timer', 'no' ), 'yes' ); ?>>
+                            <?php esc_html_e( 'הצג טיימר דחיפות (המוצרים מוגבלים)', 'commerce-layer' ); ?>
+                        </label>
+                    </td>
+                </tr>
+            </table>
+
+            <h2 class="title"><?php esc_html_e( 'CSS מותאם אישית', 'commerce-layer' ); ?></h2>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'קוד CSS נוסף', 'commerce-layer' ); ?></th>
+                    <td>
+                        <textarea name="cl_custom_css" rows="10" class="large-text code" placeholder="<?php esc_attr_e( '/* הוסף כאן CSS מותאם אישית */', 'commerce-layer' ); ?>"><?php echo esc_textarea( get_option( 'cl_custom_css', '' ) ); ?></textarea>
+                        <p class="description"><?php esc_html_e( 'הזן קוד CSS מותאם אישית שיחול על כל רכיבי התוסף', 'commerce-layer' ); ?></p>
+                    </td>
+                </tr>
+            </table>
+
         <?php endif; ?>
 
         <?php submit_button(); ?>
@@ -331,5 +482,14 @@ jQuery(document).ready(function($) {
 
     toggleGatewaySettings();
     $('#cl-payment-gateway').on('change', toggleGatewaySettings);
+
+    // Toggle custom colors section based on theme preset
+    $('input[name="cl_theme_preset"]').on('change', function() {
+        if ($(this).val() === 'custom') {
+            $('#cl-custom-colors').slideDown();
+        } else {
+            $('#cl-custom-colors').slideUp();
+        }
+    });
 });
 </script>

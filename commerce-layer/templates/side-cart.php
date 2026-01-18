@@ -35,7 +35,7 @@ $currency_symbol = get_option( 'cl_currency_symbol', '₪' );
             </button>
         </div>
 
-        <?php if ( $free_shipping_threshold > 0 ) :
+        <?php if ( $free_shipping_threshold > 0 && 'yes' === get_option( 'cl_side_cart_shipping_bar', 'yes' ) ) :
             $remaining = max( 0, $free_shipping_threshold - $totals['subtotal'] );
             $progress = min( 100, ( $totals['subtotal'] / $free_shipping_threshold ) * 100 );
         ?>
@@ -71,7 +71,7 @@ $currency_symbol = get_option( 'cl_currency_symbol', '₪' );
         <?php endif; ?>
 
         <!-- Urgency Timer (optional) -->
-        <?php if ( 'yes' === get_option( 'cl_cart_urgency_timer', 'no' ) ) : ?>
+        <?php if ( 'yes' === get_option( 'cl_side_cart_urgency_timer', 'no' ) ) : ?>
         <div class="cl-urgency-notice">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M12 2L12 6M12 18L12 22M4.93 4.93L7.76 7.76M16.24 16.24L19.07 19.07M2 12L6 12M18 12L22 12M4.93 19.07L7.76 16.24M16.24 7.76L19.07 4.93"></path>

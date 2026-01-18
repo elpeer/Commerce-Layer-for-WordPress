@@ -18,6 +18,7 @@ class CL_Public {
      */
     public function __construct() {
         add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+        add_action( 'wp_head', array( $this, 'output_dynamic_styles' ), 100 );
         add_filter( 'the_content', array( $this, 'auto_inject_commerce' ), 20 );
         add_action( 'wp_footer', array( $this, 'render_floating_bar' ) );
         add_action( 'wp_footer', array( $this, 'render_side_cart' ) );
@@ -273,5 +274,128 @@ class CL_Public {
         }
 
         return $styles;
+    }
+
+    /**
+     * Output dynamic styles based on settings
+     */
+    public function output_dynamic_styles() {
+        $theme_preset = get_option( 'cl_theme_preset', 'modern' );
+
+        // Get colors based on preset
+        $colors = $this->get_theme_colors( $theme_preset );
+
+        // Get button settings
+        $button_corners = get_option( 'cl_button_corners', 'rounded' );
+        $button_style   = get_option( 'cl_button_style', 'gradient' );
+
+        // Get side cart settings
+        $side_cart_width = absint( get_option( 'cl_side_cart_width', 420 ) );
+        $side_cart_side  = get_option( 'cl_side_cart_side', 'right' );
+
+        // Button border radius based on corners setting
+        $border_radius = '8px';
+        if ( 'square' === $button_corners ) {
+            $border_radius = '0';
+        } elseif ( 'pill' === $button_corners ) {
+            $border_radius = '50px';
+        }
+
+        // Start output
+        echo '<style id="cl-dynamic-styles">' . "\n";
+        echo ':root {' . "\n";
+
+        // Color variables
+        echo '  --cl-color-primary: ' . esc_attr( $colors['primary'] ) . ';' . "\n";
+        echo '  --cl-color-primary-dark: ' . esc_attr( $colors['primary_dark'] ) . ';' . "\n";
+        echo '  --cl-color-secondary: ' . esc_attr( $colors['secondary'] ) . ';' . "\n";
+        echo '  --cl-color-text: ' . esc_attr( $colors['text'] ) . ';' . "\n";
+        echo '  --cl-color-background: ' . esc_attr( $colors['background'] ) . ';' . "\n";
+        echo '  --cl-color-success: ' . esc_attr( $colors['success'] ) . ';' . "\n";
+        echo '  --cl-color-danger: ' . esc_attr( $colors['danger'] ) . ';' . "\n";
+
+        // Button variables
+        echo '  --cl-button-radius: ' . esc_attr( $border_radius ) . ';' . "\n";
+
+        // Side cart variables
+        echo '  --cl-side-cart-width: ' . esc_attr( $side_cart_width ) . 'px;' . "\n";
+
+        echo '}' . "\n";
+
+        // Button style
+        echo '.cl-btn {' . "\n";
+        echo '  border-radius: var(--cl-button-radius);' . "\n";
+        echo '}' . "\n";
+
+        if ( 'filled' === $button_style ) {
+            echo '.cl-btn { background: var(--cl-color-primary); border: none; }' . "\n";
+            echo '.cl-btn:hover { background: var(--cl-color-primary-dark); }' . "\n";
+        } elseif ( 'outline' === $button_style ) {
+            echo '.cl-btn { background: transparent; border: 2px solid var(--cl-color-primary); color: var(--cl-color-primary); }' . "\n";
+            echo '.cl-btn:hover { background: var(--cl-color-primary); color: #fff; }' . "\n";
+        } elseif ( 'gradient' === $button_style ) {
+            echo '.cl-btn { background: linear-gradient(135deg, var(--cl-color-primary), var(--cl-color-primary-dark)); border: none; }' . "\n";
+            echo '.cl-btn:hover { background: linear-gradient(135deg, var(--cl-color-primary-dark), var(--cl-color-primary)); }' . "\n";
+        }
+
+        // Side cart width
+        echo '.cl-side-cart-drawer { width: var(--cl-side-cart-width); max-width: 100vw; }' . "\n";
+
+        // Side cart position (left or right)
+        if ( 'left' === $side_cart_side ) {
+            echo '.cl-side-cart-drawer { right: auto; left: 0; transform: translateX(-100%); }' . "\n";
+            echo '.cl-side-cart.cl-open .cl-side-cart-drawer { transform: translateX(0); }' . "\n";
+        }
+
+        // Custom CSS
+        $custom_css = get_option( 'cl_custom_css', '' );
+        if ( ! empty( $custom_css ) ) {
+            echo '/* Custom CSS */' . "\n";
+            echo wp_strip_all_tags( $custom_css ) . "\n";
+        }
+
+        echo '</style>' . "\n";
+    }
+
+    /**
+     * Get theme colors based on preset
+     */
+    private function get_theme_colors( $preset ) {
+        // Default modern theme colors
+        $colors = array(
+            'primary'      => '#2563eb',
+            'primary_dark' => '#1e40af',
+            'secondary'    => '#64748b',
+            'text'         => '#1e293b',
+            'background'   => '#ffffff',
+            'success'      => '#10b981',
+            'danger'       => '#ef4444',
+        );
+
+        if ( 'classic' === $preset ) {
+            // Classic theme - black/white/gray
+            $colors = array(
+                'primary'      => '#1a1a1a',
+                'primary_dark' => '#000000',
+                'secondary'    => '#6b7280',
+                'text'         => '#111827',
+                'background'   => '#ffffff',
+                'success'      => '#059669',
+                'danger'       => '#dc2626',
+            );
+        } elseif ( 'custom' === $preset ) {
+            // Custom colors from settings
+            $colors = array(
+                'primary'      => get_option( 'cl_color_primary', '#2563eb' ),
+                'primary_dark' => get_option( 'cl_color_primary_dark', '#1e40af' ),
+                'secondary'    => get_option( 'cl_color_secondary', '#64748b' ),
+                'text'         => get_option( 'cl_color_text', '#1e293b' ),
+                'background'   => get_option( 'cl_color_background', '#ffffff' ),
+                'success'      => get_option( 'cl_color_success', '#10b981' ),
+                'danger'       => get_option( 'cl_color_danger', '#ef4444' ),
+            );
+        }
+
+        return $colors;
     }
 }
