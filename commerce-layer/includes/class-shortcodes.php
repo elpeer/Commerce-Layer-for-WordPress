@@ -115,10 +115,11 @@ class CL_Shortcodes {
         }
 
         $text = $atts['text'] ?: get_option( 'cl_add_to_cart_text', __( 'הוסף לסל', 'commerce-layer' ) );
-        $class = 'cl-add-to-cart-btn ' . sanitize_html_class( $atts['class'] );
+        $class = 'cl-btn cl-add-to-cart-btn ' . sanitize_html_class( $atts['class'] );
 
         return sprintf(
-            '<button type="button" class="%s" data-post-id="%d">%s</button>',
+            '<div class="cl-shortcode-btn-wrap" data-post-id="%d"><button type="button" class="%s" data-post-id="%d">%s</button></div>',
+            $post_id,
             esc_attr( $class ),
             $post_id,
             esc_html( $text )
@@ -153,10 +154,11 @@ class CL_Shortcodes {
         }
 
         $text = $atts['text'] ?: get_option( 'cl_buy_now_text', __( 'קנה עכשיו', 'commerce-layer' ) );
-        $class = 'cl-buy-now-btn ' . sanitize_html_class( $atts['class'] );
+        $class = 'cl-btn cl-btn-secondary cl-buy-now-btn ' . sanitize_html_class( $atts['class'] );
 
         return sprintf(
-            '<button type="button" class="%s" data-post-id="%d">%s</button>',
+            '<div class="cl-shortcode-btn-wrap" data-post-id="%d"><button type="button" class="%s" data-post-id="%d">%s</button></div>',
+            $post_id,
             esc_attr( $class ),
             $post_id,
             esc_html( $text )

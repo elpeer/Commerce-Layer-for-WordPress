@@ -174,6 +174,14 @@ class CL_Admin {
             }
         }
 
+        // Load WP_List_Table class if not loaded
+        if ( ! class_exists( 'WP_List_Table' ) ) {
+            require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
+        }
+
+        // Load orders list class
+        require_once CL_PLUGIN_DIR . 'admin/class-orders-list.php';
+
         // List view
         $orders_list = new CL_Orders_List();
         $orders_list->prepare_items();

@@ -14,11 +14,8 @@ if ( ! isset( $product ) || ! $product instanceof CL_Product ) {
     return;
 }
 
-if ( ! $product->is_purchasable() ) {
-    return;
-}
-
 $has_variants = $product->has_variants();
+$is_purchasable = $product->is_purchasable();
 ?>
 <div class="cl-purchase-card" data-post-id="<?php echo esc_attr( $product->get_id() ); ?>">
     <!-- Price Display -->
@@ -30,19 +27,25 @@ $has_variants = $product->has_variants();
             ?>
                 <div class="cl-price cl-price-range"><?php echo $range['html']; ?></div>
             <?php endif; ?>
-        <?php else : ?>
+        <?php elseif ( $product->get_price() !== false ) : ?>
             <?php echo $product->get_price_html(); ?>
+        <?php else : ?>
+            <div class="cl-price cl-no-price"><?php esc_html_e( 'מחיר לא הוגדר', 'commerce-layer' ); ?></div>
         <?php endif; ?>
     </div>
 
-    <!-- Stock Status -->
-    <div class="cl-stock-status cl-in-stock">
-        <span class="cl-stock-icon">✓</span>
-        <?php esc_html_e( 'במלאי', 'commerce-layer' ); ?>
-    </div>
+    <?php if ( $is_purchasable ) : ?>
+        <!-- Stock Status -->
+        <div class="cl-stock-status cl-in-stock">
+            <span class="cl-stock-icon">✓</span>
+            <?php esc_html_e( 'במלאי', 'commerce-layer' ); ?>
+        </div>
 
-    <!-- Purchase Form -->
-    <?php echo CL_Purchase_Card::get_buttons_html( $product ); ?>
+        <!-- Purchase Form -->
+        <?php echo CL_Purchase_Card::get_buttons_html( $product ); ?>
+    <?php else : ?>
+        <p class="cl-not-purchasable"><?php esc_html_e( 'הגדר מחיר כדי להפעיל רכישה', 'commerce-layer' ); ?></p>
+    <?php endif; ?>
 
     <!-- Added to Cart Message -->
     <div class="cl-added-message" style="display: none;">

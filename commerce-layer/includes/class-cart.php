@@ -270,6 +270,26 @@ class CL_Cart {
     }
 
     /**
+     * Get all totals
+     */
+    public function get_totals() {
+        $subtotal = $this->get_subtotal();
+        return array(
+            'subtotal' => $subtotal,
+            'discount' => 0,
+            'shipping' => 0,
+            'total'    => $subtotal,
+        );
+    }
+
+    /**
+     * Get cart items (alias for get_contents)
+     */
+    public function get_items() {
+        return $this->cart_contents;
+    }
+
+    /**
      * Check if cart is empty
      */
     public function is_empty() {
