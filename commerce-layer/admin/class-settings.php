@@ -26,11 +26,12 @@ class CL_Settings {
      */
     public function __construct() {
         $this->tabs = array(
-            'general'  => __( 'כללי', 'commerce-layer' ),
-            'checkout' => __( 'תשלום', 'commerce-layer' ),
-            'shipping' => __( 'משלוח', 'commerce-layer' ),
-            'display'  => __( 'תצוגה', 'commerce-layer' ),
-            'styling'  => __( 'עיצוב', 'commerce-layer' ),
+            'general'      => __( 'כללי', 'commerce-layer' ),
+            'checkout'     => __( 'תשלום', 'commerce-layer' ),
+            'shipping'     => __( 'משלוח', 'commerce-layer' ),
+            'display'      => __( 'תצוגה', 'commerce-layer' ),
+            'styling'      => __( 'עיצוב', 'commerce-layer' ),
+            'translations' => __( 'תרגום טקסטים', 'commerce-layer' ),
         );
 
         $this->current_tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'general';
@@ -143,6 +144,7 @@ class CL_Settings {
                 update_option( 'cl_custom_injection_enabled', isset( $_POST['cl_custom_injection_enabled'] ) ? 'yes' : 'no' );
                 update_option( 'cl_custom_injection_selector', sanitize_text_field( $_POST['cl_custom_injection_selector'] ?? '' ) );
                 update_option( 'cl_custom_injection_position', sanitize_text_field( $_POST['cl_custom_injection_position'] ?? 'after' ) );
+                update_option( 'cl_custom_injection_show_price', isset( $_POST['cl_custom_injection_show_price'] ) ? 'yes' : 'no' );
 
                 // Floating cart icon settings
                 update_option( 'cl_floating_cart_icon_enabled', isset( $_POST['cl_floating_cart_icon_enabled'] ) ? 'yes' : 'no' );
@@ -217,6 +219,61 @@ class CL_Settings {
 
                 // Custom CSS
                 update_option( 'cl_custom_css', wp_strip_all_tags( $_POST['cl_custom_css'] ?? '' ) );
+                break;
+
+            case 'translations':
+                // Button texts
+                update_option( 'cl_text_add_to_cart', sanitize_text_field( $_POST['cl_text_add_to_cart'] ?? __( 'הוסף לסל', 'commerce-layer' ) ) );
+                update_option( 'cl_text_buy_now', sanitize_text_field( $_POST['cl_text_buy_now'] ?? __( 'קנה עכשיו', 'commerce-layer' ) ) );
+                update_option( 'cl_text_view_cart', sanitize_text_field( $_POST['cl_text_view_cart'] ?? __( 'צפה בסל', 'commerce-layer' ) ) );
+                update_option( 'cl_text_checkout', sanitize_text_field( $_POST['cl_text_checkout'] ?? __( 'לתשלום', 'commerce-layer' ) ) );
+                update_option( 'cl_text_continue_shopping', sanitize_text_field( $_POST['cl_text_continue_shopping'] ?? __( 'המשך בקנייה', 'commerce-layer' ) ) );
+                update_option( 'cl_text_continue_to_checkout', sanitize_text_field( $_POST['cl_text_continue_to_checkout'] ?? __( 'המשך לתשלום', 'commerce-layer' ) ) );
+
+                // Cart texts
+                update_option( 'cl_text_cart_title', sanitize_text_field( $_POST['cl_text_cart_title'] ?? __( 'סל קניות', 'commerce-layer' ) ) );
+                update_option( 'cl_text_cart_empty', sanitize_text_field( $_POST['cl_text_cart_empty'] ?? __( 'הסל שלך ריק', 'commerce-layer' ) ) );
+                update_option( 'cl_text_product', sanitize_text_field( $_POST['cl_text_product'] ?? __( 'מוצר', 'commerce-layer' ) ) );
+                update_option( 'cl_text_price', sanitize_text_field( $_POST['cl_text_price'] ?? __( 'מחיר', 'commerce-layer' ) ) );
+                update_option( 'cl_text_quantity', sanitize_text_field( $_POST['cl_text_quantity'] ?? __( 'כמות', 'commerce-layer' ) ) );
+                update_option( 'cl_text_total', sanitize_text_field( $_POST['cl_text_total'] ?? __( 'סה"כ', 'commerce-layer' ) ) );
+                update_option( 'cl_text_subtotal', sanitize_text_field( $_POST['cl_text_subtotal'] ?? __( 'סיכום ביניים', 'commerce-layer' ) ) );
+                update_option( 'cl_text_remove', sanitize_text_field( $_POST['cl_text_remove'] ?? __( 'הסר', 'commerce-layer' ) ) );
+
+                // Shipping texts
+                update_option( 'cl_text_free_shipping', sanitize_text_field( $_POST['cl_text_free_shipping'] ?? __( 'זכאי למשלוח חינם!', 'commerce-layer' ) ) );
+                update_option( 'cl_text_add_for_free_shipping', sanitize_text_field( $_POST['cl_text_add_for_free_shipping'] ?? __( 'הוסף %s לקבלת משלוח חינם!', 'commerce-layer' ) ) );
+                update_option( 'cl_text_shipping', sanitize_text_field( $_POST['cl_text_shipping'] ?? __( 'משלוח', 'commerce-layer' ) ) );
+
+                // Checkout texts
+                update_option( 'cl_text_customer_details', sanitize_text_field( $_POST['cl_text_customer_details'] ?? __( 'פרטי הלקוח', 'commerce-layer' ) ) );
+                update_option( 'cl_text_first_name', sanitize_text_field( $_POST['cl_text_first_name'] ?? __( 'שם פרטי', 'commerce-layer' ) ) );
+                update_option( 'cl_text_last_name', sanitize_text_field( $_POST['cl_text_last_name'] ?? __( 'שם משפחה', 'commerce-layer' ) ) );
+                update_option( 'cl_text_email', sanitize_text_field( $_POST['cl_text_email'] ?? __( 'אימייל', 'commerce-layer' ) ) );
+                update_option( 'cl_text_phone', sanitize_text_field( $_POST['cl_text_phone'] ?? __( 'טלפון', 'commerce-layer' ) ) );
+                update_option( 'cl_text_address', sanitize_text_field( $_POST['cl_text_address'] ?? __( 'כתובת', 'commerce-layer' ) ) );
+                update_option( 'cl_text_city', sanitize_text_field( $_POST['cl_text_city'] ?? __( 'עיר', 'commerce-layer' ) ) );
+                update_option( 'cl_text_notes', sanitize_text_field( $_POST['cl_text_notes'] ?? __( 'הערות להזמנה', 'commerce-layer' ) ) );
+                update_option( 'cl_text_order_summary', sanitize_text_field( $_POST['cl_text_order_summary'] ?? __( 'סיכום הזמנה', 'commerce-layer' ) ) );
+                update_option( 'cl_text_place_order', sanitize_text_field( $_POST['cl_text_place_order'] ?? __( 'לתשלום מאובטח', 'commerce-layer' ) ) );
+
+                // Discount texts
+                update_option( 'cl_text_coupon', sanitize_text_field( $_POST['cl_text_coupon'] ?? __( 'קופון הנחה', 'commerce-layer' ) ) );
+                update_option( 'cl_text_coupon_placeholder', sanitize_text_field( $_POST['cl_text_coupon_placeholder'] ?? __( 'הזן קוד קופון', 'commerce-layer' ) ) );
+                update_option( 'cl_text_apply_coupon', sanitize_text_field( $_POST['cl_text_apply_coupon'] ?? __( 'החל קופון', 'commerce-layer' ) ) );
+                update_option( 'cl_text_savings', sanitize_text_field( $_POST['cl_text_savings'] ?? __( 'סה"כ חיסכון', 'commerce-layer' ) ) );
+                update_option( 'cl_text_discount', sanitize_text_field( $_POST['cl_text_discount'] ?? __( 'הנחה', 'commerce-layer' ) ) );
+
+                // Thank you page texts
+                update_option( 'cl_text_thank_you', sanitize_text_field( $_POST['cl_text_thank_you'] ?? __( 'תודה על הזמנתך!', 'commerce-layer' ) ) );
+                update_option( 'cl_text_order_received', sanitize_text_field( $_POST['cl_text_order_received'] ?? __( 'ההזמנה התקבלה בהצלחה', 'commerce-layer' ) ) );
+                update_option( 'cl_text_order_number', sanitize_text_field( $_POST['cl_text_order_number'] ?? __( 'מספר הזמנה', 'commerce-layer' ) ) );
+
+                // Other texts
+                update_option( 'cl_text_select', sanitize_text_field( $_POST['cl_text_select'] ?? __( 'בחר', 'commerce-layer' ) ) );
+                update_option( 'cl_text_sale', sanitize_text_field( $_POST['cl_text_sale'] ?? __( 'מבצע', 'commerce-layer' ) ) );
+                update_option( 'cl_text_out_of_stock', sanitize_text_field( $_POST['cl_text_out_of_stock'] ?? __( 'אזל מהמלאי', 'commerce-layer' ) ) );
+                update_option( 'cl_text_added_to_cart', sanitize_text_field( $_POST['cl_text_added_to_cart'] ?? __( 'הפריט נוסף לסל', 'commerce-layer' ) ) );
                 break;
         }
 

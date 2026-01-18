@@ -379,17 +379,34 @@ class CL_Public {
         echo '.cl-btn-checkout, .cl-btn.cl-btn-checkout { background: var(--cl-add-to-cart-bg) !important; color: var(--cl-add-to-cart-text) !important; }' . "\n";
         echo '.cl-btn-checkout:hover { filter: brightness(0.9); }' . "\n";
 
-        // View cart button specific styles (side cart)
-        echo '.cl-view-cart-btn, .cl-btn.cl-view-cart-btn { background: var(--cl-color-background, #fff) !important; color: var(--cl-color-text, #1e293b) !important; border: 2px solid var(--cl-color-primary) !important; }' . "\n";
-        echo '.cl-view-cart-btn:hover { background: var(--cl-color-primary) !important; color: #fff !important; }' . "\n";
+        // View cart button specific styles (side cart) - high specificity
+        echo '.cl-side-cart-buttons .cl-view-cart-btn, .cl-side-cart-buttons .cl-btn.cl-view-cart-btn, a.cl-btn.cl-view-cart-btn { background: var(--cl-continue-shopping-bg, #fff) !important; color: var(--cl-continue-shopping-text, #1e293b) !important; border: 2px solid var(--cl-continue-shopping-border, var(--cl-color-primary)) !important; text-decoration: none !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; }' . "\n";
+        echo '.cl-side-cart-buttons .cl-view-cart-btn:hover, a.cl-btn.cl-view-cart-btn:hover { background: var(--cl-continue-shopping-border, var(--cl-color-primary)) !important; color: #fff !important; }' . "\n";
 
-        // Continue shopping button (cart page)
-        echo '.cl-continue, .cl-btn.cl-continue { background: var(--cl-continue-shopping-bg) !important; color: var(--cl-continue-shopping-text) !important; border: 2px solid var(--cl-continue-shopping-border) !important; }' . "\n";
-        echo '.cl-continue:hover { background: var(--cl-continue-shopping-border) !important; color: #fff !important; }' . "\n";
+        // Continue shopping button (cart page) - high specificity
+        echo '.cl-cart-actions .cl-continue, .cl-cart-actions .cl-btn.cl-continue, a.cl-btn.cl-continue { background: var(--cl-continue-shopping-bg) !important; color: var(--cl-continue-shopping-text) !important; border: 2px solid var(--cl-continue-shopping-border) !important; text-decoration: none !important; box-sizing: border-box !important; }' . "\n";
+        echo '.cl-cart-actions .cl-continue:hover, a.cl-btn.cl-continue:hover { background: var(--cl-continue-shopping-border) !important; color: #fff !important; }' . "\n";
+
+        // Cart page buttons layout - 30%/70% width
+        echo '.cl-cart-actions { display: flex !important; gap: 12px !important; flex-direction: row-reverse !important; }' . "\n";
+        echo '.cl-cart-actions .cl-btn-checkout { flex: 7 !important; min-width: 0 !important; }' . "\n";
+        echo '.cl-cart-actions .cl-continue { flex: 3 !important; min-width: 0 !important; }' . "\n";
+
+        // Side cart buttons layout
+        echo '.cl-side-cart-buttons { display: flex !important; gap: 10px !important; }' . "\n";
+        echo '.cl-side-cart-buttons .cl-view-cart-btn { flex: 3 !important; min-width: 0 !important; }' . "\n";
+        echo '.cl-side-cart-buttons .cl-checkout-btn { flex: 7 !important; min-width: 0 !important; }' . "\n";
 
         // Product name link in cart
         echo '.cl-product-name { color: var(--cl-color-text, #1e293b) !important; text-decoration: none; }' . "\n";
         echo '.cl-product-name:hover { color: var(--cl-color-primary) !important; }' . "\n";
+
+        // Injected price styles
+        echo '.cl-injected-price { margin-bottom: 15px; font-size: 1.25em; font-weight: 600; }' . "\n";
+        echo '.cl-injected-price .cl-original-price { text-decoration: line-through; color: #999; margin-left: 8px; font-weight: normal; }' . "\n";
+        echo '.cl-injected-price .cl-sale-price { color: var(--cl-color-danger, #ef4444); }' . "\n";
+        echo '.cl-injected-price .cl-current-price { color: var(--cl-color-text, #1e293b); }' . "\n";
+        echo '.cl-injected-purchase-form { padding: 15px 0; }' . "\n";
 
         // Cart icon styles
         echo '.cl-floating-cart-btn { background: var(--cl-cart-icon-bg); color: var(--cl-cart-icon-color); }' . "\n";
@@ -491,6 +508,7 @@ class CL_Public {
         }
 
         $position = get_option( 'cl_custom_injection_position', 'after' );
+        $show_price = 'yes' === get_option( 'cl_custom_injection_show_price', 'yes' );
 
         // Only on singular posts/pages/products
         if ( ! is_singular() ) {
@@ -509,7 +527,7 @@ class CL_Public {
         // Get button HTML
         ob_start();
         $purchase_card = new CL_Purchase_Card();
-        $purchase_card->render_buttons_only( $post_id );
+        $purchase_card->render_buttons_only( $post_id, $show_price );
         $buttons_html = ob_get_clean();
 
         // Escape for JavaScript

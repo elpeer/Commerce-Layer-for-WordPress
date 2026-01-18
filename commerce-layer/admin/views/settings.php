@@ -438,6 +438,15 @@ if ( ! defined( 'ABSPATH' ) ) {
                         </select>
                     </td>
                 </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'הצג מחירים', 'commerce-layer' ); ?></th>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="cl_custom_injection_show_price" value="yes" <?php checked( get_option( 'cl_custom_injection_show_price', 'yes' ), 'yes' ); ?>>
+                            <?php esc_html_e( 'הצג מחיר ומחיר מבצע בהטמעה', 'commerce-layer' ); ?>
+                        </label>
+                    </td>
+                </tr>
             </table>
 
             <!-- Floating Cart Icon Settings -->
@@ -738,6 +747,271 @@ if ( ! defined( 'ABSPATH' ) ) {
                     <td>
                         <textarea name="cl_custom_css" rows="10" class="large-text code" placeholder="<?php esc_attr_e( '/* הוסף כאן CSS מותאם אישית */', 'commerce-layer' ); ?>"><?php echo esc_textarea( get_option( 'cl_custom_css', '' ) ); ?></textarea>
                         <p class="description"><?php esc_html_e( 'הזן קוד CSS מותאם אישית שיחול על כל רכיבי התוסף', 'commerce-layer' ); ?></p>
+                    </td>
+                </tr>
+            </table>
+
+        <?php elseif ( 'translations' === $this->current_tab ) : ?>
+            <!-- Translations Settings -->
+            <h2 class="title"><?php esc_html_e( 'טקסטים לכפתורים', 'commerce-layer' ); ?></h2>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'הוסף לסל', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="text" name="cl_text_add_to_cart" value="<?php echo esc_attr( get_option( 'cl_text_add_to_cart', __( 'הוסף לסל', 'commerce-layer' ) ) ); ?>" class="regular-text">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'קנה עכשיו', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="text" name="cl_text_buy_now" value="<?php echo esc_attr( get_option( 'cl_text_buy_now', __( 'קנה עכשיו', 'commerce-layer' ) ) ); ?>" class="regular-text">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'צפה בסל', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="text" name="cl_text_view_cart" value="<?php echo esc_attr( get_option( 'cl_text_view_cart', __( 'צפה בסל', 'commerce-layer' ) ) ); ?>" class="regular-text">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'לתשלום', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="text" name="cl_text_checkout" value="<?php echo esc_attr( get_option( 'cl_text_checkout', __( 'לתשלום', 'commerce-layer' ) ) ); ?>" class="regular-text">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'המשך בקנייה', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="text" name="cl_text_continue_shopping" value="<?php echo esc_attr( get_option( 'cl_text_continue_shopping', __( 'המשך בקנייה', 'commerce-layer' ) ) ); ?>" class="regular-text">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'המשך לתשלום', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="text" name="cl_text_continue_to_checkout" value="<?php echo esc_attr( get_option( 'cl_text_continue_to_checkout', __( 'המשך לתשלום', 'commerce-layer' ) ) ); ?>" class="regular-text">
+                    </td>
+                </tr>
+            </table>
+
+            <h2 class="title"><?php esc_html_e( 'טקסטים לסל קניות', 'commerce-layer' ); ?></h2>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'כותרת סל קניות', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="text" name="cl_text_cart_title" value="<?php echo esc_attr( get_option( 'cl_text_cart_title', __( 'סל קניות', 'commerce-layer' ) ) ); ?>" class="regular-text">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'הסל שלך ריק', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="text" name="cl_text_cart_empty" value="<?php echo esc_attr( get_option( 'cl_text_cart_empty', __( 'הסל שלך ריק', 'commerce-layer' ) ) ); ?>" class="regular-text">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'מוצר', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="text" name="cl_text_product" value="<?php echo esc_attr( get_option( 'cl_text_product', __( 'מוצר', 'commerce-layer' ) ) ); ?>" class="regular-text">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'מחיר', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="text" name="cl_text_price" value="<?php echo esc_attr( get_option( 'cl_text_price', __( 'מחיר', 'commerce-layer' ) ) ); ?>" class="regular-text">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'כמות', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="text" name="cl_text_quantity" value="<?php echo esc_attr( get_option( 'cl_text_quantity', __( 'כמות', 'commerce-layer' ) ) ); ?>" class="regular-text">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'סה"כ', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="text" name="cl_text_total" value="<?php echo esc_attr( get_option( 'cl_text_total', __( 'סה"כ', 'commerce-layer' ) ) ); ?>" class="regular-text">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'סיכום ביניים', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="text" name="cl_text_subtotal" value="<?php echo esc_attr( get_option( 'cl_text_subtotal', __( 'סיכום ביניים', 'commerce-layer' ) ) ); ?>" class="regular-text">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'הסר', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="text" name="cl_text_remove" value="<?php echo esc_attr( get_option( 'cl_text_remove', __( 'הסר', 'commerce-layer' ) ) ); ?>" class="regular-text">
+                    </td>
+                </tr>
+            </table>
+
+            <h2 class="title"><?php esc_html_e( 'טקסטים למשלוח', 'commerce-layer' ); ?></h2>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'זכאי למשלוח חינם', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="text" name="cl_text_free_shipping" value="<?php echo esc_attr( get_option( 'cl_text_free_shipping', __( 'זכאי למשלוח חינם!', 'commerce-layer' ) ) ); ?>" class="regular-text">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'הוסף לקבלת משלוח חינם', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="text" name="cl_text_add_for_free_shipping" value="<?php echo esc_attr( get_option( 'cl_text_add_for_free_shipping', __( 'הוסף %s לקבלת משלוח חינם!', 'commerce-layer' ) ) ); ?>" class="regular-text">
+                        <p class="description"><?php esc_html_e( 'השתמש ב-%s במקום הסכום החסר', 'commerce-layer' ); ?></p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'משלוח', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="text" name="cl_text_shipping" value="<?php echo esc_attr( get_option( 'cl_text_shipping', __( 'משלוח', 'commerce-layer' ) ) ); ?>" class="regular-text">
+                    </td>
+                </tr>
+            </table>
+
+            <h2 class="title"><?php esc_html_e( 'טקסטים לעמוד תשלום', 'commerce-layer' ); ?></h2>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'פרטי הלקוח', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="text" name="cl_text_customer_details" value="<?php echo esc_attr( get_option( 'cl_text_customer_details', __( 'פרטי הלקוח', 'commerce-layer' ) ) ); ?>" class="regular-text">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'שם פרטי', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="text" name="cl_text_first_name" value="<?php echo esc_attr( get_option( 'cl_text_first_name', __( 'שם פרטי', 'commerce-layer' ) ) ); ?>" class="regular-text">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'שם משפחה', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="text" name="cl_text_last_name" value="<?php echo esc_attr( get_option( 'cl_text_last_name', __( 'שם משפחה', 'commerce-layer' ) ) ); ?>" class="regular-text">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'אימייל', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="text" name="cl_text_email" value="<?php echo esc_attr( get_option( 'cl_text_email', __( 'אימייל', 'commerce-layer' ) ) ); ?>" class="regular-text">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'טלפון', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="text" name="cl_text_phone" value="<?php echo esc_attr( get_option( 'cl_text_phone', __( 'טלפון', 'commerce-layer' ) ) ); ?>" class="regular-text">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'כתובת', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="text" name="cl_text_address" value="<?php echo esc_attr( get_option( 'cl_text_address', __( 'כתובת', 'commerce-layer' ) ) ); ?>" class="regular-text">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'עיר', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="text" name="cl_text_city" value="<?php echo esc_attr( get_option( 'cl_text_city', __( 'עיר', 'commerce-layer' ) ) ); ?>" class="regular-text">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'הערות להזמנה', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="text" name="cl_text_notes" value="<?php echo esc_attr( get_option( 'cl_text_notes', __( 'הערות להזמנה', 'commerce-layer' ) ) ); ?>" class="regular-text">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'סיכום הזמנה', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="text" name="cl_text_order_summary" value="<?php echo esc_attr( get_option( 'cl_text_order_summary', __( 'סיכום הזמנה', 'commerce-layer' ) ) ); ?>" class="regular-text">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'לתשלום מאובטח', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="text" name="cl_text_place_order" value="<?php echo esc_attr( get_option( 'cl_text_place_order', __( 'לתשלום מאובטח', 'commerce-layer' ) ) ); ?>" class="regular-text">
+                    </td>
+                </tr>
+            </table>
+
+            <h2 class="title"><?php esc_html_e( 'טקסטים לקופונים והנחות', 'commerce-layer' ); ?></h2>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'קופון הנחה', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="text" name="cl_text_coupon" value="<?php echo esc_attr( get_option( 'cl_text_coupon', __( 'קופון הנחה', 'commerce-layer' ) ) ); ?>" class="regular-text">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'placeholder קוד קופון', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="text" name="cl_text_coupon_placeholder" value="<?php echo esc_attr( get_option( 'cl_text_coupon_placeholder', __( 'הזן קוד קופון', 'commerce-layer' ) ) ); ?>" class="regular-text">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'החל קופון', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="text" name="cl_text_apply_coupon" value="<?php echo esc_attr( get_option( 'cl_text_apply_coupon', __( 'החל קופון', 'commerce-layer' ) ) ); ?>" class="regular-text">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'סה"כ חיסכון', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="text" name="cl_text_savings" value="<?php echo esc_attr( get_option( 'cl_text_savings', __( 'סה"כ חיסכון', 'commerce-layer' ) ) ); ?>" class="regular-text">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'הנחה', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="text" name="cl_text_discount" value="<?php echo esc_attr( get_option( 'cl_text_discount', __( 'הנחה', 'commerce-layer' ) ) ); ?>" class="regular-text">
+                    </td>
+                </tr>
+            </table>
+
+            <h2 class="title"><?php esc_html_e( 'טקסטים לעמוד תודה', 'commerce-layer' ); ?></h2>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'תודה על הזמנתך', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="text" name="cl_text_thank_you" value="<?php echo esc_attr( get_option( 'cl_text_thank_you', __( 'תודה על הזמנתך!', 'commerce-layer' ) ) ); ?>" class="regular-text">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'ההזמנה התקבלה בהצלחה', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="text" name="cl_text_order_received" value="<?php echo esc_attr( get_option( 'cl_text_order_received', __( 'ההזמנה התקבלה בהצלחה', 'commerce-layer' ) ) ); ?>" class="regular-text">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'מספר הזמנה', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="text" name="cl_text_order_number" value="<?php echo esc_attr( get_option( 'cl_text_order_number', __( 'מספר הזמנה', 'commerce-layer' ) ) ); ?>" class="regular-text">
+                    </td>
+                </tr>
+            </table>
+
+            <h2 class="title"><?php esc_html_e( 'טקסטים נוספים', 'commerce-layer' ); ?></h2>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'בחר', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="text" name="cl_text_select" value="<?php echo esc_attr( get_option( 'cl_text_select', __( 'בחר', 'commerce-layer' ) ) ); ?>" class="regular-text">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'מבצע', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="text" name="cl_text_sale" value="<?php echo esc_attr( get_option( 'cl_text_sale', __( 'מבצע', 'commerce-layer' ) ) ); ?>" class="regular-text">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'אזל מהמלאי', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="text" name="cl_text_out_of_stock" value="<?php echo esc_attr( get_option( 'cl_text_out_of_stock', __( 'אזל מהמלאי', 'commerce-layer' ) ) ); ?>" class="regular-text">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'הפריט נוסף לסל', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="text" name="cl_text_added_to_cart" value="<?php echo esc_attr( get_option( 'cl_text_added_to_cart', __( 'הפריט נוסף לסל', 'commerce-layer' ) ) ); ?>" class="regular-text">
                     </td>
                 </tr>
             </table>
