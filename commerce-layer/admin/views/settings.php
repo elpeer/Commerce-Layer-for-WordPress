@@ -610,6 +610,17 @@ if ( ! defined( 'ABSPATH' ) ) {
                 </tr>
             </table>
 
+            <h2 class="title"><?php esc_html_e( 'עמוד תשלום', 'commerce-layer' ); ?></h2>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'רוחב מקסימלי', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="number" name="cl_checkout_max_width" value="<?php echo esc_attr( get_option( 'cl_checkout_max_width', 88 ) ); ?>" min="50" max="100" class="small-text"> <?php esc_html_e( 'rem', 'commerce-layer' ); ?>
+                        <p class="description"><?php esc_html_e( 'רוחב מקסימלי של עמוד התשלום. ברירת מחדל: 88rem (מומלץ 70-100)', 'commerce-layer' ); ?></p>
+                    </td>
+                </tr>
+            </table>
+
             <h2 class="title"><?php esc_html_e( 'CSS מותאם אישית', 'commerce-layer' ); ?></h2>
             <table class="form-table">
                 <tr>

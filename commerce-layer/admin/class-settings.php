@@ -196,6 +196,9 @@ class CL_Settings {
                 update_option( 'cl_side_cart_shipping_bar', isset( $_POST['cl_side_cart_shipping_bar'] ) ? 'yes' : 'no' );
                 update_option( 'cl_side_cart_urgency_timer', isset( $_POST['cl_side_cart_urgency_timer'] ) ? 'yes' : 'no' );
 
+                // Checkout settings
+                update_option( 'cl_checkout_max_width', absint( $_POST['cl_checkout_max_width'] ?? 88 ) );
+
                 // Custom CSS
                 update_option( 'cl_custom_css', wp_strip_all_tags( $_POST['cl_custom_css'] ?? '' ) );
                 break;

@@ -395,6 +395,11 @@ class CL_Public {
             echo '.cl-side-cart.cl-side-cart-open .cl-side-cart-drawer { transform: translateX(0) !important; }' . "\n";
         }
 
+        // Checkout page width
+        $checkout_max_width = absint( get_option( 'cl_checkout_max_width', 88 ) );
+        echo '/* Checkout Page Override */' . "\n";
+        echo '.cl-checkout-shopify, .default-page__inner:has(.cl-checkout-shopify) { max-width: ' . esc_attr( $checkout_max_width ) . 'rem !important; margin-inline: auto; }' . "\n";
+
         // Custom CSS
         $custom_css = get_option( 'cl_custom_css', '' );
         if ( ! empty( $custom_css ) ) {
