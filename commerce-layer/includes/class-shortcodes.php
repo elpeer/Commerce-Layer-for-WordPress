@@ -30,6 +30,7 @@ class CL_Shortcodes {
         add_shortcode( 'cl_checkout', array( $this, 'checkout_page' ) );
         add_shortcode( 'cl_thank_you', array( $this, 'thank_you_page' ) );
         add_shortcode( 'cl_mini_cart', array( $this, 'mini_cart' ) );
+        add_shortcode( 'cl_cart_icon', array( $this, 'cart_icon' ) );
     }
 
     /**
@@ -227,7 +228,7 @@ class CL_Shortcodes {
     }
 
     /**
-     * Mini cart shortcode
+     * Mini cart shortcode (links to cart page)
      */
     public function mini_cart( $atts ) {
         $atts = shortcode_atts( array(
@@ -247,6 +248,43 @@ class CL_Shortcodes {
                 <span class="cl-cart-count"><?php echo $cart->get_items_count(); ?></span>
                 <span class="cl-cart-total"><?php echo CL_Core::format_price( $cart->get_total() ); ?></span>
             </a>
+        </div>
+        <?php
+        return ob_get_clean();
+    }
+
+    /**
+     * Cart icon shortcode - opens side cart (AJAX)
+     * Usage: [cl_cart_icon] or [cl_cart_icon show_total="yes" show_count="yes"]
+     */
+    public function cart_icon( $atts ) {
+        $atts = shortcode_atts( array(
+            'show_total' => 'no',
+            'show_count' => 'yes',
+            'style'      => 'default', // default, minimal, badge
+        ), $atts );
+
+        $cart = CL_Cart::get_instance();
+        $count = $cart->get_items_count();
+        $total = $cart->get_total();
+        $style_class = 'cl-cart-icon-' . sanitize_html_class( $atts['style'] );
+
+        ob_start();
+        ?>
+        <div class="cl-cart-icon-wrapper <?php echo esc_attr( $style_class ); ?>">
+            <button type="button" class="cl-cart-icon-btn cl-open-side-cart" aria-label="<?php esc_attr_e( 'פתח סל קניות', 'commerce-layer' ); ?>">
+                <svg class="cl-cart-icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                </svg>
+                <?php if ( 'yes' === $atts['show_count'] ) : ?>
+                    <span class="cl-cart-icon-count cl-cart-count"><?php echo esc_html( $count ); ?></span>
+                <?php endif; ?>
+            </button>
+            <?php if ( 'yes' === $atts['show_total'] && $total > 0 ) : ?>
+                <span class="cl-cart-icon-total"><?php echo CL_Core::format_price( $total ); ?></span>
+            <?php endif; ?>
         </div>
         <?php
         return ob_get_clean();

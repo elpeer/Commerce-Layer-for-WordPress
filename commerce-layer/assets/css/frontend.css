@@ -1034,13 +1034,33 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 16px 20px;
-    max-width: 600px;
+    padding: 12px 20px;
+    max-width: 900px;
     margin: 0 auto;
+    gap: 16px;
+}
+
+.cl-floating-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    flex: 1;
+}
+
+.cl-floating-title {
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--cl-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 300px;
 }
 
 .cl-floating-price .cl-price {
-    font-size: 22px;
+    font-size: 18px;
+    font-weight: 700;
 }
 
 .cl-floating-actions {
@@ -1189,6 +1209,90 @@
 .cl-cart-total {
     font-weight: 600;
     color: var(--cl-text);
+}
+
+/* =========================================
+   Cart Icon (Header)
+   ========================================= */
+.cl-cart-icon-wrapper {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.cl-cart-icon-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    border-radius: var(--cl-radius);
+    transition: var(--cl-transition);
+    color: var(--cl-text);
+}
+
+.cl-cart-icon-btn:hover {
+    background: var(--cl-bg-light);
+    color: var(--cl-primary);
+}
+
+.cl-cart-icon-svg {
+    width: 24px;
+    height: 24px;
+}
+
+.cl-cart-icon-count {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    min-width: 18px;
+    height: 18px;
+    background: var(--cl-primary);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 5px;
+}
+
+.cl-cart-icon-count:empty,
+.cl-cart-icon-count[data-count="0"] {
+    display: none;
+}
+
+.cl-cart-icon-total {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--cl-text);
+}
+
+/* Style: Minimal */
+.cl-cart-icon-minimal .cl-cart-icon-btn {
+    width: auto;
+    height: auto;
+    padding: 8px;
+}
+
+/* Style: Badge */
+.cl-cart-icon-badge .cl-cart-icon-btn {
+    background: var(--cl-bg-light);
+    border: 1px solid var(--cl-border);
+}
+
+.cl-cart-icon-badge .cl-cart-icon-btn:hover {
+    border-color: var(--cl-primary);
+}
+
+html[dir="rtl"] .cl-cart-icon-count {
+    right: auto;
+    left: 2px;
 }
 
 /* =========================================

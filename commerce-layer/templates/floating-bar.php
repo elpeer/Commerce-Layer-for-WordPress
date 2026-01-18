@@ -19,17 +19,20 @@ $has_variants = $product->has_variants();
 ?>
 <div class="cl-floating-bar" data-post-id="<?php echo esc_attr( $product->get_id() ); ?>">
     <div class="cl-floating-bar-inner">
-        <div class="cl-floating-price">
-            <?php if ( $has_variants ) : ?>
-                <?php
-                $range = $product->get_price_range();
-                if ( $range ) :
-                ?>
-                    <span class="cl-price"><?php echo $range['html']; ?></span>
+        <div class="cl-floating-info">
+            <span class="cl-floating-title"><?php echo esc_html( $product->get_title() ); ?></span>
+            <div class="cl-floating-price">
+                <?php if ( $has_variants ) : ?>
+                    <?php
+                    $range = $product->get_price_range();
+                    if ( $range ) :
+                    ?>
+                        <span class="cl-price"><?php echo $range['html']; ?></span>
+                    <?php endif; ?>
+                <?php else : ?>
+                    <?php echo $product->get_price_html(); ?>
                 <?php endif; ?>
-            <?php else : ?>
-                <?php echo $product->get_price_html(); ?>
-            <?php endif; ?>
+            </div>
         </div>
 
         <div class="cl-floating-actions">
