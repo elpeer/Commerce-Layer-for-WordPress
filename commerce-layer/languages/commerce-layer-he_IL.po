@@ -1,0 +1,223 @@
+# Commerce Layer Hebrew Translation
+# Copyright (C) 2024 Commerce Layer
+# This file is distributed under the GPL v2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Commerce Layer 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-01-01 00:00+0000\n"
+"PO-Revision-Date: 2024-01-01 00:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: Hebrew\n"
+"Language: he_IL\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Commerce Layer"
+msgstr "Commerce Layer"
+
+msgid "Add to Cart"
+msgstr "הוסף לסל"
+
+msgid "Buy Now"
+msgstr "קנה עכשיו"
+
+msgid "Cart"
+msgstr "סל קניות"
+
+msgid "Checkout"
+msgstr "תשלום"
+
+msgid "Thank You"
+msgstr "תודה"
+
+msgid "Orders"
+msgstr "הזמנות"
+
+msgid "Settings"
+msgstr "הגדרות"
+
+msgid "Attributes"
+msgstr "מאפיינים"
+
+msgid "Dashboard"
+msgstr "לוח בקרה"
+
+msgid "Price"
+msgstr "מחיר"
+
+msgid "Sale Price"
+msgstr "מחיר מבצע"
+
+msgid "Quantity"
+msgstr "כמות"
+
+msgid "Total"
+msgstr "סה\"כ"
+
+msgid "Subtotal"
+msgstr "סיכום ביניים"
+
+msgid "In Stock"
+msgstr "במלאי"
+
+msgid "Out of Stock"
+msgstr "אזל מהמלאי"
+
+msgid "Select"
+msgstr "בחר"
+
+msgid "Continue Shopping"
+msgstr "המשך בקנייה"
+
+msgid "Proceed to Checkout"
+msgstr "המשך לתשלום"
+
+msgid "View Cart"
+msgstr "צפה בסל"
+
+msgid "Your cart is empty"
+msgstr "הסל שלך ריק"
+
+msgid "Order Number"
+msgstr "מספר הזמנה"
+
+msgid "Customer"
+msgstr "לקוח"
+
+msgid "Status"
+msgstr "סטטוס"
+
+msgid "Date"
+msgstr "תאריך"
+
+msgid "Pending"
+msgstr "ממתין לתשלום"
+
+msgid "Paid"
+msgstr "שולם"
+
+msgid "Canceled"
+msgstr "בוטל"
+
+msgid "Refunded"
+msgstr "זוכה"
+
+msgid "Full Name"
+msgstr "שם מלא"
+
+msgid "Email"
+msgstr "אימייל"
+
+msgid "Phone"
+msgstr "טלפון"
+
+msgid "Address"
+msgstr "כתובת"
+
+msgid "City"
+msgstr "עיר"
+
+msgid "Postcode"
+msgstr "מיקוד"
+
+msgid "Notes"
+msgstr "הערות"
+
+msgid "Pay"
+msgstr "שלם"
+
+msgid "Payment Secure"
+msgstr "התשלום מאובטח"
+
+msgid "Thank you for your order!"
+msgstr "תודה על הזמנתך!"
+
+msgid "Your order has been received"
+msgstr "ההזמנה שלך התקבלה בהצלחה"
+
+msgid "Item added to cart"
+msgstr "הפריט נוסף לסל"
+
+msgid "Select variant"
+msgstr "בחר וריאציה"
+
+msgid "Error"
+msgstr "שגיאה"
+
+msgid "Save"
+msgstr "שמור"
+
+msgid "Delete"
+msgstr "מחק"
+
+msgid "Edit"
+msgstr "ערוך"
+
+msgid "Cancel"
+msgstr "ביטול"
+
+msgid "Next"
+msgstr "הבא"
+
+msgid "Previous"
+msgstr "הקודם"
+
+msgid "Finish"
+msgstr "סיום"
+
+msgid "Skip"
+msgstr "דלג"
+
+msgid "Enable Commerce"
+msgstr "הפעל מכירה"
+
+msgid "Variants"
+msgstr "וריאציות"
+
+msgid "Generate Variants"
+msgstr "צור וריאציות"
+
+msgid "Add Variant"
+msgstr "הוסף וריאציה"
+
+msgid "SKU"
+msgstr "מק\"ט"
+
+msgid "Image"
+msgstr "תמונה"
+
+msgid "Availability"
+msgstr "זמינות"
+
+msgid "Currency"
+msgstr "מטבע"
+
+msgid "Payment Gateway"
+msgstr "שער תשלום"
+
+msgid "Test Mode"
+msgstr "מצב בדיקה"
+
+msgid "Post Types"
+msgstr "סוגי תוכן"
+
+msgid "Display Mode"
+msgstr "מצב הצגה"
+
+msgid "Auto"
+msgstr "אוטומטי"
+
+msgid "Manual"
+msgstr "ידני"
+
+msgid "Floating Bar"
+msgstr "סרגל צף"
+
+msgid "Welcome!"
+msgstr "ברוך הבא!"
+
+msgid "Setup Wizard"
+msgstr "אשף הגדרה"
