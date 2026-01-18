@@ -8,6 +8,7 @@
 
     // Initialize
     $(document).ready(function() {
+        console.log('[Commerce Layer] Initializing frontend...');
         initQuantityButtons();
         initVariantSelection();
         initAddToCart();
@@ -16,6 +17,7 @@
         initFloatingBar();
         initSideCart();
         initUrgencyTimer();
+        console.log('[Commerce Layer] Frontend initialized. Side cart element:', document.getElementById('cl-side-cart'));
     });
 
     /**
@@ -235,7 +237,10 @@
 
             $btn.prop('disabled', true).addClass('cl-loading');
 
+            console.log('[Commerce Layer] Add to cart request:', data);
+
             $.post(clFrontend.ajaxUrl, data, function(response) {
+                console.log('[Commerce Layer] Add to cart response:', response);
                 if (response.success) {
                     // Update cart count
                     updateCartCount(response.data.items_count);
@@ -244,13 +249,16 @@
                     showNotice(response.data.message, 'success');
 
                     // Update and open side cart
+                    console.log('[Commerce Layer] Updating and opening side cart...');
                     updateSideCart(function() {
+                        console.log('[Commerce Layer] Side cart updated, now opening...');
                         openSideCart();
                     });
                 } else {
                     showNotice(response.data.message || clFrontend.strings.error, 'error');
                 }
-            }).fail(function() {
+            }).fail(function(xhr, status, error) {
+                console.error('[Commerce Layer] Add to cart failed:', status, error);
                 showNotice(clFrontend.strings.error, 'error');
             }).always(function() {
                 $btn.prop('disabled', false).removeClass('cl-loading');
@@ -350,6 +358,10 @@
      * Side Cart
      */
     function initSideCart() {
+        console.log('[Commerce Layer] initSideCart called');
+        var $sideCart = $('#cl-side-cart');
+        console.log('[Commerce Layer] Side cart element exists on init:', $sideCart.length > 0);
+
         // Close button
         $(document).on('click', '.cl-side-cart-close, .cl-side-cart-overlay', function(e) {
             e.preventDefault();
@@ -387,8 +399,15 @@
     }
 
     function openSideCart() {
-        $('#cl-side-cart').addClass('cl-side-cart-open');
-        $('body').css('overflow', 'hidden');
+        var $sideCart = $('#cl-side-cart');
+        console.log('[Commerce Layer] openSideCart called, element found:', $sideCart.length > 0);
+        if ($sideCart.length) {
+            $sideCart.addClass('cl-side-cart-open');
+            $('body').css('overflow', 'hidden');
+            console.log('[Commerce Layer] Side cart classes:', $sideCart.attr('class'));
+        } else {
+            console.error('[Commerce Layer] Side cart element #cl-side-cart not found!');
+        }
     }
 
     function closeSideCart() {
@@ -397,14 +416,17 @@
     }
 
     function updateSideCart(callback) {
+        console.log('[Commerce Layer] updateSideCart called');
         $.post(clFrontend.ajaxUrl, {
             action: 'cl_get_side_cart',
             nonce: clFrontend.nonce
         }, function(response) {
+            console.log('[Commerce Layer] Side cart AJAX response:', response);
             if (response.success) {
                 // Replace side cart HTML
                 var $newCart = $(response.data.html);
                 $('#cl-side-cart').replaceWith($newCart);
+                console.log('[Commerce Layer] Side cart HTML replaced');
 
                 // Update cart count
                 updateCartCount(response.data.items_count);
@@ -412,7 +434,11 @@
                 if (typeof callback === 'function') {
                     callback();
                 }
+            } else {
+                console.error('[Commerce Layer] Side cart AJAX failed:', response);
             }
+        }).fail(function(xhr, status, error) {
+            console.error('[Commerce Layer] Side cart AJAX error:', status, error);
         });
     }
 
