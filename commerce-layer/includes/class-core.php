@@ -66,7 +66,7 @@ class CL_Core {
             require_once CL_PLUGIN_DIR . 'admin/class-admin.php';
             require_once CL_PLUGIN_DIR . 'admin/class-meta-box.php';
             require_once CL_PLUGIN_DIR . 'admin/class-settings.php';
-            require_once CL_PLUGIN_DIR . 'admin/class-orders-list.php';
+            // Note: class-orders-list.php is loaded on demand in CL_Admin
             require_once CL_PLUGIN_DIR . 'admin/class-wizard.php';
         }
 
@@ -96,7 +96,7 @@ class CL_Core {
             $this->admin = new CL_Admin();
             new CL_Meta_Box();
             new CL_Settings();
-            new CL_Orders_List();
+            // Note: CL_Orders_List is instantiated on demand in CL_Admin::render_orders()
             new CL_Wizard();
         }
 
