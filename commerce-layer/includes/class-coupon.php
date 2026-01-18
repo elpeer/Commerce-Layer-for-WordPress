@@ -22,15 +22,67 @@ class CL_Coupon {
     private $data = array();
 
     /**
+     * Ensure table exists
+     */
+    private static $table_checked = false;
+
+    /**
      * Constructor
      */
     public function __construct( $coupon = 0 ) {
+        self::maybe_create_table();
+
         if ( is_numeric( $coupon ) && $coupon > 0 ) {
             $this->id = absint( $coupon );
             $this->load();
         } elseif ( is_string( $coupon ) && ! empty( $coupon ) ) {
             $this->load_by_code( $coupon );
         }
+    }
+
+    /**
+     * Create table if it doesn't exist
+     */
+    public static function maybe_create_table() {
+        if ( self::$table_checked ) {
+            return;
+        }
+
+        global $wpdb;
+        $table = $wpdb->prefix . 'cl_coupons';
+
+        // Check if table exists
+        if ( $wpdb->get_var( "SHOW TABLES LIKE '$table'" ) === $table ) {
+            self::$table_checked = true;
+            return;
+        }
+
+        // Create table
+        $charset_collate = $wpdb->get_charset_collate();
+
+        $sql = "CREATE TABLE $table (
+            id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+            code varchar(50) NOT NULL,
+            description varchar(255) DEFAULT NULL,
+            discount_type varchar(20) NOT NULL DEFAULT 'percent',
+            discount_value decimal(10,2) NOT NULL DEFAULT 0,
+            min_order_amount decimal(10,2) DEFAULT NULL,
+            max_discount decimal(10,2) DEFAULT NULL,
+            usage_limit int(11) DEFAULT NULL,
+            usage_count int(11) NOT NULL DEFAULT 0,
+            start_date datetime DEFAULT NULL,
+            end_date datetime DEFAULT NULL,
+            status varchar(20) NOT NULL DEFAULT 'active',
+            created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (id),
+            UNIQUE KEY code (code),
+            KEY status (status)
+        ) $charset_collate;";
+
+        require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+        dbDelta( $sql );
+
+        self::$table_checked = true;
     }
 
     /**
@@ -309,6 +361,8 @@ class CL_Coupon {
      * Get all coupons
      */
     public static function get_all( $args = array() ) {
+        self::maybe_create_table();
+
         global $wpdb;
 
         $defaults = array(
