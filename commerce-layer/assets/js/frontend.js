@@ -1,6 +1,7 @@
 /**
  * Frontend JavaScript
  * Commerce Layer Frontend Scripts
+ * Version: 1.0.2
  */
 
 (function($) {
@@ -8,7 +9,7 @@
 
     // Initialize
     $(document).ready(function() {
-        console.log('[Commerce Layer] Initializing frontend...');
+        console.log('[Commerce Layer] Version 1.0.2 - Initializing frontend...');
         initQuantityButtons();
         initVariantSelection();
         initAddToCart();
@@ -188,6 +189,10 @@
     function initAddToCart() {
         $(document).on('click', '.cl-add-to-cart-btn, .cl-floating-add-to-cart', function(e) {
             e.preventDefault();
+            e.stopPropagation();
+
+            console.log('[Commerce Layer] Add to Cart button clicked!');
+            console.log('[Commerce Layer] Button classes:', this.className);
 
             var $btn = $(this);
             var postId = getPostId($btn);
@@ -298,6 +303,9 @@
     function initBuyNow() {
         $(document).on('click', '.cl-buy-now-btn, .cl-floating-buy-now', function(e) {
             e.preventDefault();
+
+            console.log('[Commerce Layer] Buy Now button clicked - will redirect to checkout!');
+            console.log('[Commerce Layer] Button classes:', this.className);
 
             var $btn = $(this);
             var postId = getPostId($btn);
