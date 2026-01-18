@@ -100,10 +100,27 @@ class CL_Cart {
             return new WP_Error( 'commerce_disabled', __( 'פריט זה אינו זמין לרכישה', 'commerce-layer' ) );
         }
 
-        // Get price
+        // Get prices (sale price and regular price)
         $price = $product->get_price( $variant_id );
         if ( false === $price ) {
             return new WP_Error( 'no_price', __( 'לא הוגדר מחיר לפריט זה', 'commerce-layer' ) );
+        }
+
+        // Get regular price for discount calculations
+        $regular_price = $price;
+        if ( $variant_id ) {
+            $variant = new CL_Variant( $variant_id );
+            if ( $variant->exists() ) {
+                $variant_regular = $variant->get_regular_price();
+                if ( $variant_regular && $variant_regular > $price ) {
+                    $regular_price = $variant_regular;
+                }
+            }
+        } else {
+            $product_regular = $product->get_regular_price();
+            if ( $product_regular && $product_regular > $price ) {
+                $regular_price = $product_regular;
+            }
         }
 
         // Check quantity limits
@@ -125,10 +142,10 @@ class CL_Cart {
         $variant_data = null;
         $variant_name = '';
         if ( $variant_id ) {
-            $variant = new CL_Variant( $variant_id );
-            if ( $variant->exists() ) {
-                $variant_data = $variant->get_attributes();
-                $variant_name = $variant->get_name();
+            $variant_obj = new CL_Variant( $variant_id );
+            if ( $variant_obj->exists() ) {
+                $variant_data = $variant_obj->get_attributes();
+                $variant_name = $variant_obj->get_name();
             }
         }
 
@@ -141,16 +158,20 @@ class CL_Cart {
             }
 
             $this->cart_contents[ $cart_item_key ]['quantity'] = $new_quantity;
+            // Update prices in case they changed
+            $this->cart_contents[ $cart_item_key ]['price'] = $price;
+            $this->cart_contents[ $cart_item_key ]['regular_price'] = $regular_price;
         } else {
             $this->cart_contents[ $cart_item_key ] = array(
-                'post_id'      => $post_id,
-                'variant_id'   => $variant_id,
-                'name'         => $post->post_title,
-                'variant_name' => $variant_name,
-                'variant_data' => $variant_data,
-                'price'        => $price,
-                'quantity'     => $quantity,
-                'meta'         => $meta,
+                'post_id'       => $post_id,
+                'variant_id'    => $variant_id,
+                'name'          => $post->post_title,
+                'variant_name'  => $variant_name,
+                'variant_data'  => $variant_data,
+                'price'         => $price,
+                'regular_price' => $regular_price,
+                'quantity'      => $quantity,
+                'meta'          => $meta,
             );
         }
 
@@ -270,15 +291,46 @@ class CL_Cart {
     }
 
     /**
+     * Get total savings from discounts
+     */
+    public function get_total_savings() {
+        $savings = 0;
+        foreach ( $this->cart_contents as $item ) {
+            $regular_price = isset( $item['regular_price'] ) ? floatval( $item['regular_price'] ) : $item['price'];
+            $price = floatval( $item['price'] );
+            if ( $regular_price > $price ) {
+                $savings += ( $regular_price - $price ) * $item['quantity'];
+            }
+        }
+        return $savings;
+    }
+
+    /**
+     * Get subtotal before discounts (using regular prices)
+     */
+    public function get_subtotal_before_discounts() {
+        $subtotal = 0;
+        foreach ( $this->cart_contents as $item ) {
+            $regular_price = isset( $item['regular_price'] ) ? floatval( $item['regular_price'] ) : $item['price'];
+            $subtotal += $regular_price * $item['quantity'];
+        }
+        return $subtotal;
+    }
+
+    /**
      * Get all totals
      */
     public function get_totals() {
         $subtotal = $this->get_subtotal();
+        $subtotal_before_discounts = $this->get_subtotal_before_discounts();
+        $total_savings = $this->get_total_savings();
         return array(
-            'subtotal' => $subtotal,
-            'discount' => 0,
-            'shipping' => 0,
-            'total'    => $subtotal,
+            'subtotal'                 => $subtotal,
+            'subtotal_before_discounts' => $subtotal_before_discounts,
+            'discount'                 => 0,
+            'savings'                  => $total_savings,
+            'shipping'                 => 0,
+            'total'                    => $subtotal,
         );
     }
 

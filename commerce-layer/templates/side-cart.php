@@ -103,10 +103,9 @@ $currency_symbol = get_option( 'cl_currency_symbol', '₪' );
             ?>
                 <?php foreach ( $items as $cart_key => $item ) :
                     $product = new CL_Product( $item['post_id'] );
-                    $variant = $item['variant_id'] ? new CL_Variant( $item['variant_id'] ) : null;
-                    $price = $variant ? $variant->get_price() : $product->get_price();
-                    $regular_price = $variant ? $variant->get_regular_price() : $product->get_regular_price();
-                    $has_discount = $regular_price && $regular_price > $price;
+                    $price = floatval( $item['price'] );
+                    $regular_price = isset( $item['regular_price'] ) ? floatval( $item['regular_price'] ) : $price;
+                    $has_discount = $regular_price > $price;
                     $item_savings = $has_discount ? ( $regular_price - $price ) * $item['quantity'] : 0;
                     $total_savings += $item_savings;
                     $line_total = $price * $item['quantity'];

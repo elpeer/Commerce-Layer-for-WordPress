@@ -790,6 +790,89 @@
     color: var(--cl-text);
 }
 
+/* Item price with discount in checkout */
+.cl-item-price-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+}
+
+.cl-item-original-price {
+    font-size: 13px;
+    color: var(--cl-text-muted);
+    text-decoration: line-through;
+}
+
+.cl-item-price.cl-sale-price {
+    color: var(--cl-danger);
+}
+
+/* Shipping Section in Checkout */
+.cl-shipping-section {
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--cl-border-light);
+}
+
+.cl-shipping-section h4 {
+    margin: 0 0 16px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--cl-text);
+}
+
+.cl-shipping-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.cl-shipping-option {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 14px 16px;
+    border: 1px solid var(--cl-border);
+    border-radius: var(--cl-radius);
+    transition: var(--cl-transition);
+    margin: 0;
+}
+
+.cl-shipping-option:hover {
+    border-color: var(--cl-primary);
+    background: var(--cl-primary-light);
+}
+
+.cl-shipping-option input[type="radio"] {
+    margin: 0;
+    margin-left: 12px;
+    width: 18px;
+    height: 18px;
+    accent-color: var(--cl-primary);
+}
+
+.cl-shipping-option-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex: 1;
+}
+
+.cl-shipping-name {
+    font-weight: 500;
+    color: var(--cl-text);
+}
+
+.cl-shipping-price {
+    font-weight: 600;
+    color: var(--cl-text);
+}
+
+.cl-shipping-option input[type="radio"]:checked + .cl-shipping-option-content .cl-shipping-name {
+    color: var(--cl-primary);
+}
+
 /* Order Totals */
 .cl-order-totals {
     padding-top: 20px;
@@ -811,6 +894,34 @@
     padding-top: 16px;
     border-top: 2px solid var(--cl-border);
     margin-top: 10px;
+}
+
+/* Checkout totals - savings and original price */
+.cl-original-subtotal .cl-strikethrough {
+    text-decoration: line-through;
+    color: var(--cl-text-muted);
+}
+
+.cl-savings-row {
+    background: var(--cl-success-light);
+    margin: 0 -16px;
+    padding: 10px 16px !important;
+    border-radius: var(--cl-radius-sm);
+}
+
+.cl-savings-row span:first-child {
+    display: flex;
+    align-items: center;
+    color: var(--cl-success-dark);
+}
+
+.cl-savings-row .cl-savings-amount {
+    color: var(--cl-success-dark);
+    font-weight: 600;
+}
+
+.cl-shipping-row {
+    color: var(--cl-text);
 }
 
 /* Payment Section */
