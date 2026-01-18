@@ -960,10 +960,12 @@
     color: #1a73e8;
     font-size: 16px;
     cursor: pointer;
+    text-decoration: none;
 }
 
 .cl-summary-toggle:hover {
     text-decoration: underline;
+    color: #1557b0;
 }
 
 /* Order Items */

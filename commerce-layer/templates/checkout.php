@@ -197,14 +197,14 @@ $final_total = $totals['subtotal'] - $coupon_discount + $default_shipping;
             <div class="cl-checkout-sidebar">
                 <div class="cl-order-summary">
                     <div class="cl-order-summary-header">
-                        <span class="cl-summary-toggle">
+                        <a href="<?php echo esc_url( get_permalink( get_option( 'cl_cart_page_id' ) ) ); ?>" class="cl-summary-toggle">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <circle cx="9" cy="21" r="1"></circle>
                                 <circle cx="20" cy="21" r="1"></circle>
                                 <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
                             </svg>
                             <?php esc_html_e( 'לעריכת הזמנה', 'commerce-layer' ); ?>
-                        </span>
+                        </a>
                     </div>
 
                     <!-- Order Items -->
