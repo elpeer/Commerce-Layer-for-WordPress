@@ -130,6 +130,13 @@ class CL_Settings {
                 update_option( 'cl_add_to_cart_text', sanitize_text_field( $_POST['cl_add_to_cart_text'] ?? '' ) );
                 update_option( 'cl_buy_now_text', sanitize_text_field( $_POST['cl_buy_now_text'] ?? '' ) );
                 update_option( 'cl_floating_bar_enabled', isset( $_POST['cl_floating_bar_enabled'] ) ? 'yes' : 'no' );
+
+                // Floating cart icon settings
+                update_option( 'cl_floating_cart_icon_enabled', isset( $_POST['cl_floating_cart_icon_enabled'] ) ? 'yes' : 'no' );
+                update_option( 'cl_cart_icon_desktop_position', sanitize_text_field( $_POST['cl_cart_icon_desktop_position'] ?? 'top-left' ) );
+                update_option( 'cl_cart_icon_desktop_offset', absint( $_POST['cl_cart_icon_desktop_offset'] ?? 20 ) );
+                update_option( 'cl_cart_icon_mobile_position', sanitize_text_field( $_POST['cl_cart_icon_mobile_position'] ?? 'bottom-right' ) );
+                update_option( 'cl_cart_icon_mobile_offset', absint( $_POST['cl_cart_icon_mobile_offset'] ?? 20 ) );
                 break;
         }
 

@@ -1296,6 +1296,169 @@ html[dir="rtl"] .cl-cart-icon-count {
 }
 
 /* =========================================
+   Floating Cart Icon (Fixed Position)
+   ========================================= */
+.cl-floating-cart-icon {
+    position: fixed;
+    z-index: 99999;
+    transition: var(--cl-transition);
+}
+
+.cl-floating-cart-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, var(--cl-primary) 0%, var(--cl-primary-dark) 100%);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4), var(--cl-shadow-lg);
+    transition: var(--cl-transition);
+    position: relative;
+}
+
+.cl-floating-cart-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5), var(--cl-shadow-xl);
+}
+
+.cl-floating-cart-btn:active {
+    transform: scale(0.95);
+}
+
+.cl-floating-cart-svg {
+    width: 26px;
+    height: 26px;
+}
+
+.cl-floating-cart-count {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    min-width: 22px;
+    height: 22px;
+    background: var(--cl-danger);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 6px;
+    border: 2px solid #fff;
+    box-shadow: var(--cl-shadow);
+}
+
+.cl-floating-cart-count:empty,
+.cl-floating-cart-count[data-count="0"] {
+    display: none;
+}
+
+/* Desktop Position Classes */
+@media (min-width: 769px) {
+    .cl-floating-cart-icon.cl-pos-desktop-top-left {
+        top: var(--cl-desktop-offset, 20px);
+        left: var(--cl-desktop-offset, 20px);
+        right: auto;
+        bottom: auto;
+    }
+    .cl-floating-cart-icon.cl-pos-desktop-top-center {
+        top: var(--cl-desktop-offset, 20px);
+        left: 50%;
+        transform: translateX(-50%);
+        right: auto;
+        bottom: auto;
+    }
+    .cl-floating-cart-icon.cl-pos-desktop-top-right {
+        top: var(--cl-desktop-offset, 20px);
+        right: var(--cl-desktop-offset, 20px);
+        left: auto;
+        bottom: auto;
+    }
+    .cl-floating-cart-icon.cl-pos-desktop-bottom-left {
+        bottom: var(--cl-desktop-offset, 20px);
+        left: var(--cl-desktop-offset, 20px);
+        right: auto;
+        top: auto;
+    }
+    .cl-floating-cart-icon.cl-pos-desktop-bottom-center {
+        bottom: var(--cl-desktop-offset, 20px);
+        left: 50%;
+        transform: translateX(-50%);
+        right: auto;
+        top: auto;
+    }
+    .cl-floating-cart-icon.cl-pos-desktop-bottom-right {
+        bottom: var(--cl-desktop-offset, 20px);
+        right: var(--cl-desktop-offset, 20px);
+        left: auto;
+        top: auto;
+    }
+}
+
+/* Mobile Position Classes */
+@media (max-width: 768px) {
+    .cl-floating-cart-icon.cl-pos-mobile-top-left {
+        top: var(--cl-mobile-offset, 20px);
+        left: var(--cl-mobile-offset, 20px);
+        right: auto;
+        bottom: auto;
+    }
+    .cl-floating-cart-icon.cl-pos-mobile-top-center {
+        top: var(--cl-mobile-offset, 20px);
+        left: 50%;
+        transform: translateX(-50%);
+        right: auto;
+        bottom: auto;
+    }
+    .cl-floating-cart-icon.cl-pos-mobile-top-right {
+        top: var(--cl-mobile-offset, 20px);
+        right: var(--cl-mobile-offset, 20px);
+        left: auto;
+        bottom: auto;
+    }
+    .cl-floating-cart-icon.cl-pos-mobile-bottom-left {
+        bottom: calc(var(--cl-mobile-offset, 20px) + 70px); /* Account for floating bar */
+        left: var(--cl-mobile-offset, 20px);
+        right: auto;
+        top: auto;
+    }
+    .cl-floating-cart-icon.cl-pos-mobile-bottom-center {
+        bottom: calc(var(--cl-mobile-offset, 20px) + 70px);
+        left: 50%;
+        transform: translateX(-50%);
+        right: auto;
+        top: auto;
+    }
+    .cl-floating-cart-icon.cl-pos-mobile-bottom-right {
+        bottom: calc(var(--cl-mobile-offset, 20px) + 70px);
+        right: var(--cl-mobile-offset, 20px);
+        left: auto;
+        top: auto;
+    }
+
+    .cl-floating-cart-btn {
+        width: 50px;
+        height: 50px;
+    }
+
+    .cl-floating-cart-svg {
+        width: 22px;
+        height: 22px;
+    }
+}
+
+/* RTL Support for Floating Cart */
+html[dir="rtl"] .cl-floating-cart-count {
+    right: auto;
+    left: -4px;
+}
+
+/* =========================================
    Responsive Design
    ========================================= */
 @media (max-width: 768px) {

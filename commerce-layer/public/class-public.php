@@ -21,6 +21,7 @@ class CL_Public {
         add_filter( 'the_content', array( $this, 'auto_inject_commerce' ), 20 );
         add_action( 'wp_footer', array( $this, 'render_floating_bar' ) );
         add_action( 'wp_footer', array( $this, 'render_side_cart' ) );
+        add_action( 'wp_footer', array( $this, 'render_floating_cart_icon' ) );
     }
 
     /**
@@ -199,5 +200,78 @@ class CL_Public {
      */
     public function render_side_cart() {
         include CL_PLUGIN_DIR . 'templates/side-cart.php';
+    }
+
+    /**
+     * Render floating cart icon
+     */
+    public function render_floating_cart_icon() {
+        // Check if enabled
+        if ( 'yes' !== get_option( 'cl_floating_cart_icon_enabled', 'yes' ) ) {
+            return;
+        }
+
+        // Skip on admin
+        if ( is_admin() ) {
+            return;
+        }
+
+        $cart = CL_Cart::get_instance();
+        $count = $cart->get_items_count();
+
+        // Get position settings
+        $desktop_position = get_option( 'cl_cart_icon_desktop_position', 'top-left' );
+        $mobile_position  = get_option( 'cl_cart_icon_mobile_position', 'bottom-right' );
+        $desktop_offset   = absint( get_option( 'cl_cart_icon_desktop_offset', 20 ) );
+        $mobile_offset    = absint( get_option( 'cl_cart_icon_mobile_offset', 20 ) );
+
+        // Build inline styles for offsets
+        $desktop_style = $this->get_position_style( $desktop_position, $desktop_offset );
+        $mobile_style  = $this->get_position_style( $mobile_position, $mobile_offset );
+        ?>
+        <div class="cl-floating-cart-icon cl-pos-desktop-<?php echo esc_attr( $desktop_position ); ?> cl-pos-mobile-<?php echo esc_attr( $mobile_position ); ?>"
+             data-desktop-offset="<?php echo esc_attr( $desktop_offset ); ?>"
+             data-mobile-offset="<?php echo esc_attr( $mobile_offset ); ?>"
+             style="--cl-desktop-offset: <?php echo esc_attr( $desktop_offset ); ?>px; --cl-mobile-offset: <?php echo esc_attr( $mobile_offset ); ?>px;">
+            <button type="button" class="cl-floating-cart-btn cl-open-side-cart" aria-label="<?php esc_attr_e( 'פתח סל קניות', 'commerce-layer' ); ?>">
+                <svg class="cl-floating-cart-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                </svg>
+                <span class="cl-floating-cart-count cl-cart-count"><?php echo esc_html( $count ); ?></span>
+            </button>
+        </div>
+        <?php
+    }
+
+    /**
+     * Get position style based on position string
+     */
+    private function get_position_style( $position, $offset ) {
+        $styles = array();
+
+        switch ( $position ) {
+            case 'top-left':
+                $styles = array( 'top' => $offset . 'px', 'left' => $offset . 'px' );
+                break;
+            case 'top-center':
+                $styles = array( 'top' => $offset . 'px', 'left' => '50%', 'transform' => 'translateX(-50%)' );
+                break;
+            case 'top-right':
+                $styles = array( 'top' => $offset . 'px', 'right' => $offset . 'px' );
+                break;
+            case 'bottom-left':
+                $styles = array( 'bottom' => $offset . 'px', 'left' => $offset . 'px' );
+                break;
+            case 'bottom-center':
+                $styles = array( 'bottom' => $offset . 'px', 'left' => '50%', 'transform' => 'translateX(-50%)' );
+                break;
+            case 'bottom-right':
+                $styles = array( 'bottom' => $offset . 'px', 'right' => $offset . 'px' );
+                break;
+        }
+
+        return $styles;
     }
 }

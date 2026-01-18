@@ -249,6 +249,71 @@ if ( ! defined( 'ABSPATH' ) ) {
                     </td>
                 </tr>
             </table>
+
+            <!-- Floating Cart Icon Settings -->
+            <h2 class="title"><?php esc_html_e( 'אייקון סל צף', 'commerce-layer' ); ?></h2>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'הפעל אייקון סל צף', 'commerce-layer' ); ?></th>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="cl_floating_cart_icon_enabled" value="yes" <?php checked( get_option( 'cl_floating_cart_icon_enabled', 'yes' ), 'yes' ); ?>>
+                            <?php esc_html_e( 'הצג אייקון סל צף באתר', 'commerce-layer' ); ?>
+                        </label>
+                        <p class="description"><?php esc_html_e( 'לחיצה על האייקון פותחת את סל הקניות הצדדי', 'commerce-layer' ); ?></p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'מיקום בדסקטופ', 'commerce-layer' ); ?></th>
+                    <td>
+                        <select name="cl_cart_icon_desktop_position">
+                            <option value="top-left" <?php selected( get_option( 'cl_cart_icon_desktop_position', 'top-left' ), 'top-left' ); ?>><?php esc_html_e( 'למעלה משמאל', 'commerce-layer' ); ?></option>
+                            <option value="top-center" <?php selected( get_option( 'cl_cart_icon_desktop_position' ), 'top-center' ); ?>><?php esc_html_e( 'למעלה באמצע', 'commerce-layer' ); ?></option>
+                            <option value="top-right" <?php selected( get_option( 'cl_cart_icon_desktop_position' ), 'top-right' ); ?>><?php esc_html_e( 'למעלה מימין', 'commerce-layer' ); ?></option>
+                            <option value="bottom-left" <?php selected( get_option( 'cl_cart_icon_desktop_position' ), 'bottom-left' ); ?>><?php esc_html_e( 'למטה משמאל', 'commerce-layer' ); ?></option>
+                            <option value="bottom-center" <?php selected( get_option( 'cl_cart_icon_desktop_position' ), 'bottom-center' ); ?>><?php esc_html_e( 'למטה באמצע', 'commerce-layer' ); ?></option>
+                            <option value="bottom-right" <?php selected( get_option( 'cl_cart_icon_desktop_position' ), 'bottom-right' ); ?>><?php esc_html_e( 'למטה מימין', 'commerce-layer' ); ?></option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'מרחק מהקצה (דסקטופ)', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="number" name="cl_cart_icon_desktop_offset" value="<?php echo esc_attr( get_option( 'cl_cart_icon_desktop_offset', 20 ) ); ?>" min="0" max="200" class="small-text"> <?php esc_html_e( 'פיקסלים', 'commerce-layer' ); ?>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'מיקום במובייל', 'commerce-layer' ); ?></th>
+                    <td>
+                        <select name="cl_cart_icon_mobile_position">
+                            <option value="top-left" <?php selected( get_option( 'cl_cart_icon_mobile_position' ), 'top-left' ); ?>><?php esc_html_e( 'למעלה משמאל', 'commerce-layer' ); ?></option>
+                            <option value="top-center" <?php selected( get_option( 'cl_cart_icon_mobile_position' ), 'top-center' ); ?>><?php esc_html_e( 'למעלה באמצע', 'commerce-layer' ); ?></option>
+                            <option value="top-right" <?php selected( get_option( 'cl_cart_icon_mobile_position' ), 'top-right' ); ?>><?php esc_html_e( 'למעלה מימין', 'commerce-layer' ); ?></option>
+                            <option value="bottom-left" <?php selected( get_option( 'cl_cart_icon_mobile_position' ), 'bottom-left' ); ?>><?php esc_html_e( 'למטה משמאל', 'commerce-layer' ); ?></option>
+                            <option value="bottom-center" <?php selected( get_option( 'cl_cart_icon_mobile_position' ), 'bottom-center' ); ?>><?php esc_html_e( 'למטה באמצע', 'commerce-layer' ); ?></option>
+                            <option value="bottom-right" <?php selected( get_option( 'cl_cart_icon_mobile_position', 'bottom-right' ), 'bottom-right' ); ?>><?php esc_html_e( 'למטה מימין', 'commerce-layer' ); ?></option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'מרחק מהקצה (מובייל)', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="number" name="cl_cart_icon_mobile_offset" value="<?php echo esc_attr( get_option( 'cl_cart_icon_mobile_offset', 20 ) ); ?>" min="0" max="200" class="small-text"> <?php esc_html_e( 'פיקסלים', 'commerce-layer' ); ?>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'שורטקוד למיקום ידני', 'commerce-layer' ); ?></th>
+                    <td>
+                        <code style="background: #f0f0f0; padding: 8px 12px; display: inline-block; border-radius: 4px;">[cl_cart_icon]</code>
+                        <p class="description"><?php esc_html_e( 'השתמש בשורטקוד זה אם תרצה למקם את האייקון ידנית (למשל בתפריט או בהדר)', 'commerce-layer' ); ?></p>
+                    </td>
+                </tr>
+            </table>
         <?php endif; ?>
 
         <?php submit_button(); ?>
