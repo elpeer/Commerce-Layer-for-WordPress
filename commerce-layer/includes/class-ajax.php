@@ -31,6 +31,7 @@ class CL_Ajax {
             'cl_get_side_cart',
             'cl_get_variant_data',
             'cl_apply_coupon',
+            'cl_remove_coupon',
         );
 
         foreach ( $public_actions as $action ) {
@@ -227,10 +228,61 @@ class CL_Ajax {
     }
 
     /**
-     * Apply coupon (placeholder for future)
+     * Apply coupon
      */
     public function cl_apply_coupon() {
-        wp_send_json_error( array( 'message' => __( 'קופונים אינם זמינים בגרסה זו', 'commerce-layer' ) ) );
+        $this->verify_nonce();
+
+        $coupon_code = isset( $_POST['coupon_code'] ) ? sanitize_text_field( $_POST['coupon_code'] ) : '';
+
+        if ( empty( $coupon_code ) ) {
+            wp_send_json_error( array( 'message' => __( 'נא להזין קוד קופון', 'commerce-layer' ) ) );
+        }
+
+        $coupon = new CL_Coupon( $coupon_code );
+        $cart = CL_Cart::get_instance();
+        $cart_total = $cart->get_subtotal();
+
+        // Validate coupon
+        $is_valid = $coupon->is_valid( $cart_total );
+        if ( is_wp_error( $is_valid ) ) {
+            wp_send_json_error( array( 'message' => $is_valid->get_error_message() ) );
+        }
+
+        // Calculate discount
+        $discount = $coupon->calculate_discount( $cart_total );
+
+        // Store coupon in session
+        $cart->apply_coupon( $coupon->get_code(), $discount );
+
+        wp_send_json_success( array(
+            'message'       => sprintf( __( 'קופון "%s" הוחל בהצלחה!', 'commerce-layer' ), $coupon->get_code() ),
+            'discount'      => $discount,
+            'coupon_code'   => $coupon->get_code(),
+            'totals'        => $cart->get_totals(),
+            'formatted'     => array(
+                'discount' => CL_Core::format_price( $discount ),
+                'total'    => CL_Core::format_price( $cart->get_total() ),
+            ),
+        ) );
+    }
+
+    /**
+     * Remove coupon
+     */
+    public function cl_remove_coupon() {
+        $this->verify_nonce();
+
+        $cart = CL_Cart::get_instance();
+        $cart->remove_coupon();
+
+        wp_send_json_success( array(
+            'message' => __( 'הקופון הוסר', 'commerce-layer' ),
+            'totals'  => $cart->get_totals(),
+            'formatted' => array(
+                'total' => CL_Core::format_price( $cart->get_total() ),
+            ),
+        ) );
     }
 
     /**

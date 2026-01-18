@@ -123,6 +123,27 @@ class CL_Activator {
             KEY attribute_id (attribute_id)
         ) $charset_collate;";
 
+        // Coupons table
+        $coupons_table = $wpdb->prefix . 'cl_coupons';
+        $sql_coupons = "CREATE TABLE $coupons_table (
+            id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+            code varchar(50) NOT NULL,
+            description varchar(255) DEFAULT NULL,
+            discount_type varchar(20) NOT NULL DEFAULT 'percent',
+            discount_value decimal(10,2) NOT NULL DEFAULT 0,
+            min_order_amount decimal(10,2) DEFAULT NULL,
+            max_discount decimal(10,2) DEFAULT NULL,
+            usage_limit int(11) DEFAULT NULL,
+            usage_count int(11) NOT NULL DEFAULT 0,
+            start_date datetime DEFAULT NULL,
+            end_date datetime DEFAULT NULL,
+            status varchar(20) NOT NULL DEFAULT 'active',
+            created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (id),
+            UNIQUE KEY code (code),
+            KEY status (status)
+        ) $charset_collate;";
+
         require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
         dbDelta( $sql_orders );
@@ -130,6 +151,7 @@ class CL_Activator {
         dbDelta( $sql_variants );
         dbDelta( $sql_attributes );
         dbDelta( $sql_attribute_values );
+        dbDelta( $sql_coupons );
 
         // Store DB version
         update_option( 'cl_db_version', CL_VERSION );

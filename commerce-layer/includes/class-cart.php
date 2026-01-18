@@ -22,9 +22,19 @@ class CL_Cart {
     private $cart_contents = array();
 
     /**
+     * Applied coupon
+     */
+    private $applied_coupon = array();
+
+    /**
      * Session key
      */
     private $session_key = 'cl_cart';
+
+    /**
+     * Coupon session key
+     */
+    private $coupon_session_key = 'cl_coupon';
 
     /**
      * Get singleton instance
@@ -59,6 +69,9 @@ class CL_Cart {
     private function load_cart() {
         if ( isset( $_SESSION[ $this->session_key ] ) ) {
             $this->cart_contents = $_SESSION[ $this->session_key ];
+        }
+        if ( isset( $_SESSION[ $this->coupon_session_key ] ) ) {
+            $this->applied_coupon = $_SESSION[ $this->coupon_session_key ];
         }
     }
 
@@ -241,7 +254,9 @@ class CL_Cart {
      */
     public function clear() {
         $this->cart_contents = array();
+        $this->applied_coupon = array();
         $this->save_cart();
+        unset( $_SESSION[ $this->coupon_session_key ] );
 
         do_action( 'cl_cart_cleared' );
     }
@@ -286,8 +301,59 @@ class CL_Cart {
      * Get cart total
      */
     public function get_total() {
-        // For now, total equals subtotal (no taxes/shipping in v1)
-        return $this->get_subtotal();
+        $subtotal = $this->get_subtotal();
+        $coupon_discount = $this->get_coupon_discount();
+        return max( 0, $subtotal - $coupon_discount );
+    }
+
+    /**
+     * Apply coupon to cart
+     */
+    public function apply_coupon( $code, $discount ) {
+        $this->applied_coupon = array(
+            'code'     => $code,
+            'discount' => $discount,
+        );
+        $_SESSION[ $this->coupon_session_key ] = $this->applied_coupon;
+    }
+
+    /**
+     * Remove coupon from cart
+     */
+    public function remove_coupon() {
+        $this->applied_coupon = array();
+        unset( $_SESSION[ $this->coupon_session_key ] );
+    }
+
+    /**
+     * Get applied coupon
+     */
+    public function get_applied_coupon() {
+        return $this->applied_coupon;
+    }
+
+    /**
+     * Get coupon discount amount
+     */
+    public function get_coupon_discount() {
+        if ( empty( $this->applied_coupon ) ) {
+            return 0;
+        }
+
+        // Recalculate discount based on current cart total
+        $coupon = new CL_Coupon( $this->applied_coupon['code'] );
+        if ( ! $coupon->exists() ) {
+            $this->remove_coupon();
+            return 0;
+        }
+
+        $is_valid = $coupon->is_valid( $this->get_subtotal() );
+        if ( is_wp_error( $is_valid ) ) {
+            $this->remove_coupon();
+            return 0;
+        }
+
+        return $coupon->calculate_discount( $this->get_subtotal() );
     }
 
     /**
@@ -324,13 +390,18 @@ class CL_Cart {
         $subtotal = $this->get_subtotal();
         $subtotal_before_discounts = $this->get_subtotal_before_discounts();
         $total_savings = $this->get_total_savings();
+        $coupon_discount = $this->get_coupon_discount();
+        $applied_coupon = $this->get_applied_coupon();
+        $total = max( 0, $subtotal - $coupon_discount );
+
         return array(
-            'subtotal'                 => $subtotal,
+            'subtotal'                  => $subtotal,
             'subtotal_before_discounts' => $subtotal_before_discounts,
-            'discount'                 => 0,
-            'savings'                  => $total_savings,
-            'shipping'                 => 0,
-            'total'                    => $subtotal,
+            'discount'                  => $coupon_discount,
+            'coupon_code'               => isset( $applied_coupon['code'] ) ? $applied_coupon['code'] : '',
+            'savings'                   => $total_savings,
+            'shipping'                  => 0,
+            'total'                     => $total,
         );
     }
 

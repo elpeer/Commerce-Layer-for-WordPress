@@ -303,6 +303,206 @@ if ( ! defined( 'ABSPATH' ) ) {
             });
             </script>
 
+        <?php elseif ( 'coupons' === $this->current_tab ) : ?>
+            <!-- Coupons Settings -->
+            <?php
+            $coupons = CL_Coupon::get_all();
+            $editing_coupon = null;
+            if ( isset( $_GET['edit_coupon'] ) ) {
+                $editing_coupon = new CL_Coupon( absint( $_GET['edit_coupon'] ) );
+                if ( ! $editing_coupon->exists() ) {
+                    $editing_coupon = null;
+                }
+            }
+            $is_adding = isset( $_GET['add_coupon'] );
+            ?>
+
+            <?php if ( $is_adding || $editing_coupon ) : ?>
+                <!-- Add/Edit Coupon Form -->
+                <h2 class="title"><?php echo $editing_coupon ? __( 'עריכת קופון', 'commerce-layer' ) : __( 'הוספת קופון חדש', 'commerce-layer' ); ?></h2>
+
+                <input type="hidden" name="cl_coupon_action" value="<?php echo $editing_coupon ? 'edit' : 'add'; ?>">
+                <?php if ( $editing_coupon ) : ?>
+                    <input type="hidden" name="cl_coupon_id" value="<?php echo esc_attr( $editing_coupon->get_id() ); ?>">
+                <?php endif; ?>
+
+                <table class="form-table">
+                    <tr>
+                        <th scope="row"><?php esc_html_e( 'קוד קופון', 'commerce-layer' ); ?> <span style="color:red;">*</span></th>
+                        <td>
+                            <input type="text" name="cl_coupon_code" value="<?php echo $editing_coupon ? esc_attr( $editing_coupon->get_code() ) : ''; ?>" class="regular-text" required style="text-transform: uppercase;">
+                            <p class="description"><?php esc_html_e( 'הקוד שהלקוחות יזינו לקבלת ההנחה', 'commerce-layer' ); ?></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><?php esc_html_e( 'תיאור', 'commerce-layer' ); ?></th>
+                        <td>
+                            <input type="text" name="cl_coupon_description" value="<?php echo $editing_coupon ? esc_attr( $editing_coupon->get_description() ) : ''; ?>" class="regular-text">
+                            <p class="description"><?php esc_html_e( 'תיאור פנימי (לא מוצג ללקוחות)', 'commerce-layer' ); ?></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><?php esc_html_e( 'סוג הנחה', 'commerce-layer' ); ?></th>
+                        <td>
+                            <select name="cl_coupon_discount_type" id="cl-coupon-discount-type">
+                                <option value="percent" <?php selected( $editing_coupon ? $editing_coupon->get_discount_type() : '', 'percent' ); ?>><?php esc_html_e( 'אחוז הנחה (%)', 'commerce-layer' ); ?></option>
+                                <option value="fixed" <?php selected( $editing_coupon ? $editing_coupon->get_discount_type() : '', 'fixed' ); ?>><?php esc_html_e( 'סכום קבוע', 'commerce-layer' ); ?></option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><?php esc_html_e( 'ערך הנחה', 'commerce-layer' ); ?> <span style="color:red;">*</span></th>
+                        <td>
+                            <input type="number" name="cl_coupon_discount_value" value="<?php echo $editing_coupon ? esc_attr( $editing_coupon->get_discount_value() ) : ''; ?>" class="small-text" min="0" step="0.01" required>
+                            <span id="cl-discount-suffix">%</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><?php esc_html_e( 'סכום הזמנה מינימלי', 'commerce-layer' ); ?></th>
+                        <td>
+                            <input type="number" name="cl_coupon_min_order" value="<?php echo $editing_coupon && $editing_coupon->get_min_order_amount() ? esc_attr( $editing_coupon->get_min_order_amount() ) : ''; ?>" class="small-text" min="0" step="0.01"> <?php echo esc_html( get_option( 'cl_currency_symbol', '₪' ) ); ?>
+                            <p class="description"><?php esc_html_e( 'השאר ריק לביטול הגבלה', 'commerce-layer' ); ?></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><?php esc_html_e( 'הנחה מקסימלית', 'commerce-layer' ); ?></th>
+                        <td>
+                            <input type="number" name="cl_coupon_max_discount" value="<?php echo $editing_coupon && $editing_coupon->get_max_discount() ? esc_attr( $editing_coupon->get_max_discount() ) : ''; ?>" class="small-text" min="0" step="0.01"> <?php echo esc_html( get_option( 'cl_currency_symbol', '₪' ) ); ?>
+                            <p class="description"><?php esc_html_e( 'רלוונטי להנחת אחוזים - הגבלת סכום ההנחה', 'commerce-layer' ); ?></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><?php esc_html_e( 'מגבלת שימושים', 'commerce-layer' ); ?></th>
+                        <td>
+                            <input type="number" name="cl_coupon_usage_limit" value="<?php echo $editing_coupon && $editing_coupon->get_usage_limit() ? esc_attr( $editing_coupon->get_usage_limit() ) : ''; ?>" class="small-text" min="0">
+                            <?php if ( $editing_coupon ) : ?>
+                                <span style="color: #666;">(<?php printf( __( 'נוצל %d פעמים', 'commerce-layer' ), $editing_coupon->get_usage_count() ); ?>)</span>
+                            <?php endif; ?>
+                            <p class="description"><?php esc_html_e( 'כמה פעמים ניתן להשתמש בקופון. השאר ריק ללא הגבלה', 'commerce-layer' ); ?></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><?php esc_html_e( 'תאריך התחלה', 'commerce-layer' ); ?></th>
+                        <td>
+                            <input type="datetime-local" name="cl_coupon_start_date" value="<?php echo $editing_coupon && $editing_coupon->get_start_date() ? esc_attr( date( 'Y-m-d\TH:i', strtotime( $editing_coupon->get_start_date() ) ) ) : ''; ?>">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><?php esc_html_e( 'תאריך סיום', 'commerce-layer' ); ?></th>
+                        <td>
+                            <input type="datetime-local" name="cl_coupon_end_date" value="<?php echo $editing_coupon && $editing_coupon->get_end_date() ? esc_attr( date( 'Y-m-d\TH:i', strtotime( $editing_coupon->get_end_date() ) ) ) : ''; ?>">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><?php esc_html_e( 'סטטוס', 'commerce-layer' ); ?></th>
+                        <td>
+                            <select name="cl_coupon_status">
+                                <option value="active" <?php selected( $editing_coupon ? $editing_coupon->get_status() : '', 'active' ); ?>><?php esc_html_e( 'פעיל', 'commerce-layer' ); ?></option>
+                                <option value="inactive" <?php selected( $editing_coupon ? $editing_coupon->get_status() : '', 'inactive' ); ?>><?php esc_html_e( 'לא פעיל', 'commerce-layer' ); ?></option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+
+                <p>
+                    <?php submit_button( $editing_coupon ? __( 'עדכן קופון', 'commerce-layer' ) : __( 'הוסף קופון', 'commerce-layer' ), 'primary', 'submit', false ); ?>
+                    <a href="<?php echo esc_url( admin_url( 'admin.php?page=cl-settings&tab=coupons' ) ); ?>" class="button"><?php esc_html_e( 'ביטול', 'commerce-layer' ); ?></a>
+                </p>
+
+                <script>
+                jQuery(document).ready(function($) {
+                    function updateDiscountSuffix() {
+                        var type = $('#cl-coupon-discount-type').val();
+                        $('#cl-discount-suffix').text(type === 'percent' ? '%' : '<?php echo esc_js( get_option( 'cl_currency_symbol', '₪' ) ); ?>');
+                    }
+                    updateDiscountSuffix();
+                    $('#cl-coupon-discount-type').on('change', updateDiscountSuffix);
+                });
+                </script>
+
+            <?php else : ?>
+                <!-- Coupons List -->
+                <h2 class="title">
+                    <?php esc_html_e( 'קופונים', 'commerce-layer' ); ?>
+                    <a href="<?php echo esc_url( add_query_arg( 'add_coupon', '1' ) ); ?>" class="page-title-action"><?php esc_html_e( 'הוסף קופון חדש', 'commerce-layer' ); ?></a>
+                </h2>
+
+                <?php if ( empty( $coupons ) ) : ?>
+                    <p><?php esc_html_e( 'לא נמצאו קופונים. צור את הקופון הראשון שלך!', 'commerce-layer' ); ?></p>
+                <?php else : ?>
+                    <table class="widefat striped">
+                        <thead>
+                            <tr>
+                                <th><?php esc_html_e( 'קוד', 'commerce-layer' ); ?></th>
+                                <th><?php esc_html_e( 'תיאור', 'commerce-layer' ); ?></th>
+                                <th><?php esc_html_e( 'הנחה', 'commerce-layer' ); ?></th>
+                                <th><?php esc_html_e( 'שימושים', 'commerce-layer' ); ?></th>
+                                <th><?php esc_html_e( 'תוקף', 'commerce-layer' ); ?></th>
+                                <th><?php esc_html_e( 'סטטוס', 'commerce-layer' ); ?></th>
+                                <th><?php esc_html_e( 'פעולות', 'commerce-layer' ); ?></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ( $coupons as $coupon_data ) :
+                                $coupon_obj = new CL_Coupon( $coupon_data['id'] );
+                            ?>
+                            <tr>
+                                <td><strong><code><?php echo esc_html( $coupon_data['code'] ); ?></code></strong></td>
+                                <td><?php echo esc_html( $coupon_data['description'] ?: '-' ); ?></td>
+                                <td>
+                                    <?php
+                                    if ( $coupon_data['discount_type'] === 'percent' ) {
+                                        echo esc_html( $coupon_data['discount_value'] ) . '%';
+                                    } else {
+                                        echo CL_Core::format_price( $coupon_data['discount_value'] );
+                                    }
+                                    ?>
+                                </td>
+                                <td>
+                                    <?php
+                                    if ( $coupon_data['usage_limit'] ) {
+                                        echo esc_html( $coupon_data['usage_count'] ) . ' / ' . esc_html( $coupon_data['usage_limit'] );
+                                    } else {
+                                        echo esc_html( $coupon_data['usage_count'] ) . ' / ' . __( 'ללא הגבלה', 'commerce-layer' );
+                                    }
+                                    ?>
+                                </td>
+                                <td>
+                                    <?php
+                                    if ( $coupon_data['end_date'] ) {
+                                        $end_date = strtotime( $coupon_data['end_date'] );
+                                        if ( $end_date < time() ) {
+                                            echo '<span style="color: #dc3232;">' . __( 'פג תוקף', 'commerce-layer' ) . '</span>';
+                                        } else {
+                                            echo date_i18n( 'd/m/Y', $end_date );
+                                        }
+                                    } else {
+                                        echo __( 'ללא הגבלה', 'commerce-layer' );
+                                    }
+                                    ?>
+                                </td>
+                                <td>
+                                    <?php if ( $coupon_data['status'] === 'active' ) : ?>
+                                        <span style="color: #46b450;"><?php esc_html_e( 'פעיל', 'commerce-layer' ); ?></span>
+                                    <?php else : ?>
+                                        <span style="color: #dc3232;"><?php esc_html_e( 'לא פעיל', 'commerce-layer' ); ?></span>
+                                    <?php endif; ?>
+                                </td>
+                                <td>
+                                    <a href="<?php echo esc_url( add_query_arg( 'edit_coupon', $coupon_data['id'] ) ); ?>" class="button button-small"><?php esc_html_e( 'עריכה', 'commerce-layer' ); ?></a>
+                                    <button type="submit" name="cl_coupon_action" value="delete" class="button button-small" style="color: #a00;" onclick="if(!confirm('<?php esc_attr_e( 'האם אתה בטוח שברצונך למחוק קופון זה?', 'commerce-layer' ); ?>')) return false;">
+                                        <?php esc_html_e( 'מחיקה', 'commerce-layer' ); ?>
+                                    </button>
+                                    <input type="hidden" name="cl_coupon_id" value="<?php echo esc_attr( $coupon_data['id'] ); ?>">
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                <?php endif; ?>
+
+            <?php endif; ?>
+
         <?php elseif ( 'display' === $this->current_tab ) : ?>
             <!-- Display Settings -->
             <table class="form-table">

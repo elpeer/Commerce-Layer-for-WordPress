@@ -41,9 +41,13 @@ if ( $eligible_for_free_shipping ) {
     ) );
 }
 
+// Check for applied coupon
+$applied_coupon = $cart->get_applied_coupon();
+$coupon_discount = $totals['discount'];
+
 // Calculate initial total
 $default_shipping = ! empty( $enabled_shipping_methods ) ? floatval( $enabled_shipping_methods[0]['price'] ) : 0;
-$final_total = $totals['subtotal'] + $default_shipping;
+$final_total = $totals['subtotal'] - $coupon_discount + $default_shipping;
 ?>
 <div class="cl-checkout cl-checkout-shopify">
     <?php if ( isset( $_GET['payment_error'] ) ) : ?>
@@ -205,7 +209,7 @@ $final_total = $totals['subtotal'] + $default_shipping;
 
                     <!-- Order Items -->
                     <div class="cl-order-items-list">
-                        <?php foreach ( $items as $item ) :
+                        <?php foreach ( $items as $cart_key => $item ) :
                             $product = new CL_Product( $item['post_id'] );
                             $thumbnail = $product->get_thumbnail( 'thumbnail' );
                             $item_price = floatval( $item['price'] );
@@ -214,7 +218,7 @@ $final_total = $totals['subtotal'] + $default_shipping;
                             $line_total = $item_price * $item['quantity'];
                             $line_regular_total = $item_regular_price * $item['quantity'];
                         ?>
-                            <div class="cl-summary-item">
+                            <div class="cl-summary-item" data-cart-key="<?php echo esc_attr( $cart_key ); ?>">
                                 <div class="cl-summary-item-image">
                                     <?php if ( $thumbnail ) : ?>
                                         <img src="<?php echo esc_url( $thumbnail ); ?>" alt="<?php echo esc_attr( $item['name'] ); ?>">
@@ -233,24 +237,62 @@ $final_total = $totals['subtotal'] + $default_shipping;
                                     <?php endif; ?>
                                     <span class="cl-price-current"><?php echo CL_Core::format_price( $line_total ); ?></span>
                                 </div>
+                                <button type="button" class="cl-checkout-remove-item" data-cart-key="<?php echo esc_attr( $cart_key ); ?>" title="<?php esc_attr_e( 'הסר מהסל', 'commerce-layer' ); ?>">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </button>
                             </div>
                         <?php endforeach; ?>
                     </div>
 
                     <!-- Coupon Code -->
                     <div class="cl-coupon-section">
-                        <div class="cl-coupon-input-wrap">
-                            <input type="text" name="coupon_code" placeholder="<?php esc_attr_e( 'קוד הנחה', 'commerce-layer' ); ?>" class="cl-coupon-input">
-                            <button type="button" class="cl-btn cl-btn-coupon"><?php esc_html_e( 'החל', 'commerce-layer' ); ?></button>
-                        </div>
+                        <?php if ( ! empty( $applied_coupon ) ) : ?>
+                            <div class="cl-coupon-applied">
+                                <span class="cl-coupon-tag">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                                        <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                                    </svg>
+                                    <code><?php echo esc_html( $applied_coupon['code'] ); ?></code>
+                                    <button type="button" class="cl-remove-coupon" title="<?php esc_attr_e( 'הסר קופון', 'commerce-layer' ); ?>">
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                                        </svg>
+                                    </button>
+                                </span>
+                                <span class="cl-coupon-discount">-<?php echo CL_Core::format_price( $coupon_discount ); ?></span>
+                            </div>
+                        <?php else : ?>
+                            <div class="cl-coupon-input-wrap">
+                                <input type="text" name="coupon_code" placeholder="<?php esc_attr_e( 'קוד הנחה', 'commerce-layer' ); ?>" class="cl-coupon-input">
+                                <button type="button" class="cl-btn cl-btn-coupon"><?php esc_html_e( 'החל', 'commerce-layer' ); ?></button>
+                            </div>
+                        <?php endif; ?>
                     </div>
 
                     <!-- Order Totals -->
                     <div class="cl-order-totals-summary">
                         <?php if ( $total_savings > 0 && $show_discounts ) : ?>
                         <div class="cl-summary-row cl-summary-discount">
-                            <span><?php esc_html_e( 'סכום הנחה', 'commerce-layer' ); ?></span>
+                            <span><?php esc_html_e( 'סכום הנחת מבצע', 'commerce-layer' ); ?></span>
                             <span class="cl-discount-amount">-<?php echo CL_Core::format_price( $total_savings ); ?></span>
+                        </div>
+                        <?php endif; ?>
+
+                        <?php if ( $coupon_discount > 0 ) : ?>
+                        <div class="cl-summary-row cl-summary-coupon">
+                            <span>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-left: 4px;">
+                                    <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                                    <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                                </svg>
+                                <?php esc_html_e( 'קופון', 'commerce-layer' ); ?>
+                            </span>
+                            <span class="cl-coupon-discount-amount">-<?php echo CL_Core::format_price( $coupon_discount ); ?></span>
                         </div>
                         <?php endif; ?>
 
@@ -313,6 +355,7 @@ jQuery(document).ready(function($) {
     var $paymentContainer = $('#cl-payment-container');
     var $iframe = $('#cl-payment-iframe');
     var subtotal = <?php echo floatval( $totals['subtotal'] ); ?>;
+    var couponDiscount = <?php echo floatval( $coupon_discount ); ?>;
     var currencySymbol = '<?php echo esc_js( get_option( 'cl_currency_symbol', '₪' ) ); ?>';
     var currencyPosition = '<?php echo esc_js( get_option( 'cl_currency_position', 'right' ) ); ?>';
 
@@ -340,7 +383,7 @@ jQuery(document).ready(function($) {
     // Update totals when shipping changes
     $('input[name="shipping_method"]').on('change', function() {
         var shippingPrice = parseFloat($(this).data('price')) || 0;
-        var total = subtotal + shippingPrice;
+        var total = subtotal - couponDiscount + shippingPrice;
 
         if (shippingPrice > 0) {
             $('#cl-shipping-cost').text(formatPrice(shippingPrice));
@@ -399,6 +442,90 @@ jQuery(document).ready(function($) {
         $paymentContainer.hide();
         $iframe.attr('src', '');
         $form.find('.cl-btn-pay').prop('disabled', false).removeClass('cl-loading');
+    });
+
+    // Remove item from cart
+    $('.cl-checkout-remove-item').on('click', function() {
+        var $btn = $(this);
+        var cartKey = $btn.data('cart-key');
+        var $item = $btn.closest('.cl-summary-item');
+
+        $btn.prop('disabled', true);
+
+        $.post(clFrontend.ajaxUrl, {
+            action: 'cl_remove_from_cart',
+            nonce: clFrontend.nonce,
+            cart_key: cartKey
+        }, function(response) {
+            if (response.success) {
+                // Reload the page to update totals
+                window.location.reload();
+            } else {
+                alert(response.data.message || '<?php esc_html_e( 'שגיאה בהסרת המוצר', 'commerce-layer' ); ?>');
+                $btn.prop('disabled', false);
+            }
+        }).fail(function() {
+            alert('<?php esc_html_e( 'שגיאת תקשורת', 'commerce-layer' ); ?>');
+            $btn.prop('disabled', false);
+        });
+    });
+
+    // Apply coupon
+    $('.cl-btn-coupon').on('click', function() {
+        var $btn = $(this);
+        var couponCode = $form.find('[name="coupon_code"]').val().trim();
+
+        if (!couponCode) {
+            alert('<?php esc_html_e( 'נא להזין קוד קופון', 'commerce-layer' ); ?>');
+            return;
+        }
+
+        $btn.prop('disabled', true).text('<?php esc_html_e( 'בודק...', 'commerce-layer' ); ?>');
+
+        $.post(clFrontend.ajaxUrl, {
+            action: 'cl_apply_coupon',
+            nonce: clFrontend.nonce,
+            coupon_code: couponCode
+        }, function(response) {
+            if (response.success) {
+                window.location.reload();
+            } else {
+                alert(response.data.message || '<?php esc_html_e( 'קופון לא תקין', 'commerce-layer' ); ?>');
+                $btn.prop('disabled', false).text('<?php esc_html_e( 'החל', 'commerce-layer' ); ?>');
+            }
+        }).fail(function() {
+            alert('<?php esc_html_e( 'שגיאת תקשורת', 'commerce-layer' ); ?>');
+            $btn.prop('disabled', false).text('<?php esc_html_e( 'החל', 'commerce-layer' ); ?>');
+        });
+    });
+
+    // Allow pressing Enter to apply coupon
+    $form.find('[name="coupon_code"]').on('keypress', function(e) {
+        if (e.which === 13) {
+            e.preventDefault();
+            $('.cl-btn-coupon').click();
+        }
+    });
+
+    // Remove coupon
+    $('.cl-remove-coupon').on('click', function() {
+        var $btn = $(this);
+        $btn.prop('disabled', true);
+
+        $.post(clFrontend.ajaxUrl, {
+            action: 'cl_remove_coupon',
+            nonce: clFrontend.nonce
+        }, function(response) {
+            if (response.success) {
+                window.location.reload();
+            } else {
+                alert(response.data.message || '<?php esc_html_e( 'שגיאה בהסרת הקופון', 'commerce-layer' ); ?>');
+                $btn.prop('disabled', false);
+            }
+        }).fail(function() {
+            alert('<?php esc_html_e( 'שגיאת תקשורת', 'commerce-layer' ); ?>');
+            $btn.prop('disabled', false);
+        });
     });
 });
 </script>

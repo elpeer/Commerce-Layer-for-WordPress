@@ -409,6 +409,23 @@
     min-width: 140px;
 }
 
+/* Floating bar buttons */
+.cl-floating-add-to-cart {
+    background: var(--cl-add-to-cart-bg, var(--cl-primary)) !important;
+    color: var(--cl-add-to-cart-text, #fff) !important;
+}
+
+.cl-floating-buy-now {
+    background: var(--cl-buy-now-bg, var(--cl-success)) !important;
+    color: var(--cl-buy-now-text, #fff) !important;
+}
+
+/* Side cart buttons */
+.cl-checkout-btn {
+    background: var(--cl-add-to-cart-bg, var(--cl-primary)) !important;
+    color: var(--cl-add-to-cart-text, #fff) !important;
+}
+
 /* Shortcode button wrapper */
 .cl-shortcode-btn-wrap {
     display: inline-block;
@@ -1025,6 +1042,26 @@
     text-align: left;
 }
 
+/* Checkout Remove Item Button */
+.cl-checkout-remove-item {
+    background: none;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    color: #999;
+    transition: color 0.2s;
+    margin-right: 8px;
+}
+
+.cl-checkout-remove-item:hover {
+    color: #ef4444;
+}
+
+.cl-checkout-remove-item:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 .cl-price-original {
     display: block;
     font-size: 14px;
@@ -1077,6 +1114,79 @@
 
 .cl-btn-coupon:hover {
     background: #e5e5e5;
+}
+
+/* Applied Coupon */
+.cl-coupon-applied {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 18px;
+    background: var(--cl-success-light, #d1fae5);
+    border: 1px solid var(--cl-success, #10b981);
+    border-radius: 8px;
+}
+
+.cl-coupon-tag {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--cl-success-dark, #059669);
+    font-weight: 600;
+}
+
+.cl-coupon-tag svg {
+    color: var(--cl-success, #10b981);
+}
+
+.cl-coupon-tag code {
+    background: rgba(0, 0, 0, 0.05);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: monospace;
+}
+
+.cl-remove-coupon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    background: rgba(0, 0, 0, 0.1);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.2s;
+}
+
+.cl-remove-coupon:hover {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.cl-remove-coupon svg {
+    color: var(--cl-success-dark, #059669);
+}
+
+.cl-coupon-discount {
+    font-weight: 700;
+    color: var(--cl-success-dark, #059669);
+    font-size: 16px;
+}
+
+/* Coupon row in order totals */
+.cl-summary-coupon {
+    color: var(--cl-success-dark, #059669);
+}
+
+.cl-summary-coupon svg {
+    color: var(--cl-success, #10b981);
+}
+
+.cl-coupon-discount-amount {
+    font-weight: 600;
+    color: var(--cl-success-dark, #059669);
 }
 
 /* Order Totals */
