@@ -29,7 +29,6 @@ class CL_Settings {
             'general'  => __( 'כללי', 'commerce-layer' ),
             'checkout' => __( 'תשלום', 'commerce-layer' ),
             'shipping' => __( 'משלוח', 'commerce-layer' ),
-            'coupons'  => __( 'קופונים', 'commerce-layer' ),
             'display'  => __( 'תצוגה', 'commerce-layer' ),
             'styling'  => __( 'עיצוב', 'commerce-layer' ),
         );
@@ -159,37 +158,6 @@ class CL_Settings {
                 update_option( 'cl_shipping_methods', $shipping_methods );
                 update_option( 'cl_free_shipping_threshold', floatval( $_POST['cl_free_shipping_threshold'] ?? 0 ) );
                 update_option( 'cl_show_discount_in_cart', isset( $_POST['cl_show_discount_in_cart'] ) ? 'yes' : 'no' );
-                break;
-
-            case 'coupons':
-                // Handle coupon actions
-                if ( isset( $_POST['cl_coupon_action'] ) ) {
-                    $action = sanitize_text_field( $_POST['cl_coupon_action'] );
-
-                    if ( $action === 'add' || $action === 'edit' ) {
-                        $coupon_id = isset( $_POST['cl_coupon_id'] ) ? absint( $_POST['cl_coupon_id'] ) : 0;
-                        $coupon = new CL_Coupon( $coupon_id );
-
-                        $coupon->save( array(
-                            'code'             => $_POST['cl_coupon_code'] ?? '',
-                            'description'      => $_POST['cl_coupon_description'] ?? '',
-                            'discount_type'    => $_POST['cl_coupon_discount_type'] ?? 'percent',
-                            'discount_value'   => $_POST['cl_coupon_discount_value'] ?? 0,
-                            'min_order_amount' => $_POST['cl_coupon_min_order'] ?? '',
-                            'max_discount'     => $_POST['cl_coupon_max_discount'] ?? '',
-                            'usage_limit'      => $_POST['cl_coupon_usage_limit'] ?? '',
-                            'start_date'       => $_POST['cl_coupon_start_date'] ?? '',
-                            'end_date'         => $_POST['cl_coupon_end_date'] ?? '',
-                            'status'           => $_POST['cl_coupon_status'] ?? 'active',
-                        ) );
-                    } elseif ( $action === 'delete' ) {
-                        $coupon_id = isset( $_POST['cl_coupon_id'] ) ? absint( $_POST['cl_coupon_id'] ) : 0;
-                        if ( $coupon_id ) {
-                            $coupon = new CL_Coupon( $coupon_id );
-                            $coupon->delete();
-                        }
-                    }
-                }
                 break;
 
             case 'styling':

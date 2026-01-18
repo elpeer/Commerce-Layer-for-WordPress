@@ -65,6 +65,16 @@ class CL_Admin {
             array( $this, 'render_attributes' )
         );
 
+        // Coupons
+        add_submenu_page(
+            'commerce-layer',
+            __( 'קופונים', 'commerce-layer' ),
+            __( 'קופונים', 'commerce-layer' ),
+            'manage_options',
+            'cl-coupons',
+            array( $this, 'render_coupons' )
+        );
+
         // Settings
         add_submenu_page(
             'commerce-layer',
@@ -202,5 +212,12 @@ class CL_Admin {
     public function render_settings() {
         $settings = new CL_Settings();
         $settings->render();
+    }
+
+    /**
+     * Render coupons page
+     */
+    public function render_coupons() {
+        include CL_PLUGIN_DIR . 'admin/views/coupons.php';
     }
 }
