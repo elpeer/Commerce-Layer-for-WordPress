@@ -20,7 +20,8 @@
      * Quantity buttons (+/-)
      */
     function initQuantityButtons() {
-        $(document).on('click', '.cl-qty-minus', function() {
+        $(document).on('click', '.cl-qty-minus', function(e) {
+            e.preventDefault();
             var $input = $(this).siblings('.cl-quantity, .cl-cart-quantity');
             var val = parseInt($input.val()) || 1;
             var min = parseInt($input.attr('min')) || 1;
@@ -30,7 +31,8 @@
             }
         });
 
-        $(document).on('click', '.cl-qty-plus', function() {
+        $(document).on('click', '.cl-qty-plus', function(e) {
+            e.preventDefault();
             var $input = $(this).siblings('.cl-quantity, .cl-cart-quantity');
             var val = parseInt($input.val()) || 1;
             var max = parseInt($input.attr('max')) || 999;
@@ -52,10 +54,18 @@
     }
 
     function updateSelectedVariant($form) {
-        var variantsData = $form.find('.cl-variants-data').text();
+        var $variantsData = $form.find('.cl-variants-data');
+        if (!$variantsData.length) return;
+
+        var variantsData = $variantsData.text();
         if (!variantsData) return;
 
-        var variants = JSON.parse(variantsData);
+        try {
+            var variants = JSON.parse(variantsData);
+        } catch (e) {
+            return;
+        }
+
         var selectedAttrs = {};
 
         $form.find('.cl-variant-dropdown').each(function() {
@@ -112,7 +122,60 @@
 
     function formatPrice(price) {
         price = parseFloat(price).toFixed(2);
-        return price + clFrontend.currency;
+        return clFrontend.currency + price;
+    }
+
+    /**
+     * Get post ID from element context
+     */
+    function getPostId($element) {
+        // Try to get from element itself first (for standalone buttons)
+        if ($element.data('post-id')) {
+            return $element.data('post-id');
+        }
+
+        // Try to get from shortcode wrapper
+        var $wrap = $element.closest('.cl-shortcode-btn-wrap');
+        if ($wrap.length && $wrap.data('post-id')) {
+            return $wrap.data('post-id');
+        }
+
+        // Try to get from parent form
+        var $form = $element.closest('.cl-purchase-form');
+        if ($form.length && $form.data('post-id')) {
+            return $form.data('post-id');
+        }
+
+        // Try to get from parent card
+        var $card = $element.closest('.cl-purchase-card');
+        if ($card.length && $card.data('post-id')) {
+            return $card.data('post-id');
+        }
+
+        // Try to get from floating bar
+        var $floatingBar = $element.closest('.cl-floating-bar');
+        if ($floatingBar.length && $floatingBar.data('post-id')) {
+            return $floatingBar.data('post-id');
+        }
+
+        return 0;
+    }
+
+    /**
+     * Get form context for element
+     */
+    function getFormContext($element) {
+        var $form = $element.closest('.cl-purchase-form');
+        if ($form.length) {
+            return $form;
+        }
+
+        var $card = $element.closest('.cl-purchase-card');
+        if ($card.length) {
+            return $card.find('.cl-purchase-form');
+        }
+
+        return null;
     }
 
     /**
@@ -123,57 +186,98 @@
             e.preventDefault();
 
             var $btn = $(this);
-            var $form = $btn.closest('.cl-purchase-form, .cl-floating-bar');
-            var postId = $form.data('post-id') || $form.find('[data-post-id]').data('post-id');
+            var postId = getPostId($btn);
+            var $form = getFormContext($btn);
 
-            // If from floating bar without variants, use main form
-            if ($btn.hasClass('cl-floating-add-to-cart')) {
+            // If from floating bar, find main form
+            if ($btn.hasClass('cl-floating-add-to-cart') && postId) {
                 var $mainForm = $('.cl-purchase-form[data-post-id="' + postId + '"]');
                 if ($mainForm.length) {
                     $form = $mainForm;
                 }
             }
 
-            // Check variant selection
-            var $variantId = $form.find('.cl-variant-id');
-            if ($variantId.length && !$variantId.val()) {
-                var hasVariants = $form.find('.cl-variant-dropdown').length > 0;
-                if (hasVariants) {
-                    alert(clFrontend.strings.selectVariant);
-                    return;
+            // Check if we have a valid post ID
+            if (!postId) {
+                showNotice(clFrontend.strings.error, 'error');
+                return;
+            }
+
+            // Check variant selection if applicable
+            var variantId = 0;
+            if ($form && $form.length) {
+                var $variantId = $form.find('.cl-variant-id');
+                if ($variantId.length) {
+                    var hasVariants = $form.find('.cl-variant-dropdown').length > 0;
+                    if (hasVariants && !$variantId.val()) {
+                        showNotice(clFrontend.strings.selectVariant, 'error');
+                        return;
+                    }
+                    variantId = $variantId.val() || 0;
                 }
+            }
+
+            // Get quantity
+            var quantity = 1;
+            if ($form && $form.length) {
+                quantity = $form.find('.cl-quantity').val() || 1;
             }
 
             var data = {
                 action: 'cl_add_to_cart',
                 nonce: clFrontend.nonce,
                 post_id: postId,
-                quantity: $form.find('.cl-quantity').val() || 1,
-                variant_id: $variantId.val() || 0
+                quantity: quantity,
+                variant_id: variantId
             };
 
-            $btn.prop('disabled', true);
+            $btn.prop('disabled', true).addClass('cl-loading');
 
             $.post(clFrontend.ajaxUrl, data, function(response) {
                 if (response.success) {
-                    showAddedMessage($form);
+                    showAddedMessage($btn, $form);
                     updateCartCount(response.data.items_count);
+                    showNotice(response.data.message, 'success');
                 } else {
-                    alert(response.data.message || clFrontend.strings.error);
+                    showNotice(response.data.message || clFrontend.strings.error, 'error');
                 }
             }).fail(function() {
-                alert(clFrontend.strings.error);
+                showNotice(clFrontend.strings.error, 'error');
             }).always(function() {
-                $btn.prop('disabled', false);
+                $btn.prop('disabled', false).removeClass('cl-loading');
             });
         });
     }
 
-    function showAddedMessage($form) {
-        var $card = $form.closest('.cl-purchase-card');
+    function showAddedMessage($btn, $form) {
+        var $card = $btn.closest('.cl-purchase-card');
+        if (!$card.length && $form) {
+            $card = $form.closest('.cl-purchase-card');
+        }
         if ($card.length) {
             $card.find('.cl-added-message').slideDown();
         }
+    }
+
+    function showNotice(message, type) {
+        // Remove existing notices
+        $('.cl-toast-notice').remove();
+
+        var $notice = $('<div class="cl-toast-notice cl-toast-' + type + '">' + message + '</div>');
+        $('body').append($notice);
+
+        // Animate in
+        setTimeout(function() {
+            $notice.addClass('cl-toast-visible');
+        }, 10);
+
+        // Remove after delay
+        setTimeout(function() {
+            $notice.removeClass('cl-toast-visible');
+            setTimeout(function() {
+                $notice.remove();
+            }, 300);
+        }, 3000);
     }
 
     $(document).on('click', '.cl-continue-shopping', function() {
@@ -192,40 +296,56 @@
             e.preventDefault();
 
             var $btn = $(this);
-            var $form = $btn.closest('.cl-purchase-form, .cl-floating-bar');
-            var postId = $form.data('post-id') || $form.find('[data-post-id]').data('post-id');
+            var postId = getPostId($btn);
+            var $form = getFormContext($btn);
 
-            // Check variant selection
-            var $variantId = $form.find('.cl-variant-id');
-            if ($variantId.length && !$variantId.val()) {
-                var hasVariants = $form.find('.cl-variant-dropdown').length > 0;
-                if (hasVariants) {
-                    alert(clFrontend.strings.selectVariant);
-                    return;
+            // Check if we have a valid post ID
+            if (!postId) {
+                showNotice(clFrontend.strings.error, 'error');
+                return;
+            }
+
+            // Check variant selection if applicable
+            var variantId = 0;
+            if ($form && $form.length) {
+                var $variantId = $form.find('.cl-variant-id');
+                if ($variantId.length) {
+                    var hasVariants = $form.find('.cl-variant-dropdown').length > 0;
+                    if (hasVariants && !$variantId.val()) {
+                        showNotice(clFrontend.strings.selectVariant, 'error');
+                        return;
+                    }
+                    variantId = $variantId.val() || 0;
                 }
+            }
+
+            // Get quantity
+            var quantity = 1;
+            if ($form && $form.length) {
+                quantity = $form.find('.cl-quantity').val() || 1;
             }
 
             var data = {
                 action: 'cl_add_to_cart',
                 nonce: clFrontend.nonce,
                 post_id: postId,
-                quantity: $form.find('.cl-quantity').val() || 1,
-                variant_id: $variantId.val() || 0
+                quantity: quantity,
+                variant_id: variantId
             };
 
-            $btn.prop('disabled', true);
+            $btn.prop('disabled', true).addClass('cl-loading');
 
             $.post(clFrontend.ajaxUrl, data, function(response) {
                 if (response.success) {
                     // Redirect to checkout
                     window.location.href = clFrontend.checkoutUrl;
                 } else {
-                    alert(response.data.message || clFrontend.strings.error);
-                    $btn.prop('disabled', false);
+                    showNotice(response.data.message || clFrontend.strings.error, 'error');
+                    $btn.prop('disabled', false).removeClass('cl-loading');
                 }
             }).fail(function() {
-                alert(clFrontend.strings.error);
-                $btn.prop('disabled', false);
+                showNotice(clFrontend.strings.error, 'error');
+                $btn.prop('disabled', false).removeClass('cl-loading');
             });
         });
     }
@@ -244,7 +364,8 @@
         });
 
         // Remove item
-        $(document).on('click', '.cl-remove-item', function() {
+        $(document).on('click', '.cl-remove-item', function(e) {
+            e.preventDefault();
             var cartKey = $(this).data('cart-key');
             removeCartItem(cartKey);
         });
@@ -264,8 +385,8 @@
 
                 // Update line total
                 var $row = $('.cl-cart-item[data-cart-key="' + cartKey + '"]');
-                var price = parseFloat($row.find('.cl-col-price').text().replace(/[^\d.]/g, ''));
-                var lineTotal = (price * quantity).toFixed(2) + clFrontend.currency;
+                var price = parseFloat($row.data('price')) || 0;
+                var lineTotal = formatPrice(price * quantity);
                 $row.find('.cl-line-total').text(lineTotal);
 
                 updateCartCount(response.data.items_count);

@@ -98,8 +98,16 @@ class CL_Public {
      * Auto inject commerce box into content
      */
     public function auto_inject_commerce( $content ) {
+        global $post;
+
+        // Skip if no post
+        if ( ! $post ) {
+            return $content;
+        }
+
         // Skip if manual mode
-        if ( 'shortcode' === get_option( 'cl_display_mode', 'auto' ) ) {
+        $display_mode = get_option( 'cl_display_mode', 'auto' );
+        if ( 'shortcode' === $display_mode ) {
             return $content;
         }
 
@@ -108,26 +116,33 @@ class CL_Public {
             return $content;
         }
 
-        // Prevent multiple injections
+        // Get current post ID
+        $post_id = $post->ID;
+        if ( ! $post_id ) {
+            return $content;
+        }
+
+        // Prevent multiple injections for the same post
         static $already_injected = array();
-        $post_id = get_the_ID();
         if ( isset( $already_injected[ $post_id ] ) ) {
             return $content;
         }
 
         // Check if post type is commerce enabled
-        $post_type = get_post_type();
-        if ( ! CL_Core::is_commerce_enabled( $post_type ) ) {
+        $post_type = get_post_type( $post_id );
+        $enabled_post_types = CL_Core::get_enabled_post_types();
+
+        if ( empty( $enabled_post_types ) || ! in_array( $post_type, $enabled_post_types, true ) ) {
             return $content;
         }
 
-        // Check if commerce is enabled for this post
+        // Check if commerce is enabled for this specific post
         $product = new CL_Product( $post_id );
         if ( ! $product->is_commerce_enabled() ) {
             return $content;
         }
 
-        // Mark as injected
+        // Mark as injected BEFORE generating content to prevent recursion
         $already_injected[ $post_id ] = true;
 
         // Generate commerce box
