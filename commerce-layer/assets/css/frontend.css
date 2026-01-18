@@ -396,11 +396,15 @@
 
 /* Add to Cart & Buy Now specific */
 .cl-add-to-cart-btn {
+    background: var(--cl-add-to-cart-bg, var(--cl-primary)) !important;
+    color: var(--cl-add-to-cart-text, #fff) !important;
     flex: 1;
     min-width: 160px;
 }
 
 .cl-buy-now-btn {
+    background: var(--cl-buy-now-bg, var(--cl-success)) !important;
+    color: var(--cl-buy-now-text, #fff) !important;
     flex: 1;
     min-width: 140px;
 }
