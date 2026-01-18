@@ -171,8 +171,8 @@ class CL_Public {
      * Render floating bar
      */
     public function render_floating_bar() {
-        // Check if enabled
-        if ( 'yes' !== get_option( 'cl_floating_bar_enabled', 'no' ) ) {
+        // Check if enabled (default: yes)
+        if ( 'yes' !== get_option( 'cl_floating_bar_enabled', 'yes' ) ) {
             return;
         }
 

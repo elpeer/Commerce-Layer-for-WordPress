@@ -1,7 +1,7 @@
 /**
  * Frontend JavaScript
  * Commerce Layer Frontend Scripts
- * Version: 1.0.2
+ * Version: 1.0.3
  */
 
 (function($) {
@@ -9,7 +9,7 @@
 
     // Initialize
     $(document).ready(function() {
-        console.log('[Commerce Layer] Version 1.0.2 - Initializing frontend...');
+        console.log('[Commerce Layer] Version 1.0.3 - Initializing frontend...');
         initQuantityButtons();
         initVariantSelection();
         initAddToCart();
