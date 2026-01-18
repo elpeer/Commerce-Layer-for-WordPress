@@ -1,0 +1,33 @@
+/**
+ * Admin Global CSS
+ * Minimal styles for all admin pages
+ */
+
+/* Status badges */
+.cl-status {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.cl-status-pending {
+    background: #fef3cd;
+    color: #856404;
+}
+
+.cl-status-paid {
+    background: #d4edda;
+    color: #155724;
+}
+
+.cl-status-canceled {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.cl-status-refunded {
+    background: #cce5ff;
+    color: #004085;
+}

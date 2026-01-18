@@ -1,0 +1,171 @@
+<?php
+/**
+ * Public Class
+ *
+ * Handles frontend functionality
+ *
+ * @package CommerceLayer
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
+class CL_Public {
+
+    /**
+     * Constructor
+     */
+    public function __construct() {
+        add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+        add_filter( 'the_content', array( $this, 'auto_inject_commerce' ), 20 );
+        add_action( 'wp_footer', array( $this, 'render_floating_bar' ) );
+    }
+
+    /**
+     * Enqueue frontend scripts and styles
+     */
+    public function enqueue_scripts() {
+        // Check if we need to load on this page
+        if ( ! $this->should_load_assets() ) {
+            return;
+        }
+
+        // Styles
+        wp_enqueue_style(
+            'cl-frontend',
+            CL_PLUGIN_URL . 'assets/css/frontend.css',
+            array(),
+            CL_VERSION
+        );
+
+        // Scripts
+        wp_enqueue_script(
+            'cl-frontend',
+            CL_PLUGIN_URL . 'assets/js/frontend.js',
+            array( 'jquery' ),
+            CL_VERSION,
+            true
+        );
+
+        // Localize
+        wp_localize_script( 'cl-frontend', 'clFrontend', array(
+            'ajaxUrl'      => admin_url( 'admin-ajax.php' ),
+            'nonce'        => wp_create_nonce( 'cl_ajax_nonce' ),
+            'cartUrl'      => get_permalink( get_option( 'cl_cart_page_id' ) ),
+            'checkoutUrl'  => get_permalink( get_option( 'cl_checkout_page_id' ) ),
+            'currency'     => get_option( 'cl_currency_symbol', '₪' ),
+            'strings'      => array(
+                'addedToCart'    => __( 'הפריט נוסף לסל', 'commerce-layer' ),
+                'error'          => __( 'שגיאה', 'commerce-layer' ),
+                'selectVariant'  => __( 'בחר וריאציה', 'commerce-layer' ),
+                'outOfStock'     => __( 'אזל מהמלאי', 'commerce-layer' ),
+                'viewCart'       => __( 'צפה בסל', 'commerce-layer' ),
+                'continueShopping' => __( 'המשך בקנייה', 'commerce-layer' ),
+            ),
+        ) );
+    }
+
+    /**
+     * Check if we should load assets
+     */
+    private function should_load_assets() {
+        // Always load on cart/checkout/thank-you pages
+        if ( is_page( array(
+            get_option( 'cl_cart_page_id' ),
+            get_option( 'cl_checkout_page_id' ),
+            get_option( 'cl_thank_you_page_id' ),
+        ) ) ) {
+            return true;
+        }
+
+        // Check if current post type is commerce enabled
+        $post_type = get_post_type();
+        if ( $post_type && CL_Core::is_commerce_enabled( $post_type ) ) {
+            return true;
+        }
+
+        // Check for shortcodes
+        global $post;
+        if ( $post && has_shortcode( $post->post_content, 'commerce_box' ) ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Auto inject commerce box into content
+     */
+    public function auto_inject_commerce( $content ) {
+        // Skip if manual mode
+        if ( 'shortcode' === get_option( 'cl_display_mode', 'auto' ) ) {
+            return $content;
+        }
+
+        // Skip if not single or not in main loop
+        if ( ! is_singular() || ! in_the_loop() || ! is_main_query() ) {
+            return $content;
+        }
+
+        // Check if post type is commerce enabled
+        $post_type = get_post_type();
+        if ( ! CL_Core::is_commerce_enabled( $post_type ) ) {
+            return $content;
+        }
+
+        // Check if commerce is enabled for this post
+        $product = new CL_Product( get_the_ID() );
+        if ( ! $product->is_commerce_enabled() ) {
+            return $content;
+        }
+
+        // Generate commerce box
+        $commerce_box = $this->get_purchase_card_html( $product );
+
+        // Insert based on position setting
+        $position = get_option( 'cl_display_position', 'after_content' );
+
+        if ( 'before_content' === $position ) {
+            return $commerce_box . $content;
+        }
+
+        return $content . $commerce_box;
+    }
+
+    /**
+     * Get purchase card HTML
+     */
+    public function get_purchase_card_html( $product ) {
+        ob_start();
+        include CL_PLUGIN_DIR . 'templates/purchase-card.php';
+        return ob_get_clean();
+    }
+
+    /**
+     * Render floating bar
+     */
+    public function render_floating_bar() {
+        // Check if enabled
+        if ( 'yes' !== get_option( 'cl_floating_bar_enabled', 'no' ) ) {
+            return;
+        }
+
+        // Only on single pages with commerce enabled
+        if ( ! is_singular() ) {
+            return;
+        }
+
+        $post_type = get_post_type();
+        if ( ! CL_Core::is_commerce_enabled( $post_type ) ) {
+            return;
+        }
+
+        $product = new CL_Product( get_the_ID() );
+        if ( ! $product->is_commerce_enabled() || ! $product->is_purchasable() ) {
+            return;
+        }
+
+        include CL_PLUGIN_DIR . 'templates/floating-bar.php';
+    }
+}

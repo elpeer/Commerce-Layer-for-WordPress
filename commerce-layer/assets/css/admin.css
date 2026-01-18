@@ -1,0 +1,176 @@
+/**
+ * Admin CSS
+ * Styles for Commerce Layer admin pages
+ */
+
+/* Dashboard */
+.cl-dashboard-widgets {
+    margin-top: 20px;
+}
+
+.cl-stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.cl-stat-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.cl-stat-icon {
+    font-size: 32px;
+}
+
+.cl-stat-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.cl-stat-number {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1d2327;
+}
+
+.cl-stat-label {
+    color: #666;
+    font-size: 14px;
+}
+
+.cl-stat-warning .cl-stat-number {
+    color: #d63638;
+}
+
+.cl-stat-success .cl-stat-number {
+    color: #00a32a;
+}
+
+.cl-dashboard-section {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.cl-dashboard-section h2 {
+    margin: 0 0 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.cl-no-data {
+    color: #666;
+    font-style: italic;
+}
+
+.cl-quick-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.cl-quick-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #1d2327;
+    transition: all 0.2s;
+}
+
+.cl-quick-link:hover {
+    background: #2271b1;
+    color: #fff;
+    border-color: #2271b1;
+}
+
+.cl-help-section ul {
+    margin: 10px 0;
+}
+
+.cl-help-section code {
+    background: #f0f0f0;
+    padding: 2px 6px;
+    border-radius: 3px;
+}
+
+/* Order View */
+.cl-order-view .cl-status {
+    margin-right: 10px;
+}
+
+.cl-order-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.cl-order-box {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.cl-order-box h2 {
+    margin: 0 0 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    font-size: 16px;
+}
+
+.cl-order-details {
+    width: 100%;
+}
+
+.cl-order-details th {
+    text-align: right;
+    padding: 8px 0;
+    width: 120px;
+    color: #666;
+    font-weight: normal;
+}
+
+.cl-order-details td {
+    padding: 8px 0;
+}
+
+.cl-order-items-box {
+    grid-column: 1 / -1;
+}
+
+.cl-order-items-box .column-item {
+    width: 40%;
+}
+
+.cl-order-items-box .text-left {
+    text-align: right;
+}
+
+.cl-subtotal td,
+.cl-total td {
+    padding-top: 15px;
+}
+
+.cl-total td {
+    font-size: 16px;
+}
+
+/* RTL Support */
+html[dir="rtl"] .cl-order-details th {
+    text-align: right;
+}
