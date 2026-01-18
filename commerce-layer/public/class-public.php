@@ -103,8 +103,15 @@ class CL_Public {
             return $content;
         }
 
-        // Skip if not single or not in main loop
-        if ( ! is_singular() || ! in_the_loop() || ! is_main_query() ) {
+        // Skip if not single view
+        if ( ! is_singular() ) {
+            return $content;
+        }
+
+        // Prevent multiple injections
+        static $already_injected = array();
+        $post_id = get_the_ID();
+        if ( isset( $already_injected[ $post_id ] ) ) {
             return $content;
         }
 
@@ -115,10 +122,13 @@ class CL_Public {
         }
 
         // Check if commerce is enabled for this post
-        $product = new CL_Product( get_the_ID() );
+        $product = new CL_Product( $post_id );
         if ( ! $product->is_commerce_enabled() ) {
             return $content;
         }
+
+        // Mark as injected
+        $already_injected[ $post_id ] = true;
 
         // Generate commerce box
         $commerce_box = $this->get_purchase_card_html( $product );
