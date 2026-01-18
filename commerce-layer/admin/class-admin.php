@@ -12,12 +12,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 class CL_Admin {
 
     /**
+     * Products List instance
+     */
+    private $products_list;
+
+    /**
      * Constructor
      */
     public function __construct() {
         add_action( 'admin_menu', array( $this, 'add_admin_menu' ) );
         add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
         add_filter( 'plugin_action_links_' . CL_PLUGIN_BASENAME, array( $this, 'plugin_action_links' ) );
+
+        // Initialize products list
+        require_once CL_PLUGIN_DIR . 'admin/class-products-list.php';
+        $this->products_list = new CL_Products_List();
     }
 
     /**
@@ -43,6 +52,16 @@ class CL_Admin {
             'manage_options',
             'commerce-layer',
             array( $this, 'render_dashboard' )
+        );
+
+        // Products
+        add_submenu_page(
+            'commerce-layer',
+            __( 'מוצרים', 'commerce-layer' ),
+            __( 'מוצרים', 'commerce-layer' ),
+            'manage_options',
+            'cl-products',
+            array( $this, 'render_products' )
         );
 
         // Orders
@@ -154,6 +173,13 @@ class CL_Admin {
         array_unshift( $links, $settings_link );
 
         return $links;
+    }
+
+    /**
+     * Render products page
+     */
+    public function render_products() {
+        $this->products_list->render();
     }
 
     /**
