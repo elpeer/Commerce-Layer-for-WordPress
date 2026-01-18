@@ -25,10 +25,10 @@ $total_savings = $totals['savings'];
 // Check if eligible for free shipping
 $eligible_for_free_shipping = $free_shipping_threshold > 0 && $totals['subtotal'] >= $free_shipping_threshold;
 
-// Filter enabled shipping methods
+// Filter shipping methods (show all methods that have a name, enabled or not)
 $enabled_shipping_methods = array();
 foreach ( $shipping_methods as $method ) {
-    if ( ! empty( $method['enabled'] ) ) {
+    if ( ! empty( $method['name'] ) && ( ! isset( $method['enabled'] ) || $method['enabled'] ) ) {
         $enabled_shipping_methods[] = $method;
     }
 }

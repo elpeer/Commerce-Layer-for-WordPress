@@ -134,7 +134,7 @@ $currency_symbol = get_option( 'cl_currency_symbol', '₪' );
                             <a href="<?php echo esc_url( $product->get_permalink() ); ?>" class="cl-side-cart-item-title">
                                 <?php echo esc_html( $product->get_title() ); ?>
                             </a>
-                            <?php if ( $variant && ! empty( $item['variant_name'] ) ) : ?>
+                            <?php if ( ! empty( $item['variant_name'] ) ) : ?>
                                 <span class="cl-side-cart-item-variant"><?php echo esc_html( $item['variant_name'] ); ?></span>
                             <?php endif; ?>
                             <div class="cl-side-cart-item-price">
