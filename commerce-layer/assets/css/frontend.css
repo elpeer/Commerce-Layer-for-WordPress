@@ -50,6 +50,17 @@
     color: var(--cl-danger);
 }
 
+.cl-no-price,
+.cl-not-purchasable {
+    color: var(--cl-text-light);
+    font-size: 14px;
+    font-style: italic;
+    padding: 12px;
+    background: var(--cl-bg-light);
+    border-radius: 6px;
+    text-align: center;
+}
+
 .cl-stock-status {
     display: flex;
     align-items: center;
