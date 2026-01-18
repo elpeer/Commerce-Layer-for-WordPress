@@ -1,6 +1,6 @@
 <?php
 /**
- * Checkout Template
+ * Checkout Template - Shopify Style
  *
  * @package CommerceLayer
  */
@@ -25,7 +25,7 @@ $total_savings = $totals['savings'];
 // Check if eligible for free shipping
 $eligible_for_free_shipping = $free_shipping_threshold > 0 && $totals['subtotal'] >= $free_shipping_threshold;
 
-// Filter shipping methods (show all methods that have a name, enabled or not)
+// Filter shipping methods
 $enabled_shipping_methods = array();
 foreach ( $shipping_methods as $method ) {
     if ( ! empty( $method['name'] ) && ( ! isset( $method['enabled'] ) || $method['enabled'] ) ) {
@@ -36,12 +36,16 @@ foreach ( $shipping_methods as $method ) {
 // Add free shipping option if eligible
 if ( $eligible_for_free_shipping ) {
     array_unshift( $enabled_shipping_methods, array(
-        'name'  => __( 'משלוח חינם', 'commerce-layer' ),
+        'name'  => __( 'משלוח חינם עד הבית', 'commerce-layer' ),
         'price' => 0,
     ) );
 }
+
+// Calculate initial total
+$default_shipping = ! empty( $enabled_shipping_methods ) ? floatval( $enabled_shipping_methods[0]['price'] ) : 0;
+$final_total = $totals['subtotal'] + $default_shipping;
 ?>
-<div class="cl-checkout">
+<div class="cl-checkout cl-checkout-shopify">
     <?php if ( isset( $_GET['payment_error'] ) ) : ?>
         <div class="cl-notice cl-notice-error">
             <?php esc_html_e( 'התשלום נכשל. אנא נסה שוב.', 'commerce-layer' ); ?>
@@ -51,171 +55,241 @@ if ( $eligible_for_free_shipping ) {
     <form id="cl-checkout-form" class="cl-checkout-form">
         <?php wp_nonce_field( 'cl_checkout_nonce', 'checkout_nonce' ); ?>
 
-        <div class="cl-checkout-grid">
-            <!-- Customer Details -->
-            <div class="cl-checkout-details">
-                <h3><?php esc_html_e( 'פרטי לקוח', 'commerce-layer' ); ?></h3>
+        <div class="cl-checkout-layout">
+            <!-- Right Side - Form (in RTL) -->
+            <div class="cl-checkout-main">
 
-                <div class="cl-form-row">
-                    <label for="cl-name"><?php esc_html_e( 'שם מלא', 'commerce-layer' ); ?> <span class="required">*</span></label>
-                    <input type="text" id="cl-name" name="name" required>
-                </div>
+                <!-- Contact Section -->
+                <div class="cl-checkout-section">
+                    <h2 class="cl-section-title"><?php esc_html_e( 'פרטים', 'commerce-layer' ); ?></h2>
 
-                <div class="cl-form-row">
-                    <label for="cl-email"><?php esc_html_e( 'אימייל', 'commerce-layer' ); ?> <span class="required">*</span></label>
-                    <input type="email" id="cl-email" name="email" required>
-                </div>
-
-                <div class="cl-form-row">
-                    <label for="cl-phone"><?php esc_html_e( 'טלפון', 'commerce-layer' ); ?> <span class="required">*</span></label>
-                    <input type="tel" id="cl-phone" name="phone" required dir="ltr">
-                </div>
-
-                <div class="cl-form-row">
-                    <label for="cl-address"><?php esc_html_e( 'כתובת', 'commerce-layer' ); ?></label>
-                    <input type="text" id="cl-address" name="address">
-                </div>
-
-                <div class="cl-form-row cl-form-row-half">
-                    <div>
-                        <label for="cl-city"><?php esc_html_e( 'עיר', 'commerce-layer' ); ?></label>
-                        <input type="text" id="cl-city" name="city">
-                    </div>
-                    <div>
-                        <label for="cl-postcode"><?php esc_html_e( 'מיקוד', 'commerce-layer' ); ?></label>
-                        <input type="text" id="cl-postcode" name="postcode" dir="ltr">
+                    <div class="cl-form-group">
+                        <label for="cl-email"><?php esc_html_e( 'דוא"ל', 'commerce-layer' ); ?></label>
+                        <input type="email" id="cl-email" name="email" required placeholder="<?php esc_attr_e( 'דוא"ל', 'commerce-layer' ); ?>">
                     </div>
                 </div>
 
-                <div class="cl-form-row">
-                    <label for="cl-notes"><?php esc_html_e( 'הערות להזמנה', 'commerce-layer' ); ?></label>
-                    <textarea id="cl-notes" name="notes" rows="3"></textarea>
+                <!-- Shipping Address Section -->
+                <div class="cl-checkout-section">
+                    <h2 class="cl-section-title"><?php esc_html_e( 'משלוח', 'commerce-layer' ); ?></h2>
+
+                    <div class="cl-form-row-2">
+                        <div class="cl-form-group">
+                            <label for="cl-first-name"><?php esc_html_e( 'שם פרטי', 'commerce-layer' ); ?></label>
+                            <input type="text" id="cl-first-name" name="first_name" required placeholder="<?php esc_attr_e( 'שם פרטי', 'commerce-layer' ); ?>">
+                        </div>
+                        <div class="cl-form-group">
+                            <label for="cl-last-name"><?php esc_html_e( 'שם משפחה', 'commerce-layer' ); ?></label>
+                            <input type="text" id="cl-last-name" name="last_name" required placeholder="<?php esc_attr_e( 'שם משפחה', 'commerce-layer' ); ?>">
+                        </div>
+                    </div>
+
+                    <div class="cl-form-row-2">
+                        <div class="cl-form-group">
+                            <label for="cl-city"><?php esc_html_e( 'עיר', 'commerce-layer' ); ?></label>
+                            <input type="text" id="cl-city" name="city" required placeholder="<?php esc_attr_e( 'עיר', 'commerce-layer' ); ?>">
+                        </div>
+                        <div class="cl-form-group">
+                            <label for="cl-address"><?php esc_html_e( 'שם רחוב', 'commerce-layer' ); ?></label>
+                            <input type="text" id="cl-address" name="address" required placeholder="<?php esc_attr_e( 'שם רחוב', 'commerce-layer' ); ?>">
+                        </div>
+                    </div>
+
+                    <div class="cl-form-group">
+                        <label for="cl-address2"><?php esc_html_e( 'מספר בית ודירה (אופציונלי)', 'commerce-layer' ); ?></label>
+                        <input type="text" id="cl-address2" name="address2" placeholder="<?php esc_attr_e( 'מספר בית ודירה', 'commerce-layer' ); ?>">
+                    </div>
+
+                    <div class="cl-form-group">
+                        <label for="cl-phone"><?php esc_html_e( 'טלפון', 'commerce-layer' ); ?></label>
+                        <input type="tel" id="cl-phone" name="phone" required dir="ltr" placeholder="<?php esc_attr_e( 'טלפון', 'commerce-layer' ); ?>">
+                    </div>
+
+                    <div class="cl-form-group">
+                        <label for="cl-notes"><?php esc_html_e( 'הערות משלוח (אופציונלי)', 'commerce-layer' ); ?></label>
+                        <textarea id="cl-notes" name="notes" rows="2" placeholder="<?php esc_attr_e( 'הערות למשלוח', 'commerce-layer' ); ?>"></textarea>
+                    </div>
                 </div>
 
                 <?php if ( ! empty( $enabled_shipping_methods ) ) : ?>
-                <!-- Shipping Options -->
-                <div class="cl-shipping-section">
-                    <h4><?php esc_html_e( 'אופציות משלוח', 'commerce-layer' ); ?></h4>
-                    <div class="cl-shipping-options">
+                <!-- Shipping Method Section -->
+                <div class="cl-checkout-section">
+                    <h2 class="cl-section-title"><?php esc_html_e( 'שיטת משלוח', 'commerce-layer' ); ?></h2>
+
+                    <div class="cl-shipping-methods">
                         <?php foreach ( $enabled_shipping_methods as $index => $method ) :
-                            $method_id = sanitize_title( $method['name'] );
                             $shipping_price = floatval( $method['price'] );
                         ?>
-                            <label class="cl-shipping-option">
+                            <label class="cl-shipping-method-card <?php echo $index === 0 ? 'selected' : ''; ?>">
                                 <input type="radio" name="shipping_method" value="<?php echo esc_attr( $index ); ?>"
                                        data-price="<?php echo esc_attr( $shipping_price ); ?>"
                                        <?php checked( $index, 0 ); ?>>
-                                <span class="cl-shipping-option-content">
-                                    <span class="cl-shipping-name"><?php echo esc_html( $method['name'] ); ?></span>
-                                    <span class="cl-shipping-price">
-                                        <?php if ( $shipping_price > 0 ) : ?>
-                                            <?php echo CL_Core::format_price( $shipping_price ); ?>
-                                        <?php else : ?>
-                                            <?php esc_html_e( 'חינם', 'commerce-layer' ); ?>
-                                        <?php endif; ?>
-                                    </span>
+                                <span class="cl-shipping-method-icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="1" y="3" width="15" height="13"></rect>
+                                        <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                                        <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                                        <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                                    </svg>
+                                </span>
+                                <span class="cl-shipping-method-details">
+                                    <span class="cl-shipping-method-name"><?php echo esc_html( $method['name'] ); ?></span>
+                                </span>
+                                <span class="cl-shipping-method-price">
+                                    <?php if ( $shipping_price > 0 ) : ?>
+                                        <?php echo CL_Core::format_price( $shipping_price ); ?>
+                                    <?php else : ?>
+                                        <?php esc_html_e( 'חינם', 'commerce-layer' ); ?>
+                                    <?php endif; ?>
                                 </span>
                             </label>
                         <?php endforeach; ?>
                     </div>
                 </div>
                 <?php endif; ?>
-            </div>
-
-            <!-- Order Summary -->
-            <div class="cl-checkout-summary">
-                <h3><?php esc_html_e( 'סיכום הזמנה', 'commerce-layer' ); ?></h3>
-
-                <div class="cl-order-items">
-                    <?php foreach ( $items as $item ) :
-                        $item_price = floatval( $item['price'] );
-                        $item_regular_price = isset( $item['regular_price'] ) ? floatval( $item['regular_price'] ) : $item_price;
-                        $item_has_discount = $item_regular_price > $item_price;
-                        $item_savings = $item_has_discount ? ( $item_regular_price - $item_price ) * $item['quantity'] : 0;
-                        $line_total = $item_price * $item['quantity'];
-                        $line_regular_total = $item_regular_price * $item['quantity'];
-                    ?>
-                        <div class="cl-order-item">
-                            <div class="cl-item-info">
-                                <span class="cl-item-name"><?php echo esc_html( $item['name'] ); ?></span>
-                                <?php if ( ! empty( $item['variant_name'] ) ) : ?>
-                                    <span class="cl-item-variant"><?php echo esc_html( $item['variant_name'] ); ?></span>
-                                <?php endif; ?>
-                                <span class="cl-item-qty">x<?php echo esc_html( $item['quantity'] ); ?></span>
-                            </div>
-                            <div class="cl-item-price-wrap">
-                                <?php if ( $item_has_discount && $show_discounts ) : ?>
-                                    <span class="cl-item-original-price"><?php echo CL_Core::format_price( $line_regular_total ); ?></span>
-                                    <span class="cl-item-price cl-sale-price"><?php echo CL_Core::format_price( $line_total ); ?></span>
-                                <?php else : ?>
-                                    <span class="cl-item-price"><?php echo CL_Core::format_price( $line_total ); ?></span>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-
-                <div class="cl-order-totals">
-                    <?php if ( $total_savings > 0 && $show_discounts ) : ?>
-                    <div class="cl-total-row cl-original-subtotal">
-                        <span><?php esc_html_e( 'מחיר מקורי:', 'commerce-layer' ); ?></span>
-                        <span class="cl-strikethrough"><?php echo CL_Core::format_price( $totals['subtotal_before_discounts'] ); ?></span>
-                    </div>
-                    <div class="cl-total-row cl-savings-row">
-                        <span>
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-left: 4px;">
-                                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
-                                <line x1="7" y1="7" x2="7.01" y2="7"></line>
-                            </svg>
-                            <?php esc_html_e( 'חסכת:', 'commerce-layer' ); ?>
-                        </span>
-                        <span class="cl-savings-amount">-<?php echo CL_Core::format_price( $total_savings ); ?></span>
-                    </div>
-                    <?php endif; ?>
-
-                    <div class="cl-total-row">
-                        <span><?php esc_html_e( 'סיכום ביניים:', 'commerce-layer' ); ?></span>
-                        <span id="cl-subtotal"><?php echo CL_Core::format_price( $totals['subtotal'] ); ?></span>
-                    </div>
-
-                    <?php if ( ! empty( $enabled_shipping_methods ) ) :
-                        $default_shipping = isset( $enabled_shipping_methods[0] ) ? floatval( $enabled_shipping_methods[0]['price'] ) : 0;
-                    ?>
-                    <div class="cl-total-row cl-shipping-row">
-                        <span><?php esc_html_e( 'משלוח:', 'commerce-layer' ); ?></span>
-                        <span id="cl-shipping-cost"><?php echo $default_shipping > 0 ? CL_Core::format_price( $default_shipping ) : esc_html__( 'חינם', 'commerce-layer' ); ?></span>
-                    </div>
-                    <?php $final_total = $totals['subtotal'] + $default_shipping; ?>
-                    <?php else : ?>
-                    <?php $final_total = $totals['subtotal']; ?>
-                    <?php endif; ?>
-
-                    <div class="cl-total-row cl-total-final">
-                        <span><?php esc_html_e( 'סה"כ לתשלום:', 'commerce-layer' ); ?></span>
-                        <span class="cl-final-amount" id="cl-final-total"><?php echo CL_Core::format_price( $final_total ); ?></span>
-                    </div>
-                </div>
 
                 <!-- Payment Section -->
-                <div class="cl-payment-section">
-                    <h4><?php esc_html_e( 'תשלום', 'commerce-layer' ); ?></h4>
+                <div class="cl-checkout-section">
+                    <h2 class="cl-section-title"><?php esc_html_e( 'תשלום', 'commerce-layer' ); ?></h2>
+                    <p class="cl-section-subtitle"><?php esc_html_e( 'כל העסקאות מאובטחות ומוצפנות.', 'commerce-layer' ); ?></p>
 
                     <?php if ( 'test' === $gateway ) : ?>
-                        <p class="cl-test-mode"><?php esc_html_e( '⚠️ מצב בדיקה - ללא תשלום אמיתי', 'commerce-layer' ); ?></p>
+                        <div class="cl-test-mode-banner">
+                            <?php esc_html_e( '⚠️ מצב בדיקה - ללא תשלום אמיתי', 'commerce-layer' ); ?>
+                        </div>
                     <?php endif; ?>
 
-                    <button type="submit" class="cl-btn cl-btn-pay">
-                        <?php
-                        printf(
-                            esc_html__( 'שלם %s', 'commerce-layer' ),
-                            CL_Core::format_price( $final_total )
-                        );
-                        ?>
-                    </button>
+                    <div class="cl-payment-methods">
+                        <label class="cl-payment-method-card selected">
+                            <input type="radio" name="payment_method" value="credit_card" checked>
+                            <span class="cl-payment-method-info">
+                                <span class="cl-payment-method-name"><?php esc_html_e( 'כרטיס אשראי', 'commerce-layer' ); ?></span>
+                                <span class="cl-payment-icons">
+                                    <img src="https://cdn.shopify.com/shopifycloud/checkout-web/assets/c1.en/assets/visa.sxIq5Dot.svg" alt="Visa" height="24">
+                                    <img src="https://cdn.shopify.com/shopifycloud/checkout-web/assets/c1.en/assets/mastercard.1c4_lyMp.svg" alt="Mastercard" height="24">
+                                </span>
+                            </span>
+                            <span class="cl-payment-radio"></span>
+                        </label>
+                    </div>
+                </div>
 
-                    <p class="cl-secure-notice">
-                        🔒 <?php esc_html_e( 'התשלום מאובטח', 'commerce-layer' ); ?>
+                <!-- Submit Button (Mobile) -->
+                <div class="cl-checkout-submit-mobile">
+                    <button type="submit" class="cl-btn cl-btn-pay cl-btn-checkout">
+                        <?php esc_html_e( 'לתשלום', 'commerce-layer' ); ?>
+                    </button>
+                    <p class="cl-secure-badge">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                        <?php esc_html_e( 'מאובטח באמצעות תקני אבטחה מתקדמים', 'commerce-layer' ); ?>
                     </p>
+                </div>
+            </div>
+
+            <!-- Left Side - Order Summary (in RTL) -->
+            <div class="cl-checkout-sidebar">
+                <div class="cl-order-summary">
+                    <div class="cl-order-summary-header">
+                        <span class="cl-summary-toggle">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="9" cy="21" r="1"></circle>
+                                <circle cx="20" cy="21" r="1"></circle>
+                                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                            </svg>
+                            <?php esc_html_e( 'לעריכת הזמנה', 'commerce-layer' ); ?>
+                        </span>
+                    </div>
+
+                    <!-- Order Items -->
+                    <div class="cl-order-items-list">
+                        <?php foreach ( $items as $item ) :
+                            $product = new CL_Product( $item['post_id'] );
+                            $thumbnail = $product->get_thumbnail( 'thumbnail' );
+                            $item_price = floatval( $item['price'] );
+                            $item_regular_price = isset( $item['regular_price'] ) ? floatval( $item['regular_price'] ) : $item_price;
+                            $item_has_discount = $item_regular_price > $item_price;
+                            $line_total = $item_price * $item['quantity'];
+                            $line_regular_total = $item_regular_price * $item['quantity'];
+                        ?>
+                            <div class="cl-summary-item">
+                                <div class="cl-summary-item-image">
+                                    <?php if ( $thumbnail ) : ?>
+                                        <img src="<?php echo esc_url( $thumbnail ); ?>" alt="<?php echo esc_attr( $item['name'] ); ?>">
+                                    <?php endif; ?>
+                                    <span class="cl-summary-item-qty"><?php echo esc_html( $item['quantity'] ); ?></span>
+                                </div>
+                                <div class="cl-summary-item-details">
+                                    <span class="cl-summary-item-name"><?php echo esc_html( $item['name'] ); ?></span>
+                                    <?php if ( ! empty( $item['variant_name'] ) ) : ?>
+                                        <span class="cl-summary-item-variant"><?php echo esc_html( $item['variant_name'] ); ?></span>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="cl-summary-item-price">
+                                    <?php if ( $item_has_discount && $show_discounts ) : ?>
+                                        <span class="cl-price-original"><?php echo CL_Core::format_price( $line_regular_total ); ?></span>
+                                    <?php endif; ?>
+                                    <span class="cl-price-current"><?php echo CL_Core::format_price( $line_total ); ?></span>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+
+                    <!-- Coupon Code -->
+                    <div class="cl-coupon-section">
+                        <div class="cl-coupon-input-wrap">
+                            <input type="text" name="coupon_code" placeholder="<?php esc_attr_e( 'קוד הנחה', 'commerce-layer' ); ?>" class="cl-coupon-input">
+                            <button type="button" class="cl-btn cl-btn-coupon"><?php esc_html_e( 'החל', 'commerce-layer' ); ?></button>
+                        </div>
+                    </div>
+
+                    <!-- Order Totals -->
+                    <div class="cl-order-totals-summary">
+                        <?php if ( $total_savings > 0 && $show_discounts ) : ?>
+                        <div class="cl-summary-row cl-summary-discount">
+                            <span><?php esc_html_e( 'סכום הנחה', 'commerce-layer' ); ?></span>
+                            <span class="cl-discount-amount">-<?php echo CL_Core::format_price( $total_savings ); ?></span>
+                        </div>
+                        <?php endif; ?>
+
+                        <div class="cl-summary-row">
+                            <span>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-left: 4px;">
+                                    <rect x="1" y="3" width="15" height="13"></rect>
+                                    <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                                    <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                                    <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                                </svg>
+                                <?php esc_html_e( 'משלוח', 'commerce-layer' ); ?>
+                            </span>
+                            <span id="cl-shipping-cost"><?php echo $default_shipping > 0 ? CL_Core::format_price( $default_shipping ) : esc_html__( 'חינם', 'commerce-layer' ); ?></span>
+                        </div>
+
+                        <div class="cl-summary-row cl-summary-total">
+                            <span><?php esc_html_e( 'סך הכל', 'commerce-layer' ); ?></span>
+                            <span class="cl-total-amount">
+                                <span id="cl-final-total"><?php echo CL_Core::format_price( $final_total ); ?></span>
+                                <small><?php esc_html_e( 'כולל מע"מ', 'commerce-layer' ); ?></small>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button (Desktop) -->
+                    <div class="cl-checkout-submit-desktop">
+                        <button type="submit" class="cl-btn cl-btn-pay cl-btn-checkout">
+                            <span class="cl-btn-icon">+</span>
+                            <?php esc_html_e( 'לתשלום', 'commerce-layer' ); ?>
+                        </button>
+                        <p class="cl-secure-badge">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                            <?php esc_html_e( 'מאובטח באמצעות תקני אבטחה מתקדמים', 'commerce-layer' ); ?>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -242,7 +316,6 @@ jQuery(document).ready(function($) {
     var currencySymbol = '<?php echo esc_js( get_option( 'cl_currency_symbol', '₪' ) ); ?>';
     var currencyPosition = '<?php echo esc_js( get_option( 'cl_currency_position', 'right' ) ); ?>';
 
-    // Format price helper
     function formatPrice(amount) {
         var formatted = amount.toFixed(2);
         if (currencyPosition === 'right') {
@@ -251,6 +324,18 @@ jQuery(document).ready(function($) {
             return currencySymbol + ' ' + formatted;
         }
     }
+
+    // Shipping method selection
+    $('.cl-shipping-method-card').on('click', function() {
+        $('.cl-shipping-method-card').removeClass('selected');
+        $(this).addClass('selected');
+    });
+
+    // Payment method selection
+    $('.cl-payment-method-card').on('click', function() {
+        $('.cl-payment-method-card').removeClass('selected');
+        $(this).addClass('selected');
+    });
 
     // Update totals when shipping changes
     $('input[name="shipping_method"]').on('change', function() {
@@ -264,28 +349,30 @@ jQuery(document).ready(function($) {
         }
 
         $('#cl-final-total').text(formatPrice(total));
-        $('.cl-btn-pay').text('<?php echo esc_js( __( 'שלם', 'commerce-layer' ) ); ?> ' + formatPrice(total));
     });
 
     $form.on('submit', function(e) {
         e.preventDefault();
 
         var $btn = $form.find('.cl-btn-pay');
-        $btn.prop('disabled', true).text('<?php esc_html_e( 'מעבד...', 'commerce-layer' ); ?>');
+        $btn.prop('disabled', true).addClass('cl-loading');
 
         var shippingMethod = $form.find('[name="shipping_method"]:checked');
         var shippingIndex = shippingMethod.length ? shippingMethod.val() : '';
         var shippingPrice = shippingMethod.length ? parseFloat(shippingMethod.data('price')) || 0 : 0;
 
+        // Combine first and last name
+        var fullName = $form.find('[name="first_name"]').val() + ' ' + $form.find('[name="last_name"]').val();
+
         $.post(clFrontend.ajaxUrl, {
             action: 'cl_process_checkout',
             nonce: $form.find('[name="checkout_nonce"]').val(),
-            name: $form.find('[name="name"]').val(),
+            name: fullName,
             email: $form.find('[name="email"]').val(),
             phone: $form.find('[name="phone"]').val(),
-            address: $form.find('[name="address"]').val(),
+            address: $form.find('[name="address"]').val() + ' ' + $form.find('[name="address2"]').val(),
             city: $form.find('[name="city"]').val(),
-            postcode: $form.find('[name="postcode"]').val(),
+            postcode: '',
             notes: $form.find('[name="notes"]').val(),
             shipping_method: shippingIndex,
             shipping_price: shippingPrice
@@ -296,19 +383,14 @@ jQuery(document).ready(function($) {
                 } else if (response.data.iframe) {
                     $iframe.attr('src', response.data.iframe_url);
                     $paymentContainer.show();
-                } else if (response.data.paypal) {
-                    // Handle PayPal
-                    // This would require PayPal JS SDK integration
                 }
             } else {
                 alert(response.data.message || '<?php esc_html_e( 'שגיאה בעיבוד ההזמנה', 'commerce-layer' ); ?>');
-                var currentTotal = subtotal + (parseFloat($form.find('[name="shipping_method"]:checked').data('price')) || 0);
-                $btn.prop('disabled', false).text('<?php echo esc_js( __( 'שלם', 'commerce-layer' ) ); ?> ' + formatPrice(currentTotal));
+                $btn.prop('disabled', false).removeClass('cl-loading');
             }
         }).fail(function() {
             alert('<?php esc_html_e( 'שגיאת תקשורת', 'commerce-layer' ); ?>');
-            var currentTotal = subtotal + (parseFloat($form.find('[name="shipping_method"]:checked').data('price')) || 0);
-            $btn.prop('disabled', false).text('<?php echo esc_js( __( 'שלם', 'commerce-layer' ) ); ?> ' + formatPrice(currentTotal));
+            $btn.prop('disabled', false).removeClass('cl-loading');
         });
     });
 
@@ -316,7 +398,7 @@ jQuery(document).ready(function($) {
     $('.cl-close-payment, .cl-payment-overlay').on('click', function() {
         $paymentContainer.hide();
         $iframe.attr('src', '');
-        $form.find('.cl-btn-pay').prop('disabled', false);
+        $form.find('.cl-btn-pay').prop('disabled', false).removeClass('cl-loading');
     });
 });
 </script>
