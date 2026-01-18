@@ -19,7 +19,7 @@ $totals = $cart->get_totals();
 $gateway = get_option( 'cl_payment_gateway', 'tranzila' );
 $checkout_mode = get_option( 'cl_checkout_mode', 'payment' );
 $is_lead_mode = 'lead' === $checkout_mode;
-$lead_button_text = get_option( 'cl_lead_button_text', __( 'שלח פנייה', 'commerce-layer' ) );
+$lead_button_text = CL_Core::get_translatable_option( 'cl_lead_button_text', 'שלח פנייה' );
 $shipping_methods = get_option( 'cl_shipping_methods', array() );
 $free_shipping_threshold = floatval( get_option( 'cl_free_shipping_threshold', 0 ) );
 $show_discounts = 'yes' === get_option( 'cl_show_discount_in_cart', 'yes' );

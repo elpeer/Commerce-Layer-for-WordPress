@@ -180,6 +180,27 @@ class CL_Core {
     }
 
     /**
+     * Get translatable option value
+     * If the stored value equals the Hebrew default, return translated version
+     * Otherwise return the custom stored value
+     *
+     * @param string $option_name    The option name
+     * @param string $hebrew_default The Hebrew default value
+     * @return string The option value (translated if it matches Hebrew default)
+     */
+    public static function get_translatable_option( $option_name, $hebrew_default ) {
+        $stored_value = get_option( $option_name, '' );
+
+        // If no stored value or matches Hebrew default, return translated default
+        if ( empty( $stored_value ) || $stored_value === $hebrew_default ) {
+            return __( $hebrew_default, 'commerce-layer' );
+        }
+
+        // Return custom stored value
+        return $stored_value;
+    }
+
+    /**
      * Format price
      */
     public static function format_price( $price, $args = array() ) {

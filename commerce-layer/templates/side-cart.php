@@ -94,7 +94,7 @@ $currency_symbol = get_option( 'cl_currency_symbol', '₪' );
                     </div>
                     <p><?php esc_html_e( 'הסל שלך ריק', 'commerce-layer' ); ?></p>
                     <button type="button" class="cl-btn cl-btn-secondary cl-side-cart-close">
-                        <?php echo esc_html( get_option( 'cl_continue_shopping_text', __( 'המשך בקנייה', 'commerce-layer' ) ) ); ?>
+                        <?php echo esc_html( CL_Core::get_translatable_option( 'cl_continue_shopping_text', 'המשך בקנייה' ) ); ?>
                     </button>
                 </div>
             <?php else :

@@ -43,13 +43,13 @@ $has_variants = $product->has_variants();
             <?php else : ?>
                 <?php if ( in_array( $mode, array( 'cart', 'both' ) ) ) : ?>
                     <button type="button" class="cl-btn cl-btn-floating cl-floating-add-to-cart">
-                        <?php echo esc_html( get_option( 'cl_add_to_cart_text', __( 'הוסף לסל', 'commerce-layer' ) ) ); ?>
+                        <?php echo esc_html( CL_Core::get_translatable_option( 'cl_add_to_cart_text', 'הוסף לסל' ) ); ?>
                     </button>
                 <?php endif; ?>
 
                 <?php if ( in_array( $mode, array( 'buy_now', 'both' ) ) ) : ?>
                     <button type="button" class="cl-btn cl-btn-floating cl-btn-secondary cl-floating-buy-now">
-                        <?php echo esc_html( get_option( 'cl_buy_now_text', __( 'קנה עכשיו', 'commerce-layer' ) ) ); ?>
+                        <?php echo esc_html( CL_Core::get_translatable_option( 'cl_buy_now_text', 'קנה עכשיו' ) ); ?>
                     </button>
                 <?php endif; ?>
             <?php endif; ?>
