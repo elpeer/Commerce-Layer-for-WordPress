@@ -388,8 +388,11 @@ class CL_Public {
 
         // Side cart position (left or right)
         if ( 'left' === $side_cart_side ) {
-            echo '.cl-side-cart-drawer { right: auto; left: 0; transform: translateX(-100%); }' . "\n";
-            echo '.cl-side-cart.cl-open .cl-side-cart-drawer { transform: translateX(0); }' . "\n";
+            echo '.cl-side-cart-drawer { right: auto !important; left: 0 !important; transform: translateX(-100%) !important; }' . "\n";
+            echo '.cl-side-cart.cl-side-cart-open .cl-side-cart-drawer { transform: translateX(0) !important; }' . "\n";
+        } elseif ( 'right' === $side_cart_side ) {
+            echo '.cl-side-cart-drawer { left: auto !important; right: 0 !important; transform: translateX(100%) !important; }' . "\n";
+            echo '.cl-side-cart.cl-side-cart-open .cl-side-cart-drawer { transform: translateX(0) !important; }' . "\n";
         }
 
         // Custom CSS
