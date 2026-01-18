@@ -28,6 +28,7 @@ class CL_Ajax {
             'cl_update_cart',
             'cl_remove_from_cart',
             'cl_get_cart',
+            'cl_get_side_cart',
             'cl_get_variant_data',
             'cl_apply_coupon',
         );
@@ -120,6 +121,8 @@ class CL_Ajax {
             'items_count' => $cart->get_items_count(),
             'subtotal'    => $cart->get_subtotal(),
             'total'       => $cart->get_total(),
+            'is_empty'    => $cart->is_empty(),
+            'totals'      => $cart->get_totals(),
             'formatted'   => array(
                 'subtotal' => CL_Core::format_price( $cart->get_subtotal() ),
                 'total'    => CL_Core::format_price( $cart->get_total() ),
@@ -152,6 +155,7 @@ class CL_Ajax {
             'subtotal'    => $cart->get_subtotal(),
             'total'       => $cart->get_total(),
             'is_empty'    => $cart->is_empty(),
+            'totals'      => $cart->get_totals(),
             'formatted'   => array(
                 'subtotal' => CL_Core::format_price( $cart->get_subtotal() ),
                 'total'    => CL_Core::format_price( $cart->get_total() ),
@@ -175,6 +179,26 @@ class CL_Ajax {
                 'subtotal' => CL_Core::format_price( $cart->get_subtotal() ),
                 'total'    => CL_Core::format_price( $cart->get_total() ),
             ),
+        ) );
+    }
+
+    /**
+     * Get side cart HTML
+     */
+    public function cl_get_side_cart() {
+        $this->verify_nonce();
+
+        $cart = CL_Cart::get_instance();
+
+        ob_start();
+        include CL_PLUGIN_DIR . 'templates/side-cart.php';
+        $html = ob_get_clean();
+
+        wp_send_json_success( array(
+            'html'        => $html,
+            'items_count' => $cart->get_items_count(),
+            'totals'      => $cart->get_totals(),
+            'is_empty'    => $cart->is_empty(),
         ) );
     }
 

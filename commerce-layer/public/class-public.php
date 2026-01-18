@@ -20,17 +20,14 @@ class CL_Public {
         add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
         add_filter( 'the_content', array( $this, 'auto_inject_commerce' ), 20 );
         add_action( 'wp_footer', array( $this, 'render_floating_bar' ) );
+        add_action( 'wp_footer', array( $this, 'render_side_cart' ) );
     }
 
     /**
      * Enqueue frontend scripts and styles
      */
     public function enqueue_scripts() {
-        // Check if we need to load on this page
-        if ( ! $this->should_load_assets() ) {
-            return;
-        }
-
+        // Always load assets on frontend (for side cart)
         // Styles
         wp_enqueue_style(
             'cl-frontend',
@@ -50,18 +47,21 @@ class CL_Public {
 
         // Localize
         wp_localize_script( 'cl-frontend', 'clFrontend', array(
-            'ajaxUrl'      => admin_url( 'admin-ajax.php' ),
-            'nonce'        => wp_create_nonce( 'cl_ajax_nonce' ),
-            'cartUrl'      => get_permalink( get_option( 'cl_cart_page_id' ) ),
-            'checkoutUrl'  => get_permalink( get_option( 'cl_checkout_page_id' ) ),
-            'currency'     => get_option( 'cl_currency_symbol', '₪' ),
-            'strings'      => array(
-                'addedToCart'    => __( 'הפריט נוסף לסל', 'commerce-layer' ),
-                'error'          => __( 'שגיאה', 'commerce-layer' ),
-                'selectVariant'  => __( 'בחר וריאציה', 'commerce-layer' ),
-                'outOfStock'     => __( 'אזל מהמלאי', 'commerce-layer' ),
-                'viewCart'       => __( 'צפה בסל', 'commerce-layer' ),
+            'ajaxUrl'              => admin_url( 'admin-ajax.php' ),
+            'nonce'                => wp_create_nonce( 'cl_ajax_nonce' ),
+            'cartUrl'              => get_permalink( get_option( 'cl_cart_page_id' ) ),
+            'checkoutUrl'          => get_permalink( get_option( 'cl_checkout_page_id' ) ),
+            'currency'             => get_option( 'cl_currency_symbol', '₪' ),
+            'freeShippingThreshold' => get_option( 'cl_free_shipping_threshold', 200 ),
+            'strings'              => array(
+                'addedToCart'      => __( 'הפריט נוסף לסל', 'commerce-layer' ),
+                'error'            => __( 'שגיאה', 'commerce-layer' ),
+                'selectVariant'    => __( 'בחר וריאציה', 'commerce-layer' ),
+                'outOfStock'       => __( 'אזל מהמלאי', 'commerce-layer' ),
+                'viewCart'         => __( 'צפה בסל', 'commerce-layer' ),
                 'continueShopping' => __( 'המשך בקנייה', 'commerce-layer' ),
+                'addMore'          => __( 'הוסף %s לקבלת משלוח חינם!', 'commerce-layer' ),
+                'freeShipping'     => __( 'זכאי למשלוח חינם!', 'commerce-layer' ),
             ),
         ) );
     }
@@ -192,5 +192,12 @@ class CL_Public {
         }
 
         include CL_PLUGIN_DIR . 'templates/floating-bar.php';
+    }
+
+    /**
+     * Render side cart drawer in footer
+     */
+    public function render_side_cart() {
+        include CL_PLUGIN_DIR . 'templates/side-cart.php';
     }
 }
