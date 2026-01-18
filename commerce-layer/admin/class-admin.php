@@ -164,9 +164,14 @@ class CL_Admin {
         $total_orders = CL_Order::get_count();
         $pending_orders = CL_Order::get_count( array( 'status' => 'pending' ) );
         $paid_orders = CL_Order::get_count( array( 'status' => 'paid' ) );
+        $lead_orders = CL_Order::get_count( array( 'status' => 'lead' ) );
 
         // Recent orders
         $recent_orders = CL_Order::get_orders( array( 'per_page' => 5 ) );
+
+        // Get analytics data
+        $days = isset( $_GET['days'] ) ? absint( $_GET['days'] ) : 30;
+        $analytics = CL_Analytics::get_dashboard_stats( $days );
 
         include CL_PLUGIN_DIR . 'admin/views/dashboard.php';
     }

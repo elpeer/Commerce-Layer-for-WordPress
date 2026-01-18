@@ -23,6 +23,7 @@ class CL_Public {
         add_action( 'wp_footer', array( $this, 'render_floating_bar' ) );
         add_action( 'wp_footer', array( $this, 'render_side_cart' ) );
         add_action( 'wp_footer', array( $this, 'render_floating_cart_icon' ) );
+        add_action( 'wp_footer', array( $this, 'render_custom_injection_script' ) );
     }
 
     /**
@@ -343,6 +344,14 @@ class CL_Public {
         echo '  --cl-buy-now-bg: ' . esc_attr( $buy_now_bg ) . ';' . "\n";
         echo '  --cl-buy-now-text: ' . esc_attr( $buy_now_text ) . ';' . "\n";
 
+        // Continue shopping button colors
+        $continue_shopping_bg = get_option( 'cl_continue_shopping_bg', '#ffffff' );
+        $continue_shopping_text = get_option( 'cl_continue_shopping_text_color', '#1e293b' );
+        $continue_shopping_border = get_option( 'cl_continue_shopping_border_color', '#2563eb' );
+        echo '  --cl-continue-shopping-bg: ' . esc_attr( $continue_shopping_bg ) . ';' . "\n";
+        echo '  --cl-continue-shopping-text: ' . esc_attr( $continue_shopping_text ) . ';' . "\n";
+        echo '  --cl-continue-shopping-border: ' . esc_attr( $continue_shopping_border ) . ';' . "\n";
+
         // Cart icon colors
         echo '  --cl-cart-icon-color: ' . esc_attr( $cart_icon_color ) . ';' . "\n";
         echo '  --cl-cart-icon-bg: ' . esc_attr( $cart_icon_bg ) . ';' . "\n";
@@ -375,8 +384,8 @@ class CL_Public {
         echo '.cl-view-cart-btn:hover { background: var(--cl-color-primary) !important; color: #fff !important; }' . "\n";
 
         // Continue shopping button (cart page)
-        echo '.cl-continue, .cl-btn.cl-continue { background: var(--cl-color-background, #fff) !important; color: var(--cl-color-text, #1e293b) !important; border: 2px solid var(--cl-color-primary) !important; }' . "\n";
-        echo '.cl-continue:hover { background: var(--cl-color-primary) !important; color: #fff !important; }' . "\n";
+        echo '.cl-continue, .cl-btn.cl-continue { background: var(--cl-continue-shopping-bg) !important; color: var(--cl-continue-shopping-text) !important; border: 2px solid var(--cl-continue-shopping-border) !important; }' . "\n";
+        echo '.cl-continue:hover { background: var(--cl-continue-shopping-border) !important; color: #fff !important; }' . "\n";
 
         // Product name link in cart
         echo '.cl-product-name { color: var(--cl-color-text, #1e293b) !important; text-decoration: none; }' . "\n";
@@ -466,5 +475,84 @@ class CL_Public {
         }
 
         return $colors;
+    }
+
+    /**
+     * Render custom injection script
+     */
+    public function render_custom_injection_script() {
+        if ( 'yes' !== get_option( 'cl_custom_injection_enabled' ) ) {
+            return;
+        }
+
+        $selector = get_option( 'cl_custom_injection_selector', '' );
+        if ( empty( $selector ) ) {
+            return;
+        }
+
+        $position = get_option( 'cl_custom_injection_position', 'after' );
+
+        // Only on singular posts/pages/products
+        if ( ! is_singular() ) {
+            return;
+        }
+
+        global $post;
+        $post_id = $post->ID;
+
+        // Get the product data
+        $product = new CL_Product( $post_id );
+        if ( ! $product->is_purchasable() ) {
+            return;
+        }
+
+        // Get button HTML
+        ob_start();
+        $purchase_card = new CL_Purchase_Card();
+        $purchase_card->render_buttons_only( $post_id );
+        $buttons_html = ob_get_clean();
+
+        // Escape for JavaScript
+        $buttons_html = str_replace( array( "\r", "\n", "'" ), array( '', '', "\\'" ), $buttons_html );
+        ?>
+        <script>
+        (function() {
+            document.addEventListener('DOMContentLoaded', function() {
+                var selector = '<?php echo esc_js( $selector ); ?>';
+                var position = '<?php echo esc_js( $position ); ?>';
+                var buttonsHtml = '<?php echo $buttons_html; ?>';
+
+                var targetElement = document.querySelector(selector);
+                if (!targetElement) {
+                    console.log('[Commerce Layer] Custom injection: selector not found:', selector);
+                    return;
+                }
+
+                // Create wrapper element
+                var wrapper = document.createElement('div');
+                wrapper.className = 'cl-custom-injected-buttons';
+                wrapper.innerHTML = buttonsHtml;
+
+                // Insert based on position
+                switch (position) {
+                    case 'before':
+                        targetElement.parentNode.insertBefore(wrapper, targetElement);
+                        break;
+                    case 'after':
+                        targetElement.parentNode.insertBefore(wrapper, targetElement.nextSibling);
+                        break;
+                    case 'append':
+                        targetElement.appendChild(wrapper);
+                        break;
+                    case 'prepend':
+                        targetElement.insertBefore(wrapper, targetElement.firstChild);
+                        break;
+                }
+
+                console.log('[Commerce Layer] Custom injection: buttons injected', position, selector);
+            });
+        })();
+        </script>
+        <?php
     }
 }

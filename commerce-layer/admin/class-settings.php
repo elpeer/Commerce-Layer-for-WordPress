@@ -139,6 +139,11 @@ class CL_Settings {
                 update_option( 'cl_continue_shopping_text', sanitize_text_field( $_POST['cl_continue_shopping_text'] ?? __( 'המשך בקנייה', 'commerce-layer' ) ) );
                 update_option( 'cl_floating_bar_enabled', isset( $_POST['cl_floating_bar_enabled'] ) ? 'yes' : 'no' );
 
+                // Custom button injection settings
+                update_option( 'cl_custom_injection_enabled', isset( $_POST['cl_custom_injection_enabled'] ) ? 'yes' : 'no' );
+                update_option( 'cl_custom_injection_selector', sanitize_text_field( $_POST['cl_custom_injection_selector'] ?? '' ) );
+                update_option( 'cl_custom_injection_position', sanitize_text_field( $_POST['cl_custom_injection_position'] ?? 'after' ) );
+
                 // Floating cart icon settings
                 update_option( 'cl_floating_cart_icon_enabled', isset( $_POST['cl_floating_cart_icon_enabled'] ) ? 'yes' : 'no' );
                 update_option( 'cl_cart_icon_desktop_position', sanitize_text_field( $_POST['cl_cart_icon_desktop_position'] ?? 'top-left' ) );
@@ -190,6 +195,11 @@ class CL_Settings {
                 // Buy now button colors
                 update_option( 'cl_buy_now_bg', sanitize_hex_color( $_POST['cl_buy_now_bg'] ?? '#10b981' ) );
                 update_option( 'cl_buy_now_text_color', sanitize_hex_color( $_POST['cl_buy_now_text_color'] ?? '#ffffff' ) );
+
+                // Continue shopping button colors
+                update_option( 'cl_continue_shopping_bg', sanitize_hex_color( $_POST['cl_continue_shopping_bg'] ?? '#ffffff' ) );
+                update_option( 'cl_continue_shopping_text_color', sanitize_hex_color( $_POST['cl_continue_shopping_text_color'] ?? '#1e293b' ) );
+                update_option( 'cl_continue_shopping_border_color', sanitize_hex_color( $_POST['cl_continue_shopping_border_color'] ?? '#2563eb' ) );
 
                 // Cart icon colors
                 update_option( 'cl_cart_icon_color', sanitize_hex_color( $_POST['cl_cart_icon_color'] ?? '#2563eb' ) );

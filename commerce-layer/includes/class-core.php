@@ -62,6 +62,7 @@ class CL_Core {
         require_once CL_PLUGIN_DIR . 'includes/class-shortcodes.php';
         require_once CL_PLUGIN_DIR . 'includes/class-checkout.php';
         require_once CL_PLUGIN_DIR . 'includes/class-tracking.php';
+        require_once CL_PLUGIN_DIR . 'includes/class-analytics.php';
 
         // Admin includes
         if ( is_admin() ) {

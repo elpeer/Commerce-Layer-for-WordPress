@@ -178,4 +178,17 @@ class CL_Purchase_Card {
         <?php
         return ob_get_clean();
     }
+
+    /**
+     * Render only the buttons (for custom injection)
+     */
+    public function render_buttons_only( $post_id ) {
+        $product = new CL_Product( $post_id );
+
+        if ( ! $product->is_commerce_enabled() ) {
+            return;
+        }
+
+        echo self::get_buttons_html( $product, true );
+    }
 }

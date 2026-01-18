@@ -399,6 +399,47 @@ if ( ! defined( 'ABSPATH' ) ) {
                 </tr>
             </table>
 
+            <!-- Custom Button Injection Settings -->
+            <h2 class="title"><?php esc_html_e( 'הטמעת כפתורים מותאמת', 'commerce-layer' ); ?></h2>
+            <p class="description">
+                <?php esc_html_e( 'הגדר selector (class או ID) לאלמנט שמתחתיו יוטמעו הכפתורים. ניתן להשתמש ב-"Copy selector" מכלי הפיתוח בדפדפן.', 'commerce-layer' ); ?>
+            </p>
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'הפעל הטמעה מותאמת', 'commerce-layer' ); ?></th>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="cl_custom_injection_enabled" value="yes" <?php checked( get_option( 'cl_custom_injection_enabled' ), 'yes' ); ?>>
+                            <?php esc_html_e( 'הפעל הטמעת כפתורים לפי selector', 'commerce-layer' ); ?>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'CSS Selector', 'commerce-layer' ); ?></th>
+                    <td>
+                        <input type="text" name="cl_custom_injection_selector" value="<?php echo esc_attr( get_option( 'cl_custom_injection_selector', '' ) ); ?>" class="regular-text" placeholder=".product-description, #product-info, div.price-wrapper">
+                        <p class="description">
+                            <?php esc_html_e( 'הזן CSS selector (class, ID, או נתיב). הכפתורים יוטמעו מתחת לאלמנט הראשון שיימצא.', 'commerce-layer' ); ?><br>
+                            <strong><?php esc_html_e( 'דוגמאות:', 'commerce-layer' ); ?></strong><br>
+                            <code>.my-class</code> - <?php esc_html_e( 'לפי קלאס', 'commerce-layer' ); ?><br>
+                            <code>#my-id</code> - <?php esc_html_e( 'לפי ID', 'commerce-layer' ); ?><br>
+                            <code>div.editor-area > div.description</code> - <?php esc_html_e( 'נתיב מדויק (Copy selector מהדפדפן)', 'commerce-layer' ); ?>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php esc_html_e( 'מיקום הטמעה', 'commerce-layer' ); ?></th>
+                    <td>
+                        <select name="cl_custom_injection_position">
+                            <option value="after" <?php selected( get_option( 'cl_custom_injection_position', 'after' ), 'after' ); ?>><?php esc_html_e( 'אחרי האלמנט', 'commerce-layer' ); ?></option>
+                            <option value="before" <?php selected( get_option( 'cl_custom_injection_position' ), 'before' ); ?>><?php esc_html_e( 'לפני האלמנט', 'commerce-layer' ); ?></option>
+                            <option value="append" <?php selected( get_option( 'cl_custom_injection_position' ), 'append' ); ?>><?php esc_html_e( 'בתוך האלמנט (בסוף)', 'commerce-layer' ); ?></option>
+                            <option value="prepend" <?php selected( get_option( 'cl_custom_injection_position' ), 'prepend' ); ?>><?php esc_html_e( 'בתוך האלמנט (בהתחלה)', 'commerce-layer' ); ?></option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+
             <!-- Floating Cart Icon Settings -->
             <h2 class="title"><?php esc_html_e( 'אייקון סל צף', 'commerce-layer' ); ?></h2>
             <table class="form-table">
@@ -568,6 +609,28 @@ if ( ! defined( 'ABSPATH' ) ) {
                         <th scope="row"><?php esc_html_e( 'צבע טקסט', 'commerce-layer' ); ?></th>
                         <td>
                             <input type="color" name="cl_buy_now_text_color" value="<?php echo esc_attr( get_option( 'cl_buy_now_text_color', '#ffffff' ) ); ?>">
+                        </td>
+                    </tr>
+                </table>
+
+                <h3><?php esc_html_e( 'כפתור המשך בקנייה', 'commerce-layer' ); ?></h3>
+                <table class="form-table">
+                    <tr>
+                        <th scope="row"><?php esc_html_e( 'צבע רקע', 'commerce-layer' ); ?></th>
+                        <td>
+                            <input type="color" name="cl_continue_shopping_bg" value="<?php echo esc_attr( get_option( 'cl_continue_shopping_bg', '#ffffff' ) ); ?>">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><?php esc_html_e( 'צבע טקסט', 'commerce-layer' ); ?></th>
+                        <td>
+                            <input type="color" name="cl_continue_shopping_text_color" value="<?php echo esc_attr( get_option( 'cl_continue_shopping_text_color', '#1e293b' ) ); ?>">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><?php esc_html_e( 'צבע מסגרת', 'commerce-layer' ); ?></th>
+                        <td>
+                            <input type="color" name="cl_continue_shopping_border_color" value="<?php echo esc_attr( get_option( 'cl_continue_shopping_border_color', '#2563eb' ) ); ?>">
                         </td>
                     </tr>
                 </table>
